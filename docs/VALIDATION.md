@@ -4,7 +4,7 @@ Validated locally on October 30, 2026 with Node.js 24 and Microsoft Edge headles
 
 - `npm test`: 10 passing tests. Covers fixture totals, tenant isolation in the mock adapter, policy interval boundaries, invalid dates, overlapping versions, stale-update conflicts, future-version cancellation, unready-current-version fail-closed behavior, clarification requests/replies, HTTP cookies/CSRF/multipart mapping, and mock/example schema conformance.
 - `npm run build`: successful Vite production build with local font assets.
-- Browser: customer sign-in, home, source-grounded pet question, landlord sign-in, overview, properties, lease book, assistant, conversations, policy library, version history and upload dialog rendered without runtime exceptions.
+- Browser: tenant sign-in, home, source-grounded pet question, landlord sign-in, overview, properties, lease book, assistant, conversations, policy library, version history and upload dialog rendered without runtime exceptions.
 - Browser: created a clarification request, switched to landlord, staged a new tenant-handbook revision effective November 2, and verified its scheduled/awaiting-ingestion presentation.
 - Desktop 1440x1000: tested principal landlord pages for horizontal overflow; none found. Mobile 390x844: policy library and navigation checked; document scroll width equals viewport width.
 - Production static server: home and SPA route return 200, missing assets return 404, disconnected /api routes return explicit JSON 503 rather than HTML or mock data.

@@ -16,7 +16,7 @@ const screenshot=async name=>{await new Promise(resolve=>setTimeout(resolve,350)
 
 
 try{
- await call('Runtime.enable');await call('Page.enable');await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await call('Page.navigate',{url:'http://localhost:5174/'});await click('Explore customer workspace');await click('My documents');await wait(`!!document.querySelector('.policy-row')`);await run('document.fonts.ready.then(()=>true)');
+ await call('Runtime.enable');await call('Page.enable');await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await call('Page.navigate',{url:'http://localhost:5174/'});await click('Explore tenant workspace');await click('My documents');await wait(`!!document.querySelector('.policy-row')`);await run('document.fonts.ready.then(()=>true)');
  const desktop=await run(`(()=>{return [...document.querySelectorAll('.policy-row')].map(row=>{const title=row.querySelector('h3').getBoundingClientRect(),icon=row.querySelector('.document-icon').getBoundingClientRect(),buttons=[...row.querySelectorAll('.policy-reader-actions button')].map(b=>b.getBoundingClientRect());return {titleX:title.x,titleY:title.y,iconY:icon.y,buttonY:buttons[0].y,otherY:buttons[1].y,height:row.getBoundingClientRect().height}})})()`);
  for(const row of desktop){assert.ok(Math.abs(row.iconY-row.titleY)<1);assert.ok(Math.abs(row.buttonY-row.otherY)<1);assert.ok(Math.abs(row.buttonY-row.titleY)<1);assert.ok(row.height<175)}
  assert.equal(new Set(desktop.map(r=>r.titleX)).size,1);

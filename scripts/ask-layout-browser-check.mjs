@@ -16,7 +16,7 @@ const screenshot=async name=>{await new Promise(resolve=>setTimeout(resolve,350)
 
 
 try{
- await call('Runtime.enable');await call('Page.enable');await call('Page.navigate',{url:'http://localhost:5174/'});await click('Explore customer workspace');await click('Ask Laga');await wait(`!!document.querySelector('.question-composer')`);await run('document.fonts.ready.then(()=>true)');
+ await call('Runtime.enable');await call('Page.enable');await call('Page.navigate',{url:'http://localhost:5174/'});await click('Explore tenant workspace');await click('Ask Laga');await wait(`!!document.querySelector('.question-composer')`);await run('document.fonts.ready.then(()=>true)');
  for(const [width,height]of [[1440,900],[1280,720],[1024,768],[390,844],[390,640]]){
   await call('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:width<500});await run('window.scrollTo(0,0)');await new Promise(r=>setTimeout(r,200));
   const layout=await run(`(()=>{const c=document.querySelector('.question-composer').getBoundingClientRect();return {top:c.top,bottom:c.bottom,height:innerHeight,overflow:document.documentElement.scrollWidth>innerWidth}})()`);

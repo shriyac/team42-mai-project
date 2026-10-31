@@ -28,7 +28,7 @@ try{
  await close();await screenshot('policies-refined');
  await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});
  await screenshot('mobile-refined');assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true);
- await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await click('Switch demo profile');await click('Explore customer workspace');await click('Can I bring a pet?');await wait(`!!document.querySelector('.answer-review-note')`);
+ await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await click('Switch demo profile');await click('Explore tenant workspace');await click('Can I bring a pet?');await wait(`!!document.querySelector('.answer-review-note')`);
  assert.equal(await run(`!!document.querySelector('select[name=state]')`),false);
  assert.equal(await run(`document.querySelector('.jurisdiction-card h2').textContent`),'North Carolina');
  await screenshot('tenant-refined');assert.deepEqual(errors,[]);console.log('PASS: NC registration, review details, invalid PDF, tenant state inheritance, withheld legal answer, mobile overflow, zero runtime errors.');

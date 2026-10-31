@@ -12,7 +12,7 @@
 
 Components call a gateway passed by the app; they do not import fixtures, call fetch, parse PDFs or access storage directly. HTTP and mock adapters expose the same methods. The Python team must not need to edit UI components to replace the mock service. Domain changes start with the contract and examples; keep existing required fields compatible or increment the API version.
 
-Tenant means customer in the UI; the wire role is `tenant`. Policy admin is a permission (`policies:write`) attached to a landlord account, rather than a third identity type. Backend role and object-level checks are required on every endpoint.
+Tenant is the UI label and `tenant` is the wire role. Policy admin is a permission (`policies:write`) attached to a landlord account, rather than a third identity type. Backend role and object-level checks are required on every endpoint.
 
 CSS is hierarchical: root tokens and primitives, shell, feature components, responsive overrides. All typography inherits the self-hosted Manrope font. Icons use lucide-react; property illustrations and the Laga mark are local SVG. No external asset services are required.
 

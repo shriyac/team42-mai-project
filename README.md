@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:5174. Choose Customer and any of the 10 fictional residents, or Landlord for Alex Morgan's three-property portfolio. No password is needed in mock mode. Demo changes survive profile switches but reset when the page reloads. All fonts and illustrations are served locally.
+Open http://localhost:5174. Choose Tenant and any of the 10 fictional residents, or Landlord for Alex Morgan's three-property portfolio. No password is needed in mock mode. Demo changes survive profile switches but reset when the page reloads. All fonts and illustrations are served locally.
 
 ```sh
 npm test
@@ -23,7 +23,7 @@ npm start
 
 ## Included
 
-- Customer home, structured lease details, source excerpts, questions with citations and clarification requests.
+- Tenant home, structured lease details, source excerpts, questions with citations and clarification requests.
 - Landlord overview, 12-unit inventory, 10 leases, filters, resident conversations and replies.
 - Policy library for tenant, pet, utilities, waste, community and maintenance policies; new categories supported through Other.
 - Current, scheduled and historical versions; explicit effective dates; immutable effective history; cancellation of a future staged version.
