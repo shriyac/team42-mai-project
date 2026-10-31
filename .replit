@@ -1,4 +1,4 @@
-modules = ["nodejs-22"]
+modules = ["nodejs-20", "python-3.11", "web"]
 run = "npm run dev"
 
 [env]
@@ -12,3 +12,6 @@ deploymentTarget = "cloudrun"
 [[ports]]
 localPort = 5174
 externalPort = 80
+
+[nix]
+channel = "stable-25_05"
