@@ -1,0 +1,21 @@
+/.venv/
+/__pycache__/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+/.pytest_cache/
+/.env
+/.env.*
+!/.env.example
+/data/
+/uploads/
+/.streamlit/secrets.toml
+
+/node_modules/
+/dist/
+
+# Generated distribution bundles; recreate with the packaging scripts.
+/laga-*.zip
+/frontend/.env
+/frontend/.env.*
+!/frontend/.env.example

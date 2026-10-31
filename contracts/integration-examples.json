@@ -1,0 +1,82 @@
+{
+  "notice": "Fictional integration fixtures only. The passed-review example is synthetic, not a real legal assessment. Fixed timestamps will expire; generate current review metadata in your service.",
+  "login": {
+    "email": "alex@alderliving.example",
+    "password": "replace-with-test-credential"
+  },
+  "propertyRegistration": {
+    "name": "Oak House",
+    "address": "10 Oak Street",
+    "city": "Raleigh, NC 27601",
+    "state": "NC",
+    "units": 2
+  },
+  "ask": {
+    "question": "What does my lease say about repair requests?",
+    "scope": {
+      "type": "lease",
+      "id": "lease-1"
+    },
+    "asOf": "2026-10-31",
+    "threadId": null
+  },
+  "newPolicyMultipart": {
+    "file": "<binary PDF bytes; this JSON placeholder is not the upload body>",
+    "title": "Maintenance policy",
+    "category": "maintenance",
+    "propertyId": "property-1",
+    "state": "NC",
+    "effectiveFrom": "2026-11-02"
+  },
+  "newVersionMultipart": {
+    "file": "<binary PDF bytes>",
+    "familyId": "family-maintenance",
+    "expectedVersion": 1,
+    "state": "NC",
+    "effectiveFrom": "2026-11-02"
+  },
+  "clarificationRequest": {
+    "leaseId": "lease-1",
+    "category": "Maintenance",
+    "subject": "Repair process",
+    "message": "Please clarify the repair notification process."
+  },
+  "landlordReply": {
+    "reply": "Please send the details so we can review your request."
+  },
+  "illustrativePassedAnswer": {
+    "data": {
+      "id": "answer-example",
+      "threadId": "thread-example",
+      "answer": "Illustrative reviewed response. Replace this fixture with an answer checked by your legal-review service.",
+      "status": "supported",
+      "citations": [],
+      "calculations": [],
+      "activity": [
+        {
+          "label": "Illustrative fixture; no actual legal assessment performed",
+          "status": "complete"
+        }
+      ],
+      "demo": true,
+      "compliance": {
+        "status": "passed",
+        "state": "NC",
+        "kind": "answer",
+        "scopeKey": "lease:lease-1",
+        "asOf": "2026-10-31",
+        "checkedAt": "2026-10-31T12:00:00Z",
+        "expiresAt": "2026-11-01T12:00:00Z",
+        "lawRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "contentHash": "f06dc6f837f6376298027846ee624e183201299c515002c366a5533649e615c9",
+        "citations": [
+          {
+            "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/ByChapter/Chapter_42.html",
+            "section": "Chapter 42 (illustrative reference only)"
+          }
+        ],
+        "findings": []
+      }
+    }
+  }
+}

@@ -1,0 +1,551 @@
+{
+  "title": "Laga Backend Integration Guide",
+  "contractVersion": "1.1.0",
+  "prepared": "2026-10-31",
+  "specSha256": "517b8eb2647ba722b73f5b7789075b1d12e8479bf3e4d60da9bd26e4897c0c6a",
+  "endpointCount": 11,
+  "modelCount": 26,
+  "sections": [
+    {
+      "id": "section-1",
+      "title": "01 / Start here: the integration route",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-2",
+      "title": "02 / Files, ownership and environments",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-3",
+      "title": "03 / Decide how the API is reached",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-4",
+      "title": "04 / HTTP, sessions and error envelopes",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-5",
+      "title": "05 / Dates, identities and DTO conventions",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-6",
+      "title": "06 / Test in the API Explorer",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-7",
+      "title": "07 / Connect in development",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-8",
+      "title": "08 / Deploy behind a same-origin route",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-9",
+      "title": "09 / Deploy with direct cross-origin calls",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-10",
+      "title": "10 / Endpoint map and implementation order",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-11",
+      "title": "E01 / POST /auth/login",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-12",
+      "title": "E02 / GET /auth/session",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-13",
+      "title": "E03 / POST /auth/logout",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-14",
+      "title": "E04 / GET /workspace",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-15",
+      "title": "E05 / GET /leases/{id}",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-16",
+      "title": "E06 / POST /assistant/messages",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-17",
+      "title": "E07 / POST /requests",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-18",
+      "title": "E08 / POST /requests/{id}/reply",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-19",
+      "title": "E09 / POST /policies",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-20",
+      "title": "E10 / DELETE /policies/{id}",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-21",
+      "title": "E11 / POST /properties",
+      "group": "Endpoint reference"
+    },
+    {
+      "id": "section-22",
+      "title": "11 / Policy storage, versions and async processing",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-23",
+      "title": "12 / NC state and compliance behavior",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-24",
+      "title": "13 / Exact review metadata and hashing",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-25",
+      "title": "14 / Reviewer integration and safe clarification",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-26",
+      "title": "15 / Manual HTTP walkthrough: curl",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-27",
+      "title": "16 / Manual HTTP walkthrough: PowerShell",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-28",
+      "title": "17 / Acceptance matrix and test evidence",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-29",
+      "title": "18 / Production cutover and rollback",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-30",
+      "title": "19 / Troubleshooting by symptom",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-31",
+      "title": "20 / Decisions to close before implementation",
+      "group": "Implementation"
+    },
+    {
+      "id": "section-32",
+      "title": "A1 / Identity and session models",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-33",
+      "title": "A2 / Properties and workspace",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-34",
+      "title": "A3 / Leases, details and question scope",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-35",
+      "title": "A4 / Policy upload and immutable versions",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-36",
+      "title": "A5 / Assistant requests and evidence",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-37",
+      "title": "A6 / Clarification request workflow",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-38",
+      "title": "A7 / Compliance review metadata",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-39",
+      "title": "A8 / Errors and mutation acknowledgments",
+      "group": "Complete data dictionary"
+    },
+    {
+      "id": "section-40",
+      "title": "J / anonymousSession — Session",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-41",
+      "title": "J / authenticatedSession — Session",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-42",
+      "title": "J / registeredProperty — Property",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-43",
+      "title": "J / emptyLandlordWorkspace — Workspace",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-44",
+      "title": "J / pendingPolicy — PolicyVersion",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-45",
+      "title": "J / clarificationAnswer — Answer",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-46",
+      "title": "J / syntheticReviewedAnswer — Answer",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-47",
+      "title": "J / versionConflict — Error",
+      "group": "Worked JSON responses"
+    },
+    {
+      "id": "section-48",
+      "title": "21 / References, version and handoff receipt",
+      "group": "Release reference"
+    }
+  ],
+  "source": "scripts/build-integration-guide.mjs",
+  "pdf": {
+    "file": "docs/Laga-Backend-Integration-Guide-v1.1.0.pdf",
+    "pages": 72,
+    "bytes": 1667396,
+    "sha256": "0c417a03bfb158a2033a357dca4526d929d0b1f951fd8b66a2f6bff64ee46dd4",
+    "layoutValidated": true,
+    "internalLinksValidated": true,
+    "tagged": true,
+    "outline": true,
+    "pageHeadings": [
+      {
+        "page": 1,
+        "title": "One clear pathfrom API contractto connected app."
+      },
+      {
+        "page": 2,
+        "title": "Find what you need."
+      },
+      {
+        "page": 3,
+        "title": "Examples you can mapdirectly to your service."
+      },
+      {
+        "page": 4,
+        "title": "01 / Start here: the integration route"
+      },
+      {
+        "page": 5,
+        "title": "02 / Files, ownership and environments"
+      },
+      {
+        "page": 6,
+        "title": "03 / Decide how the API is reached"
+      },
+      {
+        "page": 7,
+        "title": "04 / HTTP, sessions and error envelopes"
+      },
+      {
+        "page": 8,
+        "title": "05 / Dates, identities and DTO conventions"
+      },
+      {
+        "page": 9,
+        "title": "06 / Test in the API Explorer"
+      },
+      {
+        "page": 10,
+        "title": "06 / Test in the API Explorer / continued"
+      },
+      {
+        "page": 11,
+        "title": "07 / Connect in development"
+      },
+      {
+        "page": 12,
+        "title": "07 / Connect in development / continued"
+      },
+      {
+        "page": 13,
+        "title": "08 / Deploy behind a same-origin route"
+      },
+      {
+        "page": 14,
+        "title": "08 / Deploy behind a same-origin route / continued"
+      },
+      {
+        "page": 15,
+        "title": "09 / Deploy with direct cross-origin calls"
+      },
+      {
+        "page": 16,
+        "title": "10 / Endpoint map and implementation order"
+      },
+      {
+        "page": 17,
+        "title": "E01 / POST /auth/login"
+      },
+      {
+        "page": 18,
+        "title": "E02 / GET /auth/session"
+      },
+      {
+        "page": 19,
+        "title": "E03 / POST /auth/logout"
+      },
+      {
+        "page": 20,
+        "title": "E04 / GET /workspace"
+      },
+      {
+        "page": 21,
+        "title": "E05 / GET /leases/{id}"
+      },
+      {
+        "page": 22,
+        "title": "E06 / POST /assistant/messages"
+      },
+      {
+        "page": 23,
+        "title": "E06 / POST /assistant/messages / continued"
+      },
+      {
+        "page": 24,
+        "title": "E07 / POST /requests"
+      },
+      {
+        "page": 25,
+        "title": "E08 / POST /requests/{id}/reply"
+      },
+      {
+        "page": 26,
+        "title": "E09 / POST /policies"
+      },
+      {
+        "page": 27,
+        "title": "E09 / POST /policies / continued"
+      },
+      {
+        "page": 28,
+        "title": "E10 / DELETE /policies/{id}"
+      },
+      {
+        "page": 29,
+        "title": "E11 / POST /properties"
+      },
+      {
+        "page": 30,
+        "title": "11 / Policy storage, versions and async processing"
+      },
+      {
+        "page": 31,
+        "title": "11 / Policy storage, versions and async processing / continued"
+      },
+      {
+        "page": 32,
+        "title": "12 / NC state and compliance behavior"
+      },
+      {
+        "page": 33,
+        "title": "13 / Exact review metadata and hashing"
+      },
+      {
+        "page": 34,
+        "title": "14 / Reviewer integration and safe clarification"
+      },
+      {
+        "page": 35,
+        "title": "14 / Reviewer integration and safe clarification / continued"
+      },
+      {
+        "page": 36,
+        "title": "15 / Manual HTTP walkthrough: curl"
+      },
+      {
+        "page": 37,
+        "title": "15 / Manual HTTP walkthrough: curl / continued"
+      },
+      {
+        "page": 38,
+        "title": "16 / Manual HTTP walkthrough: PowerShell"
+      },
+      {
+        "page": 39,
+        "title": "16 / Manual HTTP walkthrough: PowerShell / continued"
+      },
+      {
+        "page": 40,
+        "title": "17 / Acceptance matrix and test evidence"
+      },
+      {
+        "page": 41,
+        "title": "18 / Production cutover and rollback"
+      },
+      {
+        "page": 42,
+        "title": "19 / Troubleshooting by symptom"
+      },
+      {
+        "page": 43,
+        "title": "19 / Troubleshooting by symptom / continued"
+      },
+      {
+        "page": 44,
+        "title": "20 / Decisions to close before implementation"
+      },
+      {
+        "page": 45,
+        "title": "A1 / Identity and session models"
+      },
+      {
+        "page": 46,
+        "title": "A1 / Identity and session models / continued"
+      },
+      {
+        "page": 47,
+        "title": "A2 / Properties and workspace"
+      },
+      {
+        "page": 48,
+        "title": "A2 / Properties and workspace / continued"
+      },
+      {
+        "page": 49,
+        "title": "A2 / Properties and workspace / continued"
+      },
+      {
+        "page": 50,
+        "title": "A3 / Leases, details and question scope"
+      },
+      {
+        "page": 51,
+        "title": "A3 / Leases, details and question scope / continued"
+      },
+      {
+        "page": 52,
+        "title": "A4 / Policy upload and immutable versions"
+      },
+      {
+        "page": 53,
+        "title": "A4 / Policy upload and immutable versions / continued"
+      },
+      {
+        "page": 54,
+        "title": "A4 / Policy upload and immutable versions / continued"
+      },
+      {
+        "page": 55,
+        "title": "A5 / Assistant requests and evidence"
+      },
+      {
+        "page": 56,
+        "title": "A5 / Assistant requests and evidence / continued"
+      },
+      {
+        "page": 57,
+        "title": "A5 / Assistant requests and evidence / continued"
+      },
+      {
+        "page": 58,
+        "title": "A6 / Clarification request workflow"
+      },
+      {
+        "page": 59,
+        "title": "A6 / Clarification request workflow / continued"
+      },
+      {
+        "page": 60,
+        "title": "A7 / Compliance review metadata"
+      },
+      {
+        "page": 61,
+        "title": "A7 / Compliance review metadata / continued"
+      },
+      {
+        "page": 62,
+        "title": "A8 / Errors and mutation acknowledgments"
+      },
+      {
+        "page": 63,
+        "title": "A8 / Errors and mutation acknowledgments / continued"
+      },
+      {
+        "page": 64,
+        "title": "J / anonymousSession — Session"
+      },
+      {
+        "page": 65,
+        "title": "J / authenticatedSession — Session"
+      },
+      {
+        "page": 66,
+        "title": "J / registeredProperty — Property"
+      },
+      {
+        "page": 67,
+        "title": "J / emptyLandlordWorkspace — Workspace"
+      },
+      {
+        "page": 68,
+        "title": "J / pendingPolicy — PolicyVersion"
+      },
+      {
+        "page": 69,
+        "title": "J / clarificationAnswer — Answer"
+      },
+      {
+        "page": 70,
+        "title": "J / syntheticReviewedAnswer — Answer"
+      },
+      {
+        "page": 71,
+        "title": "J / versionConflict — Error"
+      },
+      {
+        "page": 72,
+        "title": "21 / References, version and handoff receipt"
+      }
+    ]
+  }
+}
