@@ -44,7 +44,7 @@ Switch to the Python API by copying frontend/.env.example to frontend/.env.local
 
 ## Replit
 
-The project includes a Node.js 22 Autoscale configuration and a production server that binds to `0.0.0.0`, respects `PORT` and serves both the app and API Explorer. The publishing build is `npm ci --include=dev && npm run build`; the run command is `node scripts/serve.mjs`. The configured internal port and `PORT` are both 5174, mapped to external port 80.
+The project includes a Node.js 22 Autoscale configuration and a production server that binds to `0.0.0.0`, respects `PORT` and serves both the app and API Explorer. The publishing build is `npm ci --include=dev && npm run build`; the run command is `node scripts/serve.mjs`. The configured internal port and `PORT` are both 5000, mapped to external port 80. The Replit Run workflow uses `npm run dev -- --port 5000`; local development still defaults to 5174.
 
 Use [the Replit deployment runbook](replit.md) for import, build/publishing settings, frontend-only versus real API deployment, environment variables and smoke checks. Run `npm run check:deploy` before publishing. The generated `laga-replit-source-v0.1.0.zip` is a clean source import without local dependencies, credentials, uploads or browser data. This prepares the frontend demo/API Explorer; it does not deploy or implement the tenant backend.
 

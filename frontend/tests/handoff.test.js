@@ -30,7 +30,11 @@ test('PDF guide examples and recorded contract snapshot match the current specif
   assert.ok(validate(value),name+': '+JSON.stringify(validate.errors));
  }
  const bytes=await readFile(new URL('../../contracts/openapi.json',import.meta.url));
- assert.equal(manifest.specSha256,createHash('sha256').update(bytes).digest('hex'));
+ // Git imports may normalize Windows line endings without changing the contract.
+ const specText=bytes.toString('utf8');
+ const hashes=[specText.replace(/\r\n/g,'\n'),specText.replace(/\r?\n/g,'\r\n')]
+  .map(text=>createHash('sha256').update(text).digest('hex'));
+ assert.ok(hashes.includes(manifest.specSha256),'Recorded contract checksum must match LF or CRLF source');
  assert.equal(manifest.endpointCount,Object.values(spec.paths).reduce((count,item)=>count+Object.keys(item).length,0));
  assert.equal(manifest.modelCount,Object.keys(spec.components.schemas).length);
 });

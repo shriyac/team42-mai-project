@@ -1,0 +1,1 @@
+- [Documentation checksums](documentation-checksums.md) — preserve generated handoff provenance across Git line-ending normalization.

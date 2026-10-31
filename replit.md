@@ -4,12 +4,12 @@ Laga currently deploys as a **frontend demo plus API Explorer**, not a completed
 
 ## What is configured
 
-- Node.js 22 through `.replit` (`modules = ["nodejs-22"]`). No Python or browser installation is needed to build or serve the frontend.
-- Development Run: `npm run dev`, bound to `0.0.0.0:5174`.
+- Node.js 22 through `.replit`; the imported Python module is retained. No Python or browser installation is needed to build or serve the frontend.
+- Development Run workflow: `npm run dev -- --port 5000`, bound to `0.0.0.0:5000`. Select Run and open Preview; the API Explorer is at `/api-docs/`. Local `npm run dev` still defaults to port 5174.
 - Autoscale publishing target: `cloudrun`.
 - Publishing build: `npm ci --include=dev && npm run build`.
 - Publishing run: `node scripts/serve.mjs` (a long-running production server, not Vite).
-- One public port: internal `5174` mapped to external `80`; `PORT=5174` is the configured default.
+- One public port: internal `5000` mapped to external `80`; `PORT=5000` is configured in Replit.
 - The production server respects `PORT`, binds to `0.0.0.0`, validates its build output before opening the port, and handles shutdown signals.
 - `/healthz` reports only frontend-server readiness. It is not a check of the backend, legal reviewer, database or government sources.
 
@@ -45,9 +45,9 @@ In Publishing, use **Autoscale** with these values (also recorded in `.replit`):
 | --- | --- |
 | Build | `npm ci --include=dev && npm run build` |
 | Run | `node scripts/serve.mjs` |
-| Internal port | `5174` |
+| Internal port | `5000` |
 | External port | `80` |
-| `PORT` | `5174` |
+| `PORT` | `5000` |
 
 Keep the configured internal port and `PORT` aligned. The server accepts a different valid runtime port, but when explicit `.replit` port mappings are used, the mapping must match the actual listener. Do not expose extra test-backend/debugger ports in the deployment.
 
@@ -59,7 +59,7 @@ The production process must serve quickly; it reads the completed build and does
 
 | Variable | When it is used | Default / meaning |
 | --- | --- | --- |
-| `PORT` | Server runtime | `5174`; integer 1-65535 |
+| `PORT` | Server runtime | `5000` in Replit, otherwise `5174`; integer 1-65535 |
 | `VITE_LAGA_MODE` | Frontend build / Vite dev | `mock`; set `api` only after backend acceptance |
 | `VITE_LAGA_API_BASE` | Frontend build / Vite dev | `/api/v1`; full HTTPS API URL for direct remote access |
 | `LAGA_API_PROXY` | Vite development server only | Upstream origin, default `http://127.0.0.1:8001` |
