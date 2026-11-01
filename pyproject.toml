@@ -20,3 +20,8 @@ laga-create-user = "laga.backend_api:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.uv]
+# Publishing invokes uv sync before the explicit pip-based build. Leave
+# installation of this package to that build's writable project-local target.
+package = false

@@ -20,6 +20,8 @@ class ReplitTests(unittest.TestCase):
         self.assertIn('python -m pip install --target .pythonlibs/lib/python3.11/site-packages', command)
         self.assertIn('.[api]', command)
         self.assertIn("npm run build", command)
+        project = tomllib.loads((ROOT/"pyproject.toml").read_text())
+        self.assertIs(project["tool"]["uv"]["package"], False)
 
     def test_published_domains_and_explicit_override(self):
         with patch.dict(os.environ, {"REPLIT_DOMAINS":"demo.replit.app,custom.example", "REPLIT_DEV_DOMAIN":"preview.replit.dev", "LAGA_ALLOWED_ORIGINS":"https://explicit.example"}):

@@ -10,7 +10,7 @@ Choose Tenant login or Landlord login and enter an account email and the passwor
 
 ## Publishing
 
-`[packager.features].enabledForHosting = false` disables the redundant automatic publishing install. The explicit build below owns dependency installation. Without this setting, the automatic `uv sync` step attempts to install the editable project into read-only Nix system Python and fails before the build command runs.
+The explicit build below owns dependency installation. `[packager.features].enabledForHosting = false` requests disabling the automatic publishing install, but publishing was observed to invoke `uv sync` anyway. Therefore `pyproject.toml` also sets `[tool.uv].package = false`, preventing that preliminary sync from building/installing the editable project into read-only Nix system Python. This uv-only setting does not disable the explicit pip installation or setuptools packaging.
 
 The `.replit` build installs `.[api]` Python dependencies and builds the UI in API mode. Publishing runs `node scripts/start-app.mjs`, which starts Python privately, waits for its readiness, then serves the built frontend and proxies `/api` over the single public port. API Explorer remains available at `/api-docs/`. Production cookies retain Secure and HttpOnly; plain localhost development uses the HTTP cookie option, while Replit HTTPS Preview also uses Secure cookies.
 
