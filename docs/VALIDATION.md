@@ -57,3 +57,5 @@ Ask Laga uses a viewport-sized desktop chat panel with an internally scrolling c
 - `npm run check:deploy` is the repeatable built-artifact check. `scripts/package-replit.py` creates a source-only import archive and validates TOML/port consistency, expected files, archive integrity and source byte identity while excluding local credentials/dependencies/runtime data.
 
 See `replit.md` for publishing settings, environment timing, real-backend options and post-publish verification. The frontend demo/API Explorer is deployable; tenant production auth/storage/ingestion/legal review still require the actual backend.
+
+- State-verification flag: defaults off for both roles; regression tests exercise enabled and disabled gateway behavior, ready-document gating, state/date boundaries and backend refusals. Browser checks assert tenant review cards and landlord review controls are hidden by default.

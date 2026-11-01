@@ -1,3 +1,4 @@
+import {stateVerificationEnabled} from '../lib/features.js';
 import React from 'react';
 import {ArrowUpRight,BookOpen,Check,Clock3,MapPin,ShieldCheck} from 'lucide-react';
 import {Badge} from './ui.jsx';
@@ -5,6 +6,7 @@ import {policyReviewCurrent} from '../lib/policies.js';
 import {officialSources,reviewLabel} from '../lib/compliance.js';
 
 export function JurisdictionCard({demo=false,compact=false,state='NC',documents=[]}){
+ if(!stateVerificationEnabled)return null;
  const pending=documents.filter(p=>p.compliance?.status!=='passed').length;
  return <section className={'jurisdiction-card '+(compact?'compact':'')} aria-label="State law and review status">
   <div className="jurisdiction-heading"><span className="jurisdiction-icon"><ShieldCheck size={23}/></span><div><span className="eyebrow">STATE LAW & YOUR DOCUMENTS</span><h2>{state==='NC'?'North Carolina':state||'Property state required'}</h2></div><span className="state-mark" aria-hidden="true">{state||'—'}</span></div>

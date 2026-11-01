@@ -160,3 +160,5 @@ An HTTPS frontend must not call an HTTP API. Any configured Content Security Pol
 
 - [Nginx proxy_pass](https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_pass): upstream URI forwarding behavior.
 - [Vite server proxy](https://vite.dev/config/server-options.html#server-proxy): development proxy configuration.
+
+State-law verification is disabled by default for both landlord and tenant experiences. Set `VITE_LAGA_STATE_VERIFICATION=true` in the build environment to enable review cards, policy review status and review-based answer/policy gating. Restart development or rebuild/redeploy production after changing it. When off, document processing, effective dates, state tagging and authorization remain enforced; answers carry no claim of legal verification. This public frontend flag does not disable a backend?s independent legal checks or start/stop its law-fetching jobs. Configure those separately in the backend; no flag is sent as a client-controlled permission bypass. The API contract and review metadata remain unchanged.

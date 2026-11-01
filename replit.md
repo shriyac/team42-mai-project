@@ -122,3 +122,5 @@ Checked against Replit documentation on October 31, 2026:
 - [Project configuration](https://docs.replit.com/features/project-setup/configuration)
 - [Deployment types](https://docs.replit.com/features/publishing/deployment-types)
 - [Publishing troubleshooting: ports, production settings and persistence](https://docs.replit.com/build/troubleshooting)
+
+State-law verification is disabled by default for both landlord and tenant experiences. Set `VITE_LAGA_STATE_VERIFICATION=true` in the build environment to enable review cards, policy review status and review-based answer/policy gating. Restart development or rebuild/redeploy production after changing it. When off, document processing, effective dates, state tagging and authorization remain enforced; answers carry no claim of legal verification. This public frontend flag does not disable a backend?s independent legal checks or start/stop its law-fetching jobs. Configure those separately in the backend; no flag is sent as a client-controlled permission bypass. The API contract and review metadata remain unchanged.

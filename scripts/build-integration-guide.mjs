@@ -72,6 +72,9 @@ ${table(['File or artifact','Purpose'],[
 ### Division of work
 The backend owns sessions, role/organization authorization, data persistence, private files, ingestion, effective-date filtering, review implementation, model calls, deterministic calculations and audit records. The frontend owns rendering and browser request mapping. The deployment owner owns HTTPS, routing, cookie/origin configuration, CORS where necessary and the correct environment at build time.
 
+### State-law verification feature flag
+State-law verification defaults off for both landlord and tenant experiences. Set VITE_LAGA_STATE_VERIFICATION=true at build time to enable review cards, policy review status and client review gates. Restart development or rebuild and redeploy production. Processing readiness, effective dates, state tagging and authorization stay enforced. This public frontend flag does not disable backend checks or control backend law-fetching jobs; configure backend behavior separately. The legal-review requirements described later apply when verification is enabled.
+
 ### Environments are explicit
 Use separate development/staging/production accounts, storage and secrets. Example IDs and fictional credentials are not real seeded records. Record the backend base URL and contract version in every test report. The explorer's target and the application's API configuration are independent.
 `,{html:false});

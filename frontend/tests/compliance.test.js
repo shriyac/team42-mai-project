@@ -16,6 +16,6 @@ test('answer review binds final text, state, date, scope and current official so
 });
 test('stale passed verdict is withheld by HTTP adapter',async()=>{
  const item=valid();item.compliance.expiresAt='2000-01-01T00:00:00Z';
- const g=createHttpGateway({fetcher:async()=>({ok:true,json:async()=>({data:item})})});
+ const g=createHttpGateway({stateVerification:true,fetcher:async()=>({ok:true,json:async()=>({data:item})})});
  const response=await g.ask(request);assert.equal(response.status,'needs_clarification');assert.equal(response.compliance.status,'unavailable');assert.deepEqual(response.citations,[]);
 });

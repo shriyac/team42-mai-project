@@ -250,9 +250,9 @@
   "source": "scripts/build-integration-guide.mjs",
   "pdf": {
     "file": "docs/Laga-Backend-Integration-Guide-v1.1.0.pdf",
-    "pages": 72,
-    "bytes": 1667400,
-    "sha256": "0f9d186d60d1224c7e4a8063376efa94fb1edff25ff880728f443e06aaef154d",
+    "pages": 73,
+    "bytes": 1673308,
+    "sha256": "94da6e7a430bc631ce3b1f7cff695f758fe73584d6eb1b221ffee86b458b7c31",
     "layoutValidated": true,
     "internalLinksValidated": true,
     "tagged": true,
@@ -280,175 +280,175 @@
       },
       {
         "page": 6,
-        "title": "03 / Decide how the API is reached"
+        "title": "02 / Files, ownership and environments / continued"
       },
       {
         "page": 7,
-        "title": "04 / HTTP, sessions and error envelopes"
+        "title": "03 / Decide how the API is reached"
       },
       {
         "page": 8,
-        "title": "05 / Dates, identities and DTO conventions"
+        "title": "04 / HTTP, sessions and error envelopes"
       },
       {
         "page": 9,
-        "title": "06 / Test in the API Explorer"
+        "title": "05 / Dates, identities and DTO conventions"
       },
       {
         "page": 10,
-        "title": "06 / Test in the API Explorer / continued"
+        "title": "06 / Test in the API Explorer"
       },
       {
         "page": 11,
-        "title": "07 / Connect in development"
+        "title": "06 / Test in the API Explorer / continued"
       },
       {
         "page": 12,
-        "title": "07 / Connect in development / continued"
+        "title": "07 / Connect in development"
       },
       {
         "page": 13,
-        "title": "08 / Deploy behind a same-origin route"
+        "title": "07 / Connect in development / continued"
       },
       {
         "page": 14,
-        "title": "08 / Deploy behind a same-origin route / continued"
+        "title": "08 / Deploy behind a same-origin route"
       },
       {
         "page": 15,
-        "title": "09 / Deploy with direct cross-origin calls"
+        "title": "08 / Deploy behind a same-origin route / continued"
       },
       {
         "page": 16,
-        "title": "10 / Endpoint map and implementation order"
+        "title": "09 / Deploy with direct cross-origin calls"
       },
       {
         "page": 17,
-        "title": "E01 / POST /auth/login"
+        "title": "10 / Endpoint map and implementation order"
       },
       {
         "page": 18,
-        "title": "E02 / GET /auth/session"
+        "title": "E01 / POST /auth/login"
       },
       {
         "page": 19,
-        "title": "E03 / POST /auth/logout"
+        "title": "E02 / GET /auth/session"
       },
       {
         "page": 20,
-        "title": "E04 / GET /workspace"
+        "title": "E03 / POST /auth/logout"
       },
       {
         "page": 21,
-        "title": "E05 / GET /leases/{id}"
+        "title": "E04 / GET /workspace"
       },
       {
         "page": 22,
-        "title": "E06 / POST /assistant/messages"
+        "title": "E05 / GET /leases/{id}"
       },
       {
         "page": 23,
-        "title": "E06 / POST /assistant/messages / continued"
+        "title": "E06 / POST /assistant/messages"
       },
       {
         "page": 24,
-        "title": "E07 / POST /requests"
+        "title": "E06 / POST /assistant/messages / continued"
       },
       {
         "page": 25,
-        "title": "E08 / POST /requests/{id}/reply"
+        "title": "E07 / POST /requests"
       },
       {
         "page": 26,
-        "title": "E09 / POST /policies"
+        "title": "E08 / POST /requests/{id}/reply"
       },
       {
         "page": 27,
-        "title": "E09 / POST /policies / continued"
+        "title": "E09 / POST /policies"
       },
       {
         "page": 28,
-        "title": "E10 / DELETE /policies/{id}"
+        "title": "E09 / POST /policies / continued"
       },
       {
         "page": 29,
-        "title": "E11 / POST /properties"
+        "title": "E10 / DELETE /policies/{id}"
       },
       {
         "page": 30,
-        "title": "11 / Policy storage, versions and async processing"
+        "title": "E11 / POST /properties"
       },
       {
         "page": 31,
-        "title": "11 / Policy storage, versions and async processing / continued"
+        "title": "11 / Policy storage, versions and async processing"
       },
       {
         "page": 32,
-        "title": "12 / NC state and compliance behavior"
+        "title": "11 / Policy storage, versions and async processing / continued"
       },
       {
         "page": 33,
-        "title": "13 / Exact review metadata and hashing"
+        "title": "12 / NC state and compliance behavior"
       },
       {
         "page": 34,
-        "title": "14 / Reviewer integration and safe clarification"
+        "title": "13 / Exact review metadata and hashing"
       },
       {
         "page": 35,
-        "title": "14 / Reviewer integration and safe clarification / continued"
+        "title": "14 / Reviewer integration and safe clarification"
       },
       {
         "page": 36,
-        "title": "15 / Manual HTTP walkthrough: curl"
+        "title": "14 / Reviewer integration and safe clarification / continued"
       },
       {
         "page": 37,
-        "title": "15 / Manual HTTP walkthrough: curl / continued"
+        "title": "15 / Manual HTTP walkthrough: curl"
       },
       {
         "page": 38,
-        "title": "16 / Manual HTTP walkthrough: PowerShell"
+        "title": "15 / Manual HTTP walkthrough: curl / continued"
       },
       {
         "page": 39,
-        "title": "16 / Manual HTTP walkthrough: PowerShell / continued"
+        "title": "16 / Manual HTTP walkthrough: PowerShell"
       },
       {
         "page": 40,
-        "title": "17 / Acceptance matrix and test evidence"
+        "title": "16 / Manual HTTP walkthrough: PowerShell / continued"
       },
       {
         "page": 41,
-        "title": "18 / Production cutover and rollback"
+        "title": "17 / Acceptance matrix and test evidence"
       },
       {
         "page": 42,
-        "title": "19 / Troubleshooting by symptom"
+        "title": "18 / Production cutover and rollback"
       },
       {
         "page": 43,
-        "title": "19 / Troubleshooting by symptom / continued"
+        "title": "19 / Troubleshooting by symptom"
       },
       {
         "page": 44,
-        "title": "20 / Decisions to close before implementation"
+        "title": "19 / Troubleshooting by symptom / continued"
       },
       {
         "page": 45,
-        "title": "A1 / Identity and session models"
+        "title": "20 / Decisions to close before implementation"
       },
       {
         "page": 46,
-        "title": "A1 / Identity and session models / continued"
+        "title": "A1 / Identity and session models"
       },
       {
         "page": 47,
-        "title": "A2 / Properties and workspace"
+        "title": "A1 / Identity and session models / continued"
       },
       {
         "page": 48,
-        "title": "A2 / Properties and workspace / continued"
+        "title": "A2 / Properties and workspace"
       },
       {
         "page": 49,
@@ -456,19 +456,19 @@
       },
       {
         "page": 50,
-        "title": "A3 / Leases, details and question scope"
+        "title": "A2 / Properties and workspace / continued"
       },
       {
         "page": 51,
-        "title": "A3 / Leases, details and question scope / continued"
+        "title": "A3 / Leases, details and question scope"
       },
       {
         "page": 52,
-        "title": "A4 / Policy upload and immutable versions"
+        "title": "A3 / Leases, details and question scope / continued"
       },
       {
         "page": 53,
-        "title": "A4 / Policy upload and immutable versions / continued"
+        "title": "A4 / Policy upload and immutable versions"
       },
       {
         "page": 54,
@@ -476,11 +476,11 @@
       },
       {
         "page": 55,
-        "title": "A5 / Assistant requests and evidence"
+        "title": "A4 / Policy upload and immutable versions / continued"
       },
       {
         "page": 56,
-        "title": "A5 / Assistant requests and evidence / continued"
+        "title": "A5 / Assistant requests and evidence"
       },
       {
         "page": 57,
@@ -488,62 +488,66 @@
       },
       {
         "page": 58,
-        "title": "A6 / Clarification request workflow"
+        "title": "A5 / Assistant requests and evidence / continued"
       },
       {
         "page": 59,
-        "title": "A6 / Clarification request workflow / continued"
+        "title": "A6 / Clarification request workflow"
       },
       {
         "page": 60,
-        "title": "A7 / Compliance review metadata"
+        "title": "A6 / Clarification request workflow / continued"
       },
       {
         "page": 61,
-        "title": "A7 / Compliance review metadata / continued"
+        "title": "A7 / Compliance review metadata"
       },
       {
         "page": 62,
-        "title": "A8 / Errors and mutation acknowledgments"
+        "title": "A7 / Compliance review metadata / continued"
       },
       {
         "page": 63,
-        "title": "A8 / Errors and mutation acknowledgments / continued"
+        "title": "A8 / Errors and mutation acknowledgments"
       },
       {
         "page": 64,
-        "title": "J / anonymousSession — Session"
+        "title": "A8 / Errors and mutation acknowledgments / continued"
       },
       {
         "page": 65,
-        "title": "J / authenticatedSession — Session"
+        "title": "J / anonymousSession — Session"
       },
       {
         "page": 66,
-        "title": "J / registeredProperty — Property"
+        "title": "J / authenticatedSession — Session"
       },
       {
         "page": 67,
-        "title": "J / emptyLandlordWorkspace — Workspace"
+        "title": "J / registeredProperty — Property"
       },
       {
         "page": 68,
-        "title": "J / pendingPolicy — PolicyVersion"
+        "title": "J / emptyLandlordWorkspace — Workspace"
       },
       {
         "page": 69,
-        "title": "J / clarificationAnswer — Answer"
+        "title": "J / pendingPolicy — PolicyVersion"
       },
       {
         "page": 70,
-        "title": "J / syntheticReviewedAnswer — Answer"
+        "title": "J / clarificationAnswer — Answer"
       },
       {
         "page": 71,
-        "title": "J / versionConflict — Error"
+        "title": "J / syntheticReviewedAnswer — Answer"
       },
       {
         "page": 72,
+        "title": "J / versionConflict — Error"
+      },
+      {
+        "page": 73,
         "title": "21 / References, version and handoff receipt"
       }
     ]

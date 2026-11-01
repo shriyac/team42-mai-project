@@ -1,7 +1,8 @@
+import {stateVerificationEnabled} from '../lib/features.js';
 import {normalizeApiBase} from '../lib/apiBase.js';
 import {answerReviewMatches} from '../lib/compliance.js';
 import {ApiError} from './errors.js';
-export function createHttpGateway({base='/api/v1',fetcher=fetch}={}){
+export function createHttpGateway({base='/api/v1',fetcher=fetch,stateVerification=stateVerificationEnabled}={}){
  base=normalizeApiBase(base);
  let csrfToken=null;
  async function request(path,{method='GET',body}={}){
@@ -18,7 +19,7 @@ export function createHttpGateway({base='/api/v1',fetcher=fetch}={}){
  async logout(){await request('/auth/logout',{method:'POST',body:{}});csrfToken=null},
  createProperty:body=>request('/properties',{method:'POST',body}),
  getWorkspace:()=>request('/workspace'),getLease:id=>request('/leases/'+encodeURIComponent(id)),
- ask:async body=>{const result=await request('/assistant/messages',{method:'POST',body});if(result.status==='supported'&&!(await answerReviewMatches(result,body)))return {...result,status:'needs_clarification',answer:'State-law validation is unavailable. Please request a review before relying on lease or policy guidance.',citations:[],calculations:[],compliance:{status:'unavailable',state:'NC'},activity:[{label:'State-law review could not be verified for this answer',status:'attention'}]};return result},
+ ask:async body=>{const result=await request('/assistant/messages',{method:'POST',body});if(stateVerification&&result.status==='supported'&&!(await answerReviewMatches(result,body)))return {...result,status:'needs_clarification',answer:'State-law validation is unavailable. Please request a review before relying on lease or policy guidance.',citations:[],calculations:[],compliance:{status:'unavailable',state:'NC'},activity:[{label:'State-law review could not be verified for this answer',status:'attention'}]};return result},
  createRequest:body=>request('/requests',{method:'POST',body}),
  replyRequest:(id,body)=>request('/requests/'+encodeURIComponent(id)+'/reply',{method:'POST',body}),
  uploadPolicy:({file,category,propertyId,familyId,title,effectiveFrom,expectedVersion,state})=>{const body=new FormData();body.append('file',file);if(state)body.append('state',state);if(category)body.append('category',category);if(propertyId)body.append('propertyId',propertyId);if(familyId)body.append('familyId',familyId);if(title)body.append('title',title);body.append('effectiveFrom',effectiveFrom);if(expectedVersion!==undefined)body.append('expectedVersion',String(expectedVersion));return request('/policies',{method:'POST',body})},

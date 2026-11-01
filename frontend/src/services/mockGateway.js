@@ -1,9 +1,10 @@
+import {stateVerificationEnabled} from '../lib/features.js';
 import {landlord,tenants,properties as initialProperties,leases,policies,requests,leaseClauses,AS_OF} from '../data/fixtures.js';
 import {summarize,daysUntil,money} from '../lib/format.js';
 import {ApiError} from './errors.js';
 import {resolvePolicies,policyState,nextPolicyDate,isPolicyDate,policyCategories} from '../lib/policies.js';
 const copy=value=>structuredClone(value);
-export function createMockGateway({delay=220}={}){
+export function createMockGateway({delay=220,stateVerification=stateVerificationEnabled}={}){
  let properties=copy(initialProperties);
  let user=null,documents=copy(policies),tickets=copy(requests);
  const sleep=()=>new Promise(resolve=>setTimeout(resolve,delay));
@@ -25,12 +26,12 @@ export function createMockGateway({delay=220}={}){
  else if(scope.type==='portfolio'){const summary=summarize(properties,leases,AS_OF);if(/renew|expir|end/.test(q)){answer=summary.renewals+' sample leases end within the next 90 days: '+leases.filter(l=>daysUntil(l.endDate,AS_OF)>=0&&daysUntil(l.endDate,AS_OF)<=90).map(l=>l.tenantName+' ('+l.endDate+')').join(', ')+'.';}else{answer='The sample portfolio has '+summary.occupied+' occupied homes across '+summary.properties+' properties. Contracted monthly rent is '+money(summary.monthlyRent)+', with '+money(summary.outstandingRent)+' marked as outstanding in the mock ledger. '+summary.renewals+' leases end within 90 days.'}citations=[{id:'portfolio-register',title:'Sample lease register',section:'Portfolio',page:null,quote:'Aggregated from the 10 fictional lease records visible in this workspace.',documentId:'demo-register'}]}
  else{status='needs_clarification';answer='I cannot support that answer with the sample clauses available here. Try asking about rent, late fees, pets, deposits or renewal notice, or send a clarification request to your landlord.'}
  const category=/utilit|electric|water|internet/.test(q)?'utilities':/waste|recycl|trash|rubbish/.test(q)?'waste':/pet|dog|cat/.test(q)?'pets':/quiet|communit/.test(q)?'community':/maintenance|emergency/.test(q)?'maintenance':/policy|handbook/.test(q)?'tenant':null;
- if(category){const relevant=documents.filter(d=>d.category===category);const resolved=resolvePolicies(relevant,{asOf,propertyId:lease?.propertyId||null});
- if(resolved.unavailable.length){status='needs_clarification';answer='An applicable policy is effective for this date, but ingestion or state-law review is not ready. I cannot use the expired version as a substitute. Please contact the landlord or wait for ingestion to finish.';citations=[];calculations=[]}
+ if(category){const relevant=documents.filter(d=>d.category===category);const resolved=resolvePolicies(relevant,{asOf,propertyId:lease?.propertyId||null,stateVerification});
+ if(resolved.unavailable.length){status='needs_clarification';answer='An applicable policy is effective for this date, but '+(stateVerification?'ingestion or state-law review is not ready':'document processing is not ready')+'. I cannot use the expired version as a substitute. Please contact the landlord or wait for ingestion to finish.';citations=[];calculations=[]}
  else if(resolved.eligible.length){const policy=resolved.eligible[0];if(category!=='pets'||!lease)answer=policy.excerpt;citations.push({id:policy.id,title:policy.title,section:'Policy v'+policy.version,page:1,quote:policy.excerpt,documentId:policy.id,version:policy.version,effectiveFrom:policy.effectiveFrom,effectiveTo:policy.effectiveTo});status='supported'}
  else{status='needs_clarification';answer='No applicable policy was found for this scope and date. Select a specific lease or ask your landlord for the applicable document.';citations=[];calculations=[]}
  }
- const state=lease?properties.find(p=>p.id===lease.propertyId)?.state:null;const compliance={status:'unavailable',state};if(scope.type==='lease'||category){status='needs_clarification';answer='North Carolina legal validation is unavailable in this preview. I cannot confirm that these lease or policy terms comply with state law. Please request a review before relying on them.';citations=[];calculations=[]}
+ const state=lease?properties.find(p=>p.id===lease.propertyId)?.state:null;const compliance={status:'unavailable',state};if(stateVerification&&(scope.type==='lease'||category)){status='needs_clarification';answer='North Carolina legal validation is unavailable in this preview. I cannot confirm that these lease or policy terms comply with state law. Please request a review before relying on them.';citations=[];calculations=[]}
  return {compliance,id:crypto.randomUUID(),threadId:threadId||crypto.randomUUID(),answer,status,citations,calculations,activity:[{label:'Checked selected workspace sources',status:'complete'},{label:status==='supported'?'Matched answer to sample evidence':'More information needed',status:status==='supported'?'complete':'attention'}],demo:true}
  },
  async createRequest({leaseId,category,subject,message}){const lease=ownLease(leaseId);if(user.role!=='tenant')throw new ApiError('Use the tenant workspace to create a request.',{code:'FORBIDDEN'});if(!subject.trim()||!message.trim())throw new ApiError('Add a subject and a message.',{code:'VALIDATION_ERROR'});await sleep();const item={id:crypto.randomUUID(),tenantId:user.id,leaseId:lease.id,category,subject,message,status:'open',createdAt:new Date().toISOString(),reply:null};tickets.unshift(item);return copy(item)},
