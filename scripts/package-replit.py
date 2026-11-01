@@ -12,7 +12,7 @@ assert config["env"]["PORT"] == str(config["ports"][0]["localPort"])
 assert config["ports"][0]["externalPort"] == 80
 version = json.loads((root / "package.json").read_text(encoding="utf-8"))["version"]
 archive = root / f"laga-replit-source-v{version}.zip"
-files = [root / name for name in [".replit", ".gitignore", "README.md", "replit.md", "package.json", "package-lock.json", "pyproject.toml", "vite.config.js"]]
+files = [root / name for name in [".replit", ".gitignore", ".gitattributes", "README.md", "replit.md", "package.json", "package-lock.json", "pyproject.toml", "vite.config.js"]]
 for folder in ["frontend", "contracts", "docs", "scripts", "src", "tests"]:
     for file in (root / folder).rglob("*"):
         relative = file.relative_to(root)
