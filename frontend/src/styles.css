@@ -35,3 +35,12 @@
 @media(max-width:1050px){.policy-row{grid-template-columns:40px minmax(0,1fr)}.policy-actions{grid-column:2;align-items:flex-start;margin-top:12px;gap:6px}.policy-version-actions{justify-content:flex-start}.policy-meta{gap:2px 12px}}
 @media(max-width:600px){.policy-row{grid-template-columns:34px minmax(0,1fr);column-gap:12px;padding:16px}.policy-row>.document-icon{display:inline-flex;width:34px;height:38px;border-radius:9px}.policy-main h3{font-size:14px;min-height:36px}.policy-badges{gap:5px;margin-top:4px}.policy-badges .badge{font-size:9px}.policy-meta{flex-direction:column;align-items:flex-start;gap:2px}.policy-actions{width:100%;margin-top:10px}.policy-reader-actions{flex-wrap:wrap;gap:7px;width:100%}.policy-actions .policy-reader-actions>.button{min-height:40px;font-size:10px;padding:8px 10px}.policy-version-actions{gap:5px 13px}.policy-main>p{font-size:11px;overflow-wrap:anywhere}}
 @media(min-width:761px) and (max-width:1050px){.policy-readiness{grid-template-columns:minmax(0,1fr)}.policy-readiness-copy{padding:5px 12px 12px}.policy-readiness-copy h2 br{display:none}.policy-readiness-copy h2{font-size:22px}.policy-readiness-copy>p{max-width:none}}
+
+/* Keep the footer avatar/action icons and their labels on shared columns. */
+.sidebar-bottom .profile-button,.sidebar-bottom .logout-button{display:grid;grid-template-columns:34px minmax(0,1fr);align-items:center;column-gap:10px;width:100%;padding-inline:4px;text-align:left}
+.sidebar-bottom .profile-button{padding-block:12px}
+.profile-button .profile-details{display:flex;flex-direction:column;gap:4px;min-width:0}
+.profile-button .profile-details strong,.profile-button .profile-details small{display:block;line-height:1.4;overflow-wrap:anywhere}
+.sidebar-bottom .logout-button{margin:2px 0 0;padding-block:8px;min-height:36px}
+.sidebar-bottom .logout-button>svg{justify-self:center}
+.sidebar-bottom .logout-button>span{line-height:1.4}
