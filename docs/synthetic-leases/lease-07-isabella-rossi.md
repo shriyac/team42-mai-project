@@ -11,8 +11,12 @@ Property ID: property-2
 State: North Carolina (NC)
 
 Landlord: Alex Morgan, for Alder Living
-Tenant: Isabella Rossi
+Primary tenant: Isabella Rossi
 Premises: The Juniper, 42 Juniper Street, Unit 4A, Raleigh, NC 27602
+
+Authorized residents ? complete household (2):
+Isabella Rossi (Named tenant; age 42)
+Elena Rossi (Child; age 14)
 
 Agreement date: 2025-12-09
 Commencement: 2025-12-16
@@ -123,7 +127,7 @@ SYNTHETIC TEST DOCUMENT | lease-7 | Isabella Rossi | Unit 4A
 
 SYNTHETIC TEST DOCUMENT | lease-7 | Isabella Rossi | Unit 4A
 
-6.1 The household roster in section 2 contains 2 people, including 1 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
+6.1 Authorized residents: Isabella Rossi; Elena Rossi. The household roster in section 2 contains 2 people, including 1 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
 
 6.2 The premises are used as the named household’s home. No right to sublet or transfer this fictional agreement is supplied. Request written clarification before assuming permission for a different use.
 
@@ -167,6 +171,7 @@ SYNTHETIC TEST DOCUMENT | lease-7 | Isabella Rossi | Unit 4A
 8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.
 
 Annexure A applies to lease-7, The Juniper, Unit 4A.
+Authorized residents: Isabella Rossi; Elena Rossi.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -186,6 +191,7 @@ SYNTHETIC TEST DOCUMENT | lease-7 | Isabella Rossi | Unit 4A
 9.4 Disclosure does not create an exception to the indoor rule. This annexure records the scenario without making a legal, medical or insurance determination.
 
 Annexure B applies to lease-7, The Juniper, Unit 4A.
+Authorized residents: Isabella Rossi; Elena Rossi.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -205,6 +211,7 @@ SYNTHETIC TEST DOCUMENT | lease-7 | Isabella Rossi | Unit 4A
 10.4 Ordinary shared waste service is included in base rent. No bulk-item fee, contamination fee or fine amount is specified in this packet. Do not invent one during extraction.
 
 Annexure C applies to lease-7, The Juniper, Unit 4A.
+Authorized residents: Isabella Rossi; Elena Rossi.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -224,6 +231,7 @@ Storage locker J-4A is assigned to this unit. Store ordinary household items onl
 
 11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.
 
+Authorized residents: Isabella Rossi; Elena Rossi.
 Separate acknowledgment requested for the unit condition above.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
@@ -241,7 +249,8 @@ SYNTHETIC TEST DOCUMENT | lease-7 | Isabella Rossi | Unit 4A
 
 12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.
 
-12.4 Named tenant: Isabella Rossi
+12.4 Primary tenant: Isabella Rossi
+All authorized residents: Isabella Rossi; Elena Rossi
 Landlord representative: Alex Morgan, Alder Living
 Scenario agreement date: 2025-12-09
 Signature status: UNSIGNED TEST FIXTURE.

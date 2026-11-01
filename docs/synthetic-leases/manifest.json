@@ -1,5 +1,5 @@
 {
-  "datasetVersion": "1.0.0",
+  "datasetVersion": "1.0.1",
   "synthetic": true,
   "createdOn": "2026-10-31",
   "currency": "USD",
@@ -18,9 +18,9 @@
       "expectedExtraction": "lease-01-maya-chen.json",
       "html": "lease-01-maya-chen.html",
       "pages": 12,
-      "textSha256": "ad3968f5de45d9615ebeb9c281d4f8bc7e5842f84023a7752f3913ccbecdc554",
-      "pdfSha256": "5d7a9f60b136e1e941a90e9a34e74d93cce085845e843c69c8b482fd49a1627e",
-      "pdfBytes": 124451,
+      "textSha256": "47619a321d4c2a5fca7f5e577c706dab74cfe210812fb0ede5f2fee1e861593d",
+      "pdfSha256": "95c4e3dff27fd4d716f2a2d46e3069a6b2ac83501c76d0c1e598268a0d6358ac",
+      "pdfBytes": 125698,
       "layoutValidated": true
     },
     {
@@ -36,9 +36,9 @@
       "expectedExtraction": "lease-02-james-wilson.json",
       "html": "lease-02-james-wilson.html",
       "pages": 12,
-      "textSha256": "4fd361b327601c79b7e985a57353c9a5689b754c9ab7e686995d19b20f3f1154",
-      "pdfSha256": "26a3c88403d0904b5ae28828290f84d353ab5fa3de1175334c9ab32ee4408cf6",
-      "pdfBytes": 124159,
+      "textSha256": "82fbd184ae78dc20b5fd4fa748901caf38b366a0ad9c01f402f589bd45d21b1e",
+      "pdfSha256": "fa7436d19d26ed28b4eb21372ff6586c58e19e9dc523a453c100a94ce48d131f",
+      "pdfBytes": 125012,
       "layoutValidated": true
     },
     {
@@ -54,9 +54,9 @@
       "expectedExtraction": "lease-03-sofia-patel.json",
       "html": "lease-03-sofia-patel.html",
       "pages": 12,
-      "textSha256": "1ac2e022dd695aaaf12dcf2271bccaf027413979a46b3a4a7ff9ccda18f1fb6b",
-      "pdfSha256": "f7e436d1fcc2394e4de23630ddc985549385bcc0d15718bfc5350d70e4df5648",
-      "pdfBytes": 124308,
+      "textSha256": "e49576502635e94cb11154ef7ae9fb3e2ca9b87839c47d403166cf6c5d5c8bcb",
+      "pdfSha256": "01c32e81741b2917dad0b11c551358b3d25f33440ca89786987701a94cfd795c",
+      "pdfBytes": 125367,
       "layoutValidated": true
     },
     {
@@ -72,9 +72,9 @@
       "expectedExtraction": "lease-04-oliver-brooks.json",
       "html": "lease-04-oliver-brooks.html",
       "pages": 12,
-      "textSha256": "1fd43a88105a3091ffc8332dbe3b9923e85a518090e114f3d155c44a28ad5f48",
-      "pdfSha256": "e687b32c4ce8aa549d9438e9ef0524637269d6ade781c57221b45127e558f35f",
-      "pdfBytes": 125074,
+      "textSha256": "67de8caf27152003cd4c5000d9de76d206c73a13e59909be46139f7c20fa2a1a",
+      "pdfSha256": "637ff09a25891ec38e667a996fdd341b09271f2626d98d986109006e10636727",
+      "pdfBytes": 126702,
       "layoutValidated": true
     },
     {
@@ -90,9 +90,9 @@
       "expectedExtraction": "lease-05-amara-okafor.json",
       "html": "lease-05-amara-okafor.html",
       "pages": 12,
-      "textSha256": "b951a8ae778782e376d4b9c21841e3c88d8dea2a8564431e13db94add5a69942",
-      "pdfSha256": "cff488d4c5ef1e49c32eec22cf12ab595a3392f8bfd0f51c990139c62d69709c",
-      "pdfBytes": 124666,
+      "textSha256": "115897e6ee7bd6d0816d52361cb503ed3193d92198567868c1ba1029b6dc05ef",
+      "pdfSha256": "a76a9274d475c5c9fe548db5754a690ca5f3df6bf063502f50a5802ee21c3aaf",
+      "pdfBytes": 126037,
       "layoutValidated": true
     },
     {
@@ -108,9 +108,9 @@
       "expectedExtraction": "lease-06-ethan-rivera.json",
       "html": "lease-06-ethan-rivera.html",
       "pages": 12,
-      "textSha256": "a86da1d851e8dfe5c68a23da41dd342b20d8a6f09f3aed34eb4bb1d927dbf620",
-      "pdfSha256": "a4bc1ae17d2c1d5ce31d1544e9815d8c5dba606d96441efba6a119e6641e5c00",
-      "pdfBytes": 124527,
+      "textSha256": "3f01e9cdb9239e03459f49386af4abcd92a1a6dbd782f7eaa339d90b51f4494a",
+      "pdfSha256": "5e4373d368556d9a017982602c3241cfbfc23750dc4eedc5e31fad13cc2cf401",
+      "pdfBytes": 125649,
       "layoutValidated": true
     },
     {
@@ -126,9 +126,9 @@
       "expectedExtraction": "lease-07-isabella-rossi.json",
       "html": "lease-07-isabella-rossi.html",
       "pages": 12,
-      "textSha256": "9672ccfb2f96a1941cd966cc90cbd8b2c7ea4b32f43159fca93ae57de3c5205e",
-      "pdfSha256": "a7e2faefa54ca4910932bd4ce1f01f5818fdc24c2cb32bfbb0e08e8e31faccfc",
-      "pdfBytes": 124236,
+      "textSha256": "e0bf76ab6b41e99bec3e22d6f4c6df8e27ae0dc66d2334c8cf89e108fd33c9ba",
+      "pdfSha256": "667e44c422c9f0feb090a527bf31ab9b40088ab5c92a50435df704068d970b60",
+      "pdfBytes": 125327,
       "layoutValidated": true
     },
     {
@@ -144,9 +144,9 @@
       "expectedExtraction": "lease-08-noah-kim.json",
       "html": "lease-08-noah-kim.html",
       "pages": 12,
-      "textSha256": "f57b5c7986a9335d2fc19746d65575d96a08998d8cba38a587dac71f84b1deea",
-      "pdfSha256": "8122a72d4b397e476fa3880ea0a3b8bc32993b9f2de6626b09845079be9b72db",
-      "pdfBytes": 123579,
+      "textSha256": "859bdbef5d44d206339a761d431f8856860ba1356bb2b43a314a4e753b7e0fcc",
+      "pdfSha256": "8a4cab59cb21cf244efb33c7088ba5e29245271ba14a2a36d20865d135d2ea2f",
+      "pdfBytes": 124399,
       "layoutValidated": true
     },
     {
@@ -162,9 +162,9 @@
       "expectedExtraction": "lease-09-ava-thompson.json",
       "html": "lease-09-ava-thompson.html",
       "pages": 12,
-      "textSha256": "822b46b5ce6af5ae030ccca5482cf2e7e9395471bf4f36ac5ce70a3fe0f58b42",
-      "pdfSha256": "509a7d857b054c711e058fa836b7c23e4faf860f501ad7dac597c2a41e41d635",
-      "pdfBytes": 124489,
+      "textSha256": "0ebe23c0d585d961b2d43171c042b941955a8aa1252a5dbe2f2c22e73a6dc9f9",
+      "pdfSha256": "5f6565491a70837e6b6a87510c117b179aafc3dfc1a2e7eec81d59a8ffeb1bcc",
+      "pdfBytes": 125984,
       "layoutValidated": true
     },
     {
@@ -180,9 +180,9 @@
       "expectedExtraction": "lease-10-lucas-bennett.json",
       "html": "lease-10-lucas-bennett.html",
       "pages": 12,
-      "textSha256": "3dd70854ae0188bfc46860a98ce271fbdc8c85f7564508650be3c6f29b26d306",
-      "pdfSha256": "bb18bd96b794083b65fdf9ebb9f4a112f5dff1261ca8273df7e3cf53f4e624a7",
-      "pdfBytes": 124146,
+      "textSha256": "147c4615a897b9574153dddce7015da301ff5a97d76945e656ce8918b407c868",
+      "pdfSha256": "28e625e9dc754509b6604d8e32ee0e83142778d8ebd849b58c47fec4b121453e",
+      "pdfBytes": 125319,
       "layoutValidated": true
     }
   ]

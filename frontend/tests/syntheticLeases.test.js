@@ -33,6 +33,10 @@ test('synthetic lease corpus maps one packet to every mock tenant with matching 
   }
   for(const annexure of ['A','B','C','D'])assert.ok(text.includes('Annexure '+annexure+' /'));
   assert.ok(text.includes(record.specialConditions.text));
+  for(const pageNumber of [1,2,6,8,9,10,11,12]){
+   const page=text.split('# Page '+pageNumber+' / ')[1]?.split('\n---\n')[0];
+   for(const resident of record.household.members)assert.ok(page?.includes(resident.name),`${entry.text}: ${resident.name} missing on page ${pageNumber}`);
+  }
  }
 });
 

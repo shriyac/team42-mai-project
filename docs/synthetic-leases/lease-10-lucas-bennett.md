@@ -11,8 +11,12 @@ Property ID: property-3
 State: North Carolina (NC)
 
 Landlord: Alex Morgan, for Alder Living
-Tenant: Lucas Bennett
+Primary tenant: Lucas Bennett
 Premises: Cedar Court, 810 Cedar Avenue, Unit 3, Raleigh, NC 27604
+
+Authorized residents ? complete household (2):
+Lucas Bennett (Named tenant; age 52)
+Harper Bennett (Adult household member; age 50)
 
 Agreement date: 2026-08-25
 Commencement: 2026-09-01
@@ -123,7 +127,7 @@ SYNTHETIC TEST DOCUMENT | lease-10 | Lucas Bennett | Unit 3
 
 SYNTHETIC TEST DOCUMENT | lease-10 | Lucas Bennett | Unit 3
 
-6.1 The household roster in section 2 contains 2 people, including 0 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
+6.1 Authorized residents: Lucas Bennett; Harper Bennett. The household roster in section 2 contains 2 people, including 0 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
 
 6.2 The premises are used as the named household’s home. No right to sublet or transfer this fictional agreement is supplied. Request written clarification before assuming permission for a different use.
 
@@ -167,6 +171,7 @@ SYNTHETIC TEST DOCUMENT | lease-10 | Lucas Bennett | Unit 3
 8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.
 
 Annexure A applies to lease-10, Cedar Court, Unit 3.
+Authorized residents: Lucas Bennett; Harper Bennett.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -186,6 +191,7 @@ SYNTHETIC TEST DOCUMENT | lease-10 | Lucas Bennett | Unit 3
 9.4 Disclosure does not create an exception to the indoor rule. This annexure records the scenario without making a legal, medical or insurance determination.
 
 Annexure B applies to lease-10, Cedar Court, Unit 3.
+Authorized residents: Lucas Bennett; Harper Bennett.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -205,6 +211,7 @@ SYNTHETIC TEST DOCUMENT | lease-10 | Lucas Bennett | Unit 3
 10.4 Ordinary shared waste service is included in base rent. No bulk-item fee, contamination fee or fine amount is specified in this packet. Do not invent one during extraction.
 
 Annexure C applies to lease-10, Cedar Court, Unit 3.
+Authorized residents: Lucas Bennett; Harper Bennett.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -224,6 +231,7 @@ Unit 3 has a recorded cosmetic scratch on the kitchen cabinet and a scuff near t
 
 11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.
 
+Authorized residents: Lucas Bennett; Harper Bennett.
 Separate acknowledgment requested for the unit condition above.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
@@ -241,7 +249,8 @@ SYNTHETIC TEST DOCUMENT | lease-10 | Lucas Bennett | Unit 3
 
 12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.
 
-12.4 Named tenant: Lucas Bennett
+12.4 Primary tenant: Lucas Bennett
+All authorized residents: Lucas Bennett; Harper Bennett
 Landlord representative: Alex Morgan, Alder Living
 Scenario agreement date: 2026-08-25
 Signature status: UNSIGNED TEST FIXTURE.

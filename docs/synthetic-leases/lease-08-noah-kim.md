@@ -11,8 +11,11 @@ Property ID: property-3
 State: North Carolina (NC)
 
 Landlord: Alex Morgan, for Alder Living
-Tenant: Noah Kim
+Primary tenant: Noah Kim
 Premises: Cedar Court, 810 Cedar Avenue, Unit 1, Raleigh, NC 27604
+
+Authorized residents ? complete household (1):
+Noah Kim (Named tenant; age 24)
 
 Agreement date: 2026-04-24
 Commencement: 2026-05-01
@@ -121,7 +124,7 @@ SYNTHETIC TEST DOCUMENT | lease-8 | Noah Kim | Unit 1
 
 SYNTHETIC TEST DOCUMENT | lease-8 | Noah Kim | Unit 1
 
-6.1 The household roster in section 2 contains 1 people, including 0 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
+6.1 Authorized residents: Noah Kim. The household roster in section 2 contains 1 people, including 0 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
 
 6.2 The premises are used as the named household’s home. No right to sublet or transfer this fictional agreement is supplied. Request written clarification before assuming permission for a different use.
 
@@ -171,6 +174,7 @@ Monthly pet rent: not specified.
 8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.
 
 Annexure A applies to lease-8, Cedar Court, Unit 1.
+Authorized residents: Noah Kim.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -190,6 +194,7 @@ SYNTHETIC TEST DOCUMENT | lease-8 | Noah Kim | Unit 1
 9.4 Disclosure does not create an exception to the indoor rule. This annexure records the scenario without making a legal, medical or insurance determination.
 
 Annexure B applies to lease-8, Cedar Court, Unit 1.
+Authorized residents: Noah Kim.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -209,6 +214,7 @@ SYNTHETIC TEST DOCUMENT | lease-8 | Noah Kim | Unit 1
 10.4 Ordinary shared waste service is included in base rent. No bulk-item fee, contamination fee or fine amount is specified in this packet. Do not invent one during extraction.
 
 Annexure C applies to lease-8, Cedar Court, Unit 1.
+Authorized residents: Noah Kim.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -228,6 +234,7 @@ Unit 1 may use the shared garden tool cabinet after orientation. Return tools cl
 
 11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.
 
+Authorized residents: Noah Kim.
 Separate acknowledgment requested for the unit condition above.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
@@ -245,7 +252,8 @@ SYNTHETIC TEST DOCUMENT | lease-8 | Noah Kim | Unit 1
 
 12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.
 
-12.4 Named tenant: Noah Kim
+12.4 Primary tenant: Noah Kim
+All authorized residents: Noah Kim
 Landlord representative: Alex Morgan, Alder Living
 Scenario agreement date: 2026-04-24
 Signature status: UNSIGNED TEST FIXTURE.

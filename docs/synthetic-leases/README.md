@@ -1,6 +1,6 @@
 # Synthetic tenant lease corpus
 
-Ten fictional, unsigned North Carolina lease packets for backend ingestion and retrieval testing. Each packet has 12 native-text PDF pages, a matching Markdown copy, printable HTML and JSON expected extraction results. All four annexures are inside each packet, not separate files.
+Ten fictional, unsigned North Carolina lease packets for backend ingestion and retrieval testing. Each packet has 12 native-text PDF pages, a matching Markdown copy, printable HTML and JSON expected extraction results. All four annexures are inside each packet, not separate files. Every authorized resident, including children, is named on the agreement cover, household roster, occupancy section, every annexure and the signature schedule. The primary tenant remains identified separately; listing a resident does not make them a signatory.
 
 These are test documents, not legal lease forms or government-approved policies. No legal compliance review was performed. State-law verification being disabled in the app does not certify these documents. Do not use them for a real tenancy, payment or signature request.
 

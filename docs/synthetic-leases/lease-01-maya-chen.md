@@ -11,8 +11,13 @@ Property ID: property-1
 State: North Carolina (NC)
 
 Landlord: Alex Morgan, for Alder Living
-Tenant: Maya Chen
+Primary tenant: Maya Chen
 Premises: Willow House, 128 Willow Lane, Unit 304, Raleigh, NC 27601
+
+Authorized residents ? complete household (3):
+Maya Chen (Named tenant; age 31)
+Jordan Chen (Adult household member; age 33)
+Riley Chen (Child; age 6)
 
 Agreement date: 2026-01-25
 Commencement: 2026-02-01
@@ -125,7 +130,7 @@ SYNTHETIC TEST DOCUMENT | lease-1 | Maya Chen | Unit 304
 
 SYNTHETIC TEST DOCUMENT | lease-1 | Maya Chen | Unit 304
 
-6.1 The household roster in section 2 contains 3 people, including 1 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
+6.1 Authorized residents: Maya Chen; Jordan Chen; Riley Chen. The household roster in section 2 contains 3 people, including 1 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
 
 6.2 The premises are used as the named household’s home. No right to sublet or transfer this fictional agreement is supplied. Request written clarification before assuming permission for a different use.
 
@@ -175,6 +180,7 @@ Monthly pet rent: not specified.
 8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.
 
 Annexure A applies to lease-1, Willow House, Unit 304.
+Authorized residents: Maya Chen; Jordan Chen; Riley Chen.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -194,6 +200,7 @@ SYNTHETIC TEST DOCUMENT | lease-1 | Maya Chen | Unit 304
 9.4 Disclosure does not create an exception to the indoor rule. This annexure records the scenario without making a legal, medical or insurance determination.
 
 Annexure B applies to lease-1, Willow House, Unit 304.
+Authorized residents: Maya Chen; Jordan Chen; Riley Chen.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -213,6 +220,7 @@ SYNTHETIC TEST DOCUMENT | lease-1 | Maya Chen | Unit 304
 10.4 Ordinary shared waste service is included in base rent. No bulk-item fee, contamination fee or fine amount is specified in this packet. Do not invent one during extraction.
 
 Annexure C applies to lease-1, Willow House, Unit 304.
+Authorized residents: Maya Chen; Jordan Chen; Riley Chen.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -232,6 +240,7 @@ One tagged bicycle may be stored in rack W-304. Keep corridor and stair landings
 
 11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.
 
+Authorized residents: Maya Chen; Jordan Chen; Riley Chen.
 Separate acknowledgment requested for the unit condition above.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
@@ -249,7 +258,8 @@ SYNTHETIC TEST DOCUMENT | lease-1 | Maya Chen | Unit 304
 
 12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.
 
-12.4 Named tenant: Maya Chen
+12.4 Primary tenant: Maya Chen
+All authorized residents: Maya Chen; Jordan Chen; Riley Chen
 Landlord representative: Alex Morgan, Alder Living
 Scenario agreement date: 2026-01-25
 Signature status: UNSIGNED TEST FIXTURE.

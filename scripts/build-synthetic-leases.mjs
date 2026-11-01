@@ -22,12 +22,14 @@ const profiles=[
  {age:52,income:880000,occupation:'Logistics planner',members:[['Harper Bennett',50,'Adult household member']],smoking:'Does not smoke or vape',pet:null,contact:['Cameron Bennett','Sibling'],special:['Move-in condition record','Unit 3 has a recorded cosmetic scratch on the kitchen cabinet and a scuff near the entry. These are pre-existing sample observations, not tenant-caused damage. No repair charge is agreed by this annexure.']}
 ];
 await fs.mkdir(directory,{recursive:true});
-const manifest={datasetVersion:'1.0.0',synthetic:true,createdOn:'2026-10-31',currency:'USD',source:'frontend/src/data/fixtures.js',documents:[]};
+const manifest={datasetVersion:'1.0.1',synthetic:true,createdOn:'2026-10-31',currency:'USD',source:'frontend/src/data/fixtures.js',documents:[]};
 for(const [index,lease] of leases.entries()){
  const profile=profiles[index],tenant=tenants.find(t=>t.id===lease.tenantId),property=properties.find(p=>p.id===lease.propertyId);
  const execution=new Date(lease.startDate+'T12:00:00Z');execution.setUTCDate(execution.getUTCDate()-7);
  const signedOn=execution.toISOString().slice(0,10),n=index+1,stem=`lease-${String(n).padStart(2,'0')}-${tenant.name.toLowerCase().replaceAll(' ','-')}`;
  const household=[{name:tenant.name,age:profile.age,relationship:'Named tenant'},...profile.members.map(([name,age,relationship])=>({name,age,relationship}))];
+ const residentNames=household.map(member=>member.name).join('; ');
+ const residentRoster=household.map(member=>`${member.name} (${member.relationship}; age ${member.age})`).join('\n');
  const pet=profile.pet?{name:profile.pet[0],species:profile.pet[1],breed:profile.pet[2],weightPounds:profile.pet[3],approved:true,approvalDate:signedOn,oneTimeFeeCents:25000}:null;
  const record={synthetic:true,datasetVersion:manifest.datasetVersion,documentId:lease.documents[0],leaseId:lease.id,tenantId:tenant.id,propertyId:property.id,state:property.state,
   landlord:{name:landlord.name,organization:landlord.organization,email:landlord.email,phone:'202-555-0100'},
@@ -45,7 +47,8 @@ for(const [index,lease] of leases.entries()){
   ['Residential lease / agreement particulars',[
    'SYNTHETIC TEST DOCUMENT — NOT FOR SIGNATURE OR LEGAL USE. Every identity, address, household detail, amount and financial/contact detail in this packet is fictional. No statutory compliance review has been performed.',
    `Document ID: ${record.documentId}\nLease ID: ${lease.id}\nTenant ID: ${tenant.id}\nProperty ID: ${property.id}\nState: North Carolina (NC)`,
-   `Landlord: ${landlord.name}, for ${landlord.organization}\nTenant: ${tenant.name}\nPremises: ${property.name}, ${property.address}, Unit ${lease.unit}, ${property.city}`,
+   `Landlord: ${landlord.name}, for ${landlord.organization}\nPrimary tenant: ${tenant.name}\nPremises: ${property.name}, ${property.address}, Unit ${lease.unit}, ${property.city}`,
+   `Authorized residents ? complete household (${household.length}):\n${residentRoster}`,
    `Agreement date: ${signedOn}\nCommencement: ${lease.startDate}\nEnd date (inclusive): ${lease.endDate}\nLease duration: 12 calendar months\nMonthly rent: ${money(lease.rent)}\nSecurity deposit: ${money(lease.deposit)}`,
    'This is a fixed-term fictional residential lease packet for backend extraction and retrieval testing. The agreement date is a synthetic scenario date, not evidence that anyone signed. Currency is USD. No real account is connected.',
    'Packet map: household p. 2; rent and banking p. 3; deposit p. 4; utilities p. 5; occupancy p. 6; maintenance p. 7; pet annexure A p. 8; smoking annexure B p. 9; waste annexure C p. 10; unit annexure D p. 11; renewal and signatures p. 12.'
@@ -80,7 +83,7 @@ for(const [index,lease] of leases.entries()){
    '5.5 No internet speed, service provider, electricity tariff or outage compensation is promised. An absent numeric rate must be extracted as unspecified, rather than zero.'
   ]],
   ['Occupancy, shared areas and access',[
-   `6.1 The household roster in section 2 contains ${household.length} people, including ${record.household.children} children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.`,
+   `6.1 Authorized residents: ${residentNames}. The household roster in section 2 contains ${household.length} people, including ${record.household.children} children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.`,
    '6.2 The premises are used as the named household’s home. No right to sublet or transfer this fictional agreement is supplied. Request written clarification before assuming permission for a different use.',
    '6.3 Quiet hours are 10 p.m. to 8 a.m. Keep corridors, exits and stairways clear. Leave common rooms ready for the next resident. These common-area terms apply to all listed households.',
    '6.4 Management access and inspection scheduling require separate coordination. This packet supplies no emergency-entry test or statutory notice period and creates no claim about legal entry rights.',
@@ -98,34 +101,34 @@ for(const [index,lease] of leases.entries()){
    pet?`8.2 Approved pet: ${pet.name}\nSpecies: ${pet.species}\nBreed/description: ${pet.breed}\nWeight: ${pet.weightPounds} pounds\nApproval date (scenario): ${signedOn}\nOne-time pet fee: ${money(pet.oneTimeFeeCents)}\nMonthly pet rent: not specified.`:'8.2 No pet is registered or approved for this household at execution. Pet count: 0. Current pet fee obligation: $0.00. The conditional $250 fee in section 8.1 is not a charge due for a household with no approved pet.',
    '8.3 Clean up pet waste immediately. Keep an approved pet leashed in shared areas. Prevent nuisance and document damage using section 4.2. Any later pet request requires its own recorded approval; do not infer approval from a general policy.',
    '8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.',
-   `Annexure A applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\n${acknowledgment}`
+   `Annexure A applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\nAuthorized residents: ${residentNames}.\n${acknowledgment}`
   ]],
   ['Annexure B / smoking and vaping',[
    `9.1 Named tenant disclosure: ${profile.smoking}. This is a fictional self-report as of ${signedOn}, not evidence about every occupant or a health assessment.`,
    '9.2 In this test agreement, no smoking or vaping occurs inside the unit or enclosed shared areas. Any smoking or vaping is limited to an outdoor designated area identified by management. Dispose of smoking materials safely; do not leave them in landscaping or household recycling.',
    '9.3 No smoking-related fee, rent surcharge or additional deposit is specified. Do not infer a zero damage claim or a penalty schedule. Any observed damage is evaluated under section 4.2.',
    '9.4 Disclosure does not create an exception to the indoor rule. This annexure records the scenario without making a legal, medical or insurance determination.',
-   `Annexure B applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\n${acknowledgment}`
+   `Annexure B applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\nAuthorized residents: ${residentNames}.\n${acknowledgment}`
   ]],
   ['Annexure C / waste, recycling and shared spaces',[
    '10.1 Place ordinary household waste in tied bags in the designated bins. Separate clean recyclables into marked containers. Keep lids and access paths clear.',
    '10.2 Do not leave bulky items in the waste room. Arrange collection with management before disposing of furniture or large packaging. Hazardous materials and electronic waste require separate instructions; no collection schedule or price is supplied here.',
    '10.3 Clean up spills and pet waste promptly. Do not store waste in hallways, stairwells or balconies. Quiet hours remain 10 p.m. to 8 a.m. when moving items through shared spaces.',
    '10.4 Ordinary shared waste service is included in base rent. No bulk-item fee, contamination fee or fine amount is specified in this packet. Do not invent one during extraction.',
-   `Annexure C applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\n${acknowledgment}`
+   `Annexure C applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\nAuthorized residents: ${residentNames}.\n${acknowledgment}`
   ]],
   ['Annexure D / unit-specific conditions',[
    `11.1 ${profile.special[0]}\n${profile.special[1]}`,
    `11.2 This condition is specific to ${property.name}, Unit ${lease.unit}, ${lease.id}. It must not be attached to any other unit during ingestion, retrieval or answer generation.`,
    '11.3 This annexure does not modify base rent, security deposit, approved household count, the conditional pet fee or the fixed term. Any unspecified charge remains unspecified.',
    '11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.',
-   `Separate acknowledgment requested for the unit condition above.\n${acknowledgment}`
+   `Authorized residents: ${residentNames}.\nSeparate acknowledgment requested for the unit condition above.\n${acknowledgment}`
   ]],
   ['Renewal, notice and signature schedule',[
    `12.1 ${clause[3].quote}`,
    `12.2 Fixed term: ${lease.startDate} through ${lease.endDate}, inclusive; 12 calendar months. Notice period in this fictional contract: ${lease.noticeDays} days. No automatic renewal rent or month-to-month conversion is specified.`,
    '12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.',
-   `12.4 Named tenant: ${tenant.name}\nLandlord representative: ${landlord.name}, ${landlord.organization}\nScenario agreement date: ${signedOn}\nSignature status: UNSIGNED TEST FIXTURE.`,
+   `12.4 Primary tenant: ${tenant.name}\nAll authorized residents: ${residentNames}\nLandlord representative: ${landlord.name}, ${landlord.organization}\nScenario agreement date: ${signedOn}\nSignature status: UNSIGNED TEST FIXTURE.`,
    acknowledgment,
    'Dataset notice: this corpus is for software ingestion, retrieval, calculation and isolation testing only. It is not an enforceable lease form, legal advice, a government mandate or a legal compliance certification. It must not be used to establish rights or obligations of real people.'
   ]]

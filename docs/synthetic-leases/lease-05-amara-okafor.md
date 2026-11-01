@@ -11,8 +11,13 @@ Property ID: property-2
 State: North Carolina (NC)
 
 Landlord: Alex Morgan, for Alder Living
-Tenant: Amara Okafor
+Primary tenant: Amara Okafor
 Premises: The Juniper, 42 Juniper Street, Unit 2A, Raleigh, NC 27602
+
+Authorized residents ? complete household (3):
+Amara Okafor (Named tenant; age 35)
+Chidi Okafor (Adult household member; age 37)
+Ada Okafor (Child; age 7)
 
 Agreement date: 2026-02-22
 Commencement: 2026-03-01
@@ -125,7 +130,7 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 
 SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 
-6.1 The household roster in section 2 contains 3 people, including 1 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
+6.1 Authorized residents: Amara Okafor; Chidi Okafor; Ada Okafor. The household roster in section 2 contains 3 people, including 1 children. The roster documents this scenario; it does not establish a maximum lawful occupancy. Notify management of proposed changes for a separate review.
 
 6.2 The premises are used as the named household’s home. No right to sublet or transfer this fictional agreement is supplied. Request written clarification before assuming permission for a different use.
 
@@ -169,6 +174,7 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.
 
 Annexure A applies to lease-5, The Juniper, Unit 2A.
+Authorized residents: Amara Okafor; Chidi Okafor; Ada Okafor.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -188,6 +194,7 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 9.4 Disclosure does not create an exception to the indoor rule. This annexure records the scenario without making a legal, medical or insurance determination.
 
 Annexure B applies to lease-5, The Juniper, Unit 2A.
+Authorized residents: Amara Okafor; Chidi Okafor; Ada Okafor.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -207,6 +214,7 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 10.4 Ordinary shared waste service is included in base rent. No bulk-item fee, contamination fee or fine amount is specified in this packet. Do not invent one during extraction.
 
 Annexure C applies to lease-5, The Juniper, Unit 2A.
+Authorized residents: Amara Okafor; Chidi Okafor; Ada Okafor.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
 Unsigned test fixture. Do not execute or use for a real tenancy.
@@ -226,6 +234,7 @@ Unit 2A receives two terrace access cards. Shared quiet hours apply; no exclusiv
 
 11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.
 
+Authorized residents: Amara Okafor; Chidi Okafor; Ada Okafor.
 Separate acknowledgment requested for the unit condition above.
 Tenant signature: ____________________  Date: __________
 Landlord signature: __________________  Date: __________
@@ -243,7 +252,8 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 
 12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.
 
-12.4 Named tenant: Amara Okafor
+12.4 Primary tenant: Amara Okafor
+All authorized residents: Amara Okafor; Chidi Okafor; Ada Okafor
 Landlord representative: Alex Morgan, Alder Living
 Scenario agreement date: 2026-02-22
 Signature status: UNSIGNED TEST FIXTURE.
