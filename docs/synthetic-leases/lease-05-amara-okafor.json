@@ -1,0 +1,141 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.0.1",
+  "documentId": "lease-document-5",
+  "leaseId": "lease-5",
+  "tenantId": "tenant-5",
+  "propertyId": "property-2",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Amara Okafor",
+    "email": "amara@example.test",
+    "phone": "202-555-0106",
+    "age": 35,
+    "ageAsOf": "2026-02-22",
+    "occupation": "Operations manager",
+    "grossMonthlyIncomeCents": 1020000,
+    "smokingHabits": "Does not smoke or vape"
+  },
+  "property": {
+    "name": "The Juniper",
+    "address": "42 Juniper Street",
+    "city": "Raleigh, NC 27602",
+    "state": "NC",
+    "unit": "2A"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Amara Okafor",
+        "age": 35,
+        "relationship": "Named tenant"
+      },
+      {
+        "name": "Chidi Okafor",
+        "age": 37,
+        "relationship": "Adult household member"
+      },
+      {
+        "name": "Ada Okafor",
+        "age": 7,
+        "relationship": "Child"
+      }
+    ],
+    "totalMembers": 3,
+    "children": 1,
+    "adults": 2,
+    "ageAsOf": "2026-02-22"
+  },
+  "emergencyContact": {
+    "name": "Ife Okafor",
+    "relationship": "Sibling",
+    "phone": "202-555-0156"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Amara Okafor",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0005",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST05",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2026-02-22",
+    "startDate": "2026-03-01",
+    "endDate": "2027-02-28",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 265000,
+    "depositCents": 265000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 0
+  },
+  "pets": [],
+  "specialConditions": {
+    "title": "Roof terrace access",
+    "text": "Unit 2A receives two terrace access cards. Shared quiet hours apply; no exclusive terrace use is granted. Access is included in base rent."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ]
+}

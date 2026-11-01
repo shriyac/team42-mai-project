@@ -1,0 +1,175 @@
+{
+  "anonymousSession": {
+    "schema": "Session",
+    "value": {
+      "user": null,
+      "csrfToken": null
+    }
+  },
+  "authenticatedSession": {
+    "schema": "Session",
+    "value": {
+      "user": {
+        "id": "landlord-1",
+        "name": "Alex Morgan",
+        "email": "alex@alderliving.example",
+        "role": "landlord",
+        "organization": "Alder Living",
+        "permissions": [
+          "portfolio:read",
+          "leases:read",
+          "requests:write",
+          "policies:write"
+        ]
+      },
+      "csrfToken": "demo-only"
+    }
+  },
+  "registeredProperty": {
+    "schema": "Property",
+    "value": {
+      "id": "property-1",
+      "name": "Willow House",
+      "address": "128 Willow Lane",
+      "city": "Raleigh, NC 27601",
+      "state": "NC",
+      "units": 5,
+      "style": "willow",
+      "description": "Quiet corners. Connected living.",
+      "amenities": [
+        "Pet friendly",
+        "Bike storage",
+        "Courtyard"
+      ]
+    }
+  },
+  "emptyLandlordWorkspace": {
+    "schema": "Workspace",
+    "value": {
+      "asOf": "2026-10-31",
+      "timeZone": "America/New_York",
+      "user": {
+        "id": "landlord-1",
+        "name": "Alex Morgan",
+        "email": "alex@alderliving.example",
+        "role": "landlord",
+        "organization": "Alder Living",
+        "permissions": [
+          "portfolio:read",
+          "leases:read",
+          "requests:write",
+          "policies:write"
+        ]
+      },
+      "properties": [],
+      "leases": [],
+      "tenants": [],
+      "requests": [],
+      "policies": [],
+      "summary": {
+        "properties": 0,
+        "units": 0,
+        "occupied": 0,
+        "monthlyRent": 0,
+        "outstandingRent": 0,
+        "renewals": 0
+      }
+    }
+  },
+  "pendingPolicy": {
+    "schema": "PolicyVersion",
+    "value": {
+      "id": "document-example-v1",
+      "familyId": "family-example",
+      "title": "Maintenance policy",
+      "name": "rules.pdf",
+      "category": "maintenance",
+      "propertyId": "property-example",
+      "state": "NC",
+      "status": "processing",
+      "compliance": {
+        "status": "pending",
+        "state": "NC"
+      },
+      "version": 1,
+      "effectiveFrom": "2026-11-15",
+      "effectiveTo": null,
+      "uploadedAt": "2026-10-31T12:00:00Z",
+      "size": 2048,
+      "pageCount": null,
+      "uploadedBy": "Alex Morgan",
+      "description": "Document processing and legal review are pending.",
+      "excerpt": null
+    }
+  },
+  "clarificationAnswer": {
+    "schema": "Answer",
+    "value": {
+      "id": "answer-example",
+      "threadId": "thread-example",
+      "answer": "The applicable policy is awaiting legal review. Please request a review before relying on its terms.",
+      "status": "needs_clarification",
+      "citations": [],
+      "calculations": [],
+      "activity": [
+        {
+          "label": "Legal review is pending",
+          "status": "attention"
+        }
+      ],
+      "compliance": {
+        "status": "pending",
+        "state": "NC"
+      }
+    }
+  },
+  "syntheticReviewedAnswer": {
+    "schema": "Answer",
+    "value": {
+      "id": "answer-example",
+      "threadId": "thread-example",
+      "answer": "Illustrative reviewed response. Replace this fixture with an answer checked by your legal-review service.",
+      "status": "supported",
+      "citations": [],
+      "calculations": [],
+      "activity": [
+        {
+          "label": "Illustrative fixture; no actual legal assessment performed",
+          "status": "complete"
+        }
+      ],
+      "demo": true,
+      "compliance": {
+        "status": "passed",
+        "state": "NC",
+        "kind": "answer",
+        "scopeKey": "lease:lease-1",
+        "asOf": "2026-10-31",
+        "checkedAt": "2026-10-31T12:00:00Z",
+        "expiresAt": "2026-11-01T12:00:00Z",
+        "lawRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "contentHash": "f06dc6f837f6376298027846ee624e183201299c515002c366a5533649e615c9",
+        "citations": [
+          {
+            "url": "https://www.ncleg.gov/EnactedLegislation/Statutes/HTML/ByChapter/Chapter_42.html",
+            "section": "Chapter 42 (illustrative reference only)"
+          }
+        ],
+        "findings": []
+      }
+    }
+  },
+  "versionConflict": {
+    "schema": "Error",
+    "value": {
+      "error": {
+        "code": "VERSION_CONFLICT",
+        "message": "This policy changed. Refresh the library before adding a version.",
+        "requestId": "example-request",
+        "fields": {
+          "expectedVersion": "The latest version is 3."
+        }
+      }
+    }
+  }
+}

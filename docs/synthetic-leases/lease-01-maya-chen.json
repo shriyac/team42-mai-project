@@ -1,0 +1,151 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.0.1",
+  "documentId": "lease-document-1",
+  "leaseId": "lease-1",
+  "tenantId": "tenant-1",
+  "propertyId": "property-1",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Maya Chen",
+    "email": "maya@example.test",
+    "phone": "202-555-0102",
+    "age": 31,
+    "ageAsOf": "2026-01-25",
+    "occupation": "Product designer",
+    "grossMonthlyIncomeCents": 840000,
+    "smokingHabits": "Does not smoke or vape"
+  },
+  "property": {
+    "name": "Willow House",
+    "address": "128 Willow Lane",
+    "city": "Raleigh, NC 27601",
+    "state": "NC",
+    "unit": "304"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Maya Chen",
+        "age": 31,
+        "relationship": "Named tenant"
+      },
+      {
+        "name": "Jordan Chen",
+        "age": 33,
+        "relationship": "Adult household member"
+      },
+      {
+        "name": "Riley Chen",
+        "age": 6,
+        "relationship": "Child"
+      }
+    ],
+    "totalMembers": 3,
+    "children": 1,
+    "adults": 2,
+    "ageAsOf": "2026-01-25"
+  },
+  "emergencyContact": {
+    "name": "Taylor Chen",
+    "relationship": "Sibling",
+    "phone": "202-555-0152"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Maya Chen",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0001",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST01",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2026-01-25",
+    "startDate": "2026-02-01",
+    "endDate": "2027-01-31",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 220000,
+    "depositCents": 220000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 25000
+  },
+  "pets": [
+    {
+      "name": "Miso",
+      "species": "Cat",
+      "breed": "Domestic shorthair",
+      "weightPounds": 11,
+      "approved": true,
+      "approvalDate": "2026-01-25",
+      "oneTimeFeeCents": 25000
+    }
+  ],
+  "specialConditions": {
+    "title": "Bike storage",
+    "text": "One tagged bicycle may be stored in rack W-304. Keep corridor and stair landings clear. No separate bike-storage fee."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ]
+}

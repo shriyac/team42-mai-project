@@ -1,0 +1,136 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.0.1",
+  "documentId": "lease-document-10",
+  "leaseId": "lease-10",
+  "tenantId": "tenant-10",
+  "propertyId": "property-3",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Lucas Bennett",
+    "email": "lucas@example.test",
+    "phone": "202-555-0111",
+    "age": 52,
+    "ageAsOf": "2026-08-25",
+    "occupation": "Logistics planner",
+    "grossMonthlyIncomeCents": 880000,
+    "smokingHabits": "Does not smoke or vape"
+  },
+  "property": {
+    "name": "Cedar Court",
+    "address": "810 Cedar Avenue",
+    "city": "Raleigh, NC 27604",
+    "state": "NC",
+    "unit": "3"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Lucas Bennett",
+        "age": 52,
+        "relationship": "Named tenant"
+      },
+      {
+        "name": "Harper Bennett",
+        "age": 50,
+        "relationship": "Adult household member"
+      }
+    ],
+    "totalMembers": 2,
+    "children": 0,
+    "adults": 2,
+    "ageAsOf": "2026-08-25"
+  },
+  "emergencyContact": {
+    "name": "Cameron Bennett",
+    "relationship": "Sibling",
+    "phone": "202-555-0161"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Lucas Bennett",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0010",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST10",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2026-08-25",
+    "startDate": "2026-09-01",
+    "endDate": "2027-08-31",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 230000,
+    "depositCents": 230000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 0
+  },
+  "pets": [],
+  "specialConditions": {
+    "title": "Move-in condition record",
+    "text": "Unit 3 has a recorded cosmetic scratch on the kitchen cabinet and a scuff near the entry. These are pre-existing sample observations, not tenant-caused damage. No repair charge is agreed by this annexure."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ]
+}
