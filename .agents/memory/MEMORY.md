@@ -1,1 +1,2 @@
 - [Documentation checksums](documentation-checksums.md) — preserve generated handoff provenance across Git line-ending normalization.
+- [Local Python installation](local-python-installation.md) — the package helper treats project extras as a forbidden self-dependency.

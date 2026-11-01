@@ -4,6 +4,7 @@ from pathlib import Path
 import socket
 import subprocess
 import tempfile
+import tomllib
 import unittest
 from unittest.mock import patch
 from laga.api import default_origins
@@ -11,6 +12,17 @@ from laga.api import default_origins
 ROOT = Path(__file__).resolve().parents[1]
 
 class ReplitTests(unittest.TestCase):
+    def test_publishing_uses_explicit_project_local_dependency_install(self):
+        config = tomllib.loads((ROOT/".replit").read_text())
+        self.assertIs(config["packager"]["features"]["enabledForHosting"], False)
+        command = " ".join(config["deployment"]["build"])
+        self.assertIn("npm ci --include=dev", command)
+        self.assertIn('python -m pip install --target .pythonlibs/lib/python3.11/site-packages', command)
+        self.assertIn('.[api]', command)
+        self.assertIn("npm run build", command)
+        project = tomllib.loads((ROOT/"pyproject.toml").read_text())
+        self.assertIs(project["tool"]["uv"]["package"], False)
+
     def test_published_domains_and_explicit_override(self):
         with patch.dict(os.environ, {"REPLIT_DOMAINS":"demo.replit.app,custom.example", "REPLIT_DEV_DOMAIN":"preview.replit.dev", "LAGA_ALLOWED_ORIGINS":"https://explicit.example"}):
             self.assertEqual(default_origins(), ["https://explicit.example"])

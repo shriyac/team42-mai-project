@@ -4,11 +4,13 @@ The repository is configured for the API-backed UI: tenant/landlord login, autom
 
 ## Preview
 
-The Run button installs Node and Python API dependencies, then runs `npm run dev:local`. It starts Vite on public port 5000 and Python privately on loopback port 8001. Bootstrap creates 11 users, 10 leases and their PDFs, three properties, nine policy PDFs and four requests. No manual provisioning is needed.
+The Run button installs Node and Python API dependencies, then runs `npm run dev:local`. Python packages go into `.pythonlibs/lib/python3.11/site-packages` rather than the read-only Nix system Python; no virtual environment is needed. It starts Vite on public port 5000 and Python privately on loopback port 8001. Bootstrap creates 11 users, 10 leases and their PDFs, three properties, nine policy PDFs and four requests. No manual provisioning is needed.
 
 Choose Tenant login or Landlord login and enter an account email and the password in `data/backend-bootstrap-login.json`. The optional `LAGA_BOOTSTRAP_PASSWORD` secret can supply the initial password instead; it must contain at least 24 characters and at most 1024 UTF-8 bytes. The same initial password applies to all fictional accounts. Existing accounts and passwords are preserved on restart.
 
 ## Publishing
+
+The explicit build below owns dependency installation. `[packager.features].enabledForHosting = false` requests disabling the automatic publishing install, but publishing was observed to invoke `uv sync` anyway. Therefore `pyproject.toml` also sets `[tool.uv].package = false`, preventing that preliminary sync from building/installing the editable project into read-only Nix system Python. This uv-only setting does not disable the explicit pip installation or setuptools packaging.
 
 The `.replit` build installs `.[api]` Python dependencies and builds the UI in API mode. Publishing runs `node scripts/start-app.mjs`, which starts Python privately, waits for its readiness, then serves the built frontend and proxies `/api` over the single public port. API Explorer remains available at `/api-docs/`. Production cookies retain Secure and HttpOnly; plain localhost development uses the HTTP cookie option, while Replit HTTPS Preview also uses Secure cookies.
 
@@ -32,9 +34,11 @@ Preview and published deployments are separate installations. Preview's generate
 
 ## Checks
 
+The API constrains Starlette below 1.0 to retain compatibility with the existing httpx-based test client. Install the `test` extra before running the Python suite; the Run button only needs the `api` extra.
+
 ```sh
 npm ci --include=dev
-python -m pip install ".[api,test]"
+python -m pip install --target .pythonlibs/lib/python3.11/site-packages --upgrade ".[api,test]"
 npm test
 npm run check:deploy
 python -m unittest discover -s tests
