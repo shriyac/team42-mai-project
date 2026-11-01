@@ -1,3 +1,4 @@
+import {askWithTiming} from './lib/responseTiming.js';
 import DeveloperAccess from './components/DeveloperAccess.jsx';
 ﻿import React,{useEffect,useState} from 'react';
 import {createRoot} from 'react-dom/client';
@@ -30,7 +31,7 @@ function Workspace({onLogout,developerAccess}){
  useEffect(()=>{const f=e=>{if((e.metaKey||e.ctrlKey)&&e.key==='k'){e.preventDefault();setSearch(s=>!s)}if(e.key==='Escape')setMobile(false)};window.addEventListener('keydown',f);return()=>window.removeEventListener('keydown',f)},[]);
  function navigate(p,o={}){setPage(p);setOptions(o);setMobile(false);window.scrollTo({top:0,behavior:'instant'})}
  const keyFor=(s,d)=>`${s?.type}:${s?.id||''}:${d}`,key=keyFor(scope,asOf);
- async function ask(question,id){const selected=id?{type:'lease',id}:scope,threadKey=keyFor(selected,asOf);if(pending[threadKey])return;setScope(selected);navigate('ask');const history=threads[threadKey]||[];setThreads(t=>({...t,[threadKey]:[...(t[threadKey]||[]),{id:crypto.randomUUID(),role:'user',text:question}]}));setPending(p=>({...p,[threadKey]:true}));try{const answer=await gateway.ask({question,scope:selected,asOf,threadId:history.find(m=>m.threadId)?.threadId||null});setThreads(t=>({...t,[threadKey]:[...(t[threadKey]||[]),{...answer,role:'assistant'}]}))}catch(e){notify(e.message)}finally{setPending(p=>({...p,[threadKey]:false}))}}
+ async function ask(question,id){const startedAt=performance.now();const selected=id?{type:'lease',id}:scope,threadKey=keyFor(selected,asOf);if(pending[threadKey])return;setScope(selected);navigate('ask');const history=threads[threadKey]||[];setThreads(t=>({...t,[threadKey]:[...(t[threadKey]||[]),{id:crypto.randomUUID(),role:'user',text:question}]}));setPending(p=>({...p,[threadKey]:true}));try{const answer=await askWithTiming(gateway,{question,scope:selected,asOf,threadId:history.find(m=>m.threadId)?.threadId||null},{startedAt});setThreads(t=>({...t,[threadKey]:[...(t[threadKey]||[]),{...answer,role:'assistant'}]}))}catch(e){notify(e.message)}finally{setPending(p=>({...p,[threadKey]:false}))}}
  if(!w)return <main className="startup"><Logo/>{error?<ErrorNotice error={error} onRetry={()=>refresh().catch(()=>{})}/>:<Loading/>}</main>;
  const tenant=w.user.role==='tenant',nav=tenant?[['home','My home',Home],['lease','My lease',FileText],['ask','Ask Laga',Sparkles],['requests','Conversations',MessageCircle],['policies','My documents',Layers3]]:[['home','Overview',Home],['properties','Properties',Building2],['leases','Lease book',FileText],['ask','Ask Laga',Sparkles],['requests','Conversations',MessageCircle],...(w.user.permissions.includes('policies:write')?[['policies','Policy library',ShieldCheck]]:[])];
  const newConversation=()=>tenant?setNewRequest(true):navigate('requests');
