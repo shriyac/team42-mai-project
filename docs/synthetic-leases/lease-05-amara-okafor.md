@@ -14,7 +14,7 @@ Landlord: Alex Morgan, for Alder Living
 Primary tenant: Amara Okafor
 Premises: The Juniper, 42 Juniper Street, Unit 2A, Raleigh, NC 27602
 
-Authorized residents ? complete household (3):
+Authorized residents - complete household (3):
 Amara Okafor (Named tenant; age 35)
 Chidi Okafor (Adult household member; age 37)
 Ada Okafor (Child; age 7)
@@ -70,13 +70,13 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 
 3.1 Monthly rent is $2650.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.
 
-3.2 Base monthly rent: $2,650.00
+3.2 Regular full-month installment (initial/final proration in 3.5). Base monthly rent: $2,650.00
 Due day: 1
 Grace period through day: 5
-Flat late fee after day 5: $50.00
+Flat late fee beginning day 6: $50.00
 Example payment on day 6: $2,700.00 = $2,650.00 + $50.00. This is arithmetic on fictional contract terms, not a lawful-fee determination or an account balance.
 
-3.3 Payment method: manual bank-transfer test workflow.
+3.3 Payment method: simulated portal transfer only. Payee: Alder Living. Destination: TEST-LANDLORD-1. Reference: lease-5. The following account belongs to the tenant, not the payee.
 Fictional bank: TEST ONLY Community Bank (fictional)
 Account holder: Amara Okafor
 Account type: Checking
@@ -86,7 +86,11 @@ Routing token: TEST-NOT-ROUTABLE
 
 These tokens are deliberately nonfunctional. No actual account number, routing number, card number or online-banking credential is provided. This lease is not an ACH or automatic debit authorization; no payment should be attempted.
 
-3.4 Rent excludes any one-time pet fee stated in annexure A. Water and ordinary shared waste service are included. There is no percentage late fee or daily compounding in this sample. Partial-month proration and current balances are not specified; do not infer them.
+3.4 Rent excludes any one-time pet fee stated in annexure A. Water and ordinary shared waste service are included. There is no percentage late fee or daily compounding in this sample. Current balances are not asserted. A late fee applies once per late rent installment, never compounds, and is not deducted from a later rent payment to create another default.
+
+3.5 First rent: $2,650.00, due 2026-03-01. Final calendar-month rent: $2,650.00, due 2027-02-01. Partial months use monthly rent times occupied calendar days divided by days in that month, including both boundary dates, rounded to the nearest cent. Full intervening months are due on day 1. As an express exception to section 3.1 for a mid-month start, the initial installment is due at commencement, with a late fee only once it is five calendar days late, counting the day after the due date as day one (first possible fee date: 2026-03-06).
+
+3.6 Security deposit $2,650.00 and approved ordinary-pet fee $0.00 are due at commencement 2026-03-01. No payment is recorded. Monthly pet rent is $0.00; shared laundry is included with no machine charge.
 
 ---
 
@@ -230,7 +234,7 @@ Unit 2A receives two terrace access cards. Shared quiet hours apply; no exclusiv
 
 11.2 This condition is specific to The Juniper, Unit 2A, lease-5. It must not be attached to any other unit during ingestion, retrieval or answer generation.
 
-11.3 This annexure does not modify base rent, security deposit, approved household count, the conditional pet fee or the fixed term. Any unspecified charge remains unspecified.
+11.3 Shared laundry has no separate charge. This annexure does not modify base rent, security deposit, approved household count, the conditional pet fee or the fixed term. Any unspecified charge remains unspecified.
 
 11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.
 
@@ -248,7 +252,7 @@ SYNTHETIC TEST DOCUMENT | lease-5 | Amara Okafor | Unit 2A
 
 12.1 Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.
 
-12.2 Fixed term: 2026-03-01 through 2027-02-28, inclusive; 12 calendar months. Notice period in this fictional contract: 60 days. No automatic renewal rent or month-to-month conversion is specified.
+12.2 Fixed term: 2026-03-01 through 2027-02-28, inclusive; 12 calendar months. Notice period in this fictional contract: 60 days. Written notice must reach management through the resident portal by 2026-12-30. This is a scenario deadline calculated by subtracting 60 calendar days from the inclusive end date. The fixed term expires on that end date; any extension requires a new written agreement. Holding over and statutory early termination require legal review.
 
 12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.
 

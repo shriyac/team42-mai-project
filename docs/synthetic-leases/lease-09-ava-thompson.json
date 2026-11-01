@@ -1,6 +1,6 @@
 {
   "synthetic": true,
-  "datasetVersion": "1.0.1",
+  "datasetVersion": "1.1.0",
   "documentId": "lease-document-9",
   "leaseId": "lease-9",
   "tenantId": "tenant-9",
@@ -20,7 +20,8 @@
     "ageAsOf": "2026-06-24",
     "occupation": "Account coordinator",
     "grossMonthlyIncomeCents": 800000,
-    "smokingHabits": "Smokes cigarettes outdoors only"
+    "smokingHabits": "Smokes cigarettes outdoors only",
+    "grossAnnualIncomeCents": 9600000
   },
   "property": {
     "name": "Cedar Court",
@@ -79,7 +80,19 @@
     "lateFeeCents": 5000,
     "lateFeeAfterDay": 5,
     "noticeDays": 60,
-    "petFeeCents": 25000
+    "petFeeCents": 25000,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2026-07-01",
+    "firstLateFeeDate": "2026-07-06",
+    "lastRentDueDate": "2027-06-01",
+    "firstRentCents": 210000,
+    "lastRentCents": 210000,
+    "depositDueDate": "2026-07-01",
+    "petFeeDueDate": "2026-07-01",
+    "noticeDeadline": "2027-05-01",
+    "lateFeeOncePerInstallment": true
   },
   "pets": [
     {
@@ -94,7 +107,7 @@
   ],
   "specialConditions": {
     "title": "Laundry access",
-    "text": "Unit 2 receives laundry access token C-2. Follow posted machine instructions and remove belongings promptly. Machine charges, if any, are outside this sample lease; no numeric charge is specified."
+    "text": "Unit 2 receives laundry access token C-2. Follow posted machine instructions and remove belongings promptly. Shared laundry use is included in base rent; there is no separate machine or token charge."
   },
   "signatureStatus": "unsigned_test_fixture",
   "legalReviewStatus": "not_performed",
@@ -147,5 +160,19 @@
       "page": 12,
       "title": "Renewal, notice and signature schedule"
     }
-  ]
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-9",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
 }

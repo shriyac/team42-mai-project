@@ -1,6 +1,6 @@
 {
   "synthetic": true,
-  "datasetVersion": "1.0.1",
+  "datasetVersion": "1.1.0",
   "documentId": "lease-document-7",
   "leaseId": "lease-7",
   "tenantId": "tenant-7",
@@ -20,7 +20,8 @@
     "ageAsOf": "2025-12-09",
     "occupation": "Project coordinator",
     "grossMonthlyIncomeCents": 980000,
-    "smokingHabits": "Does not smoke or vape"
+    "smokingHabits": "Does not smoke or vape",
+    "grossAnnualIncomeCents": 11760000
   },
   "property": {
     "name": "The Juniper",
@@ -74,7 +75,19 @@
     "lateFeeCents": 5000,
     "lateFeeAfterDay": 5,
     "noticeDays": 60,
-    "petFeeCents": 0
+    "petFeeCents": 0,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2025-12-16",
+    "firstLateFeeDate": "2025-12-21",
+    "lastRentDueDate": "2026-12-01",
+    "firstRentCents": 129032,
+    "lastRentCents": 120968,
+    "depositDueDate": "2025-12-16",
+    "petFeeDueDate": null,
+    "noticeDeadline": "2026-10-16",
+    "lateFeeOncePerInstallment": true
   },
   "pets": [],
   "specialConditions": {
@@ -132,5 +145,19 @@
       "page": 12,
       "title": "Renewal, notice and signature schedule"
     }
-  ]
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-7",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
 }

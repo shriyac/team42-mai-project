@@ -18,11 +18,11 @@ const profiles=[
  {age:27,income:710000,occupation:'Software tester',members:[['Sam Rivera',26,'Adult household member']],smoking:'Vapes outdoors only',pet:['Luna','Dog','Terrier mix',19],contact:['Alexis Rivera','Sibling'],special:['Guest parking','For Unit 3B, one overnight guest permit may be requested through the portal, subject to marked-space availability. No guaranteed guest space or additional charge is created by this annexure.']},
  {age:42,income:980000,occupation:'Project coordinator',members:[['Elena Rossi',14,'Child']],smoking:'Does not smoke or vape',pet:null,contact:['Marco Rossi','Sibling'],special:['Assigned storage','Storage locker J-4A is assigned to this unit. Store ordinary household items only; no fuel, chemicals or food. Storage is included in base rent.']},
  {age:24,income:590000,occupation:'Technical support specialist',members:[],smoking:'Does not smoke or vape',pet:['Bean','Cat','Domestic longhair',9],contact:['Min Kim','Sibling'],special:['Garden equipment','Unit 1 may use the shared garden tool cabinet after orientation. Return tools clean and do not store them in common walkways. No separate garden fee.']},
- {age:33,income:800000,occupation:'Account coordinator',members:[['Drew Thompson',34,'Adult household member'],['Emery Thompson',5,'Child']],smoking:'Smokes cigarettes outdoors only',pet:['Scout','Dog','Spaniel mix',32],contact:['Robin Thompson','Sibling'],special:['Laundry access','Unit 2 receives laundry access token C-2. Follow posted machine instructions and remove belongings promptly. Machine charges, if any, are outside this sample lease; no numeric charge is specified.']},
+ {age:33,income:800000,occupation:'Account coordinator',members:[['Drew Thompson',34,'Adult household member'],['Emery Thompson',5,'Child']],smoking:'Smokes cigarettes outdoors only',pet:['Scout','Dog','Spaniel mix',32],contact:['Robin Thompson','Sibling'],special:['Laundry access','Unit 2 receives laundry access token C-2. Follow posted machine instructions and remove belongings promptly. Shared laundry use is included in base rent; there is no separate machine or token charge.']},
  {age:52,income:880000,occupation:'Logistics planner',members:[['Harper Bennett',50,'Adult household member']],smoking:'Does not smoke or vape',pet:null,contact:['Cameron Bennett','Sibling'],special:['Move-in condition record','Unit 3 has a recorded cosmetic scratch on the kitchen cabinet and a scuff near the entry. These are pre-existing sample observations, not tenant-caused damage. No repair charge is agreed by this annexure.']}
 ];
 await fs.mkdir(directory,{recursive:true});
-const manifest={datasetVersion:'1.0.1',synthetic:true,createdOn:'2026-10-31',currency:'USD',source:'frontend/src/data/fixtures.js',documents:[]};
+const manifest={datasetVersion:'1.1.0',synthetic:true,createdOn:'2026-10-31',revisedOn:'2026-11-01',currency:'USD',source:'frontend/src/data/fixtures.js',documents:[]};
 for(const [index,lease] of leases.entries()){
  const profile=profiles[index],tenant=tenants.find(t=>t.id===lease.tenantId),property=properties.find(p=>p.id===lease.propertyId);
  const execution=new Date(lease.startDate+'T12:00:00Z');execution.setUTCDate(execution.getUTCDate()-7);
@@ -31,6 +31,11 @@ for(const [index,lease] of leases.entries()){
  const residentNames=household.map(member=>member.name).join('; ');
  const residentRoster=household.map(member=>`${member.name} (${member.relationship}; age ${member.age})`).join('\n');
  const pet=profile.pet?{name:profile.pet[0],species:profile.pet[1],breed:profile.pet[2],weightPounds:profile.pet[3],approved:true,approvalDate:signedOn,oneTimeFeeCents:25000}:null;
+ const monthInfo=date=>{const d=new Date(date+'T12:00:00Z');return {days:new Date(Date.UTC(d.getUTCFullYear(),d.getUTCMonth()+1,0)).getUTCDate(),day:d.getUTCDate()}};
+ const first=monthInfo(lease.startDate),last=monthInfo(lease.endDate);
+ const firstLate=new Date(lease.startDate+'T12:00:00Z');firstLate.setUTCDate(firstLate.getUTCDate()+5);
+ const firstRent=Math.round(lease.rent*(first.days-first.day+1)/first.days),lastRent=Math.round(lease.rent*last.day/last.days);
+ const deadline=new Date(lease.endDate+'T12:00:00Z');deadline.setUTCDate(deadline.getUTCDate()-lease.noticeDays);
  const record={synthetic:true,datasetVersion:manifest.datasetVersion,documentId:lease.documents[0],leaseId:lease.id,tenantId:tenant.id,propertyId:property.id,state:property.state,
   landlord:{name:landlord.name,organization:landlord.organization,email:landlord.email,phone:'202-555-0100'},
   tenant:{name:tenant.name,email:tenant.email,phone:`202-555-${String(101+n).padStart(4,'0')}`,age:profile.age,ageAsOf:signedOn,occupation:profile.occupation,grossMonthlyIncomeCents:profile.income,smokingHabits:profile.smoking},
@@ -41,6 +46,10 @@ for(const [index,lease] of leases.entries()){
   terms:{executionDate:signedOn,startDate:lease.startDate,endDate:lease.endDate,durationMonths:12,endDateInclusive:true,rentCents:lease.rent,depositCents:lease.deposit,currency:lease.currency,dueDay:lease.dueDay,lateFeeCents:5000,lateFeeAfterDay:5,noticeDays:lease.noticeDays,petFeeCents:pet?25000:0},
   pets:pet?[pet]:[],specialConditions:{title:profile.special[0],text:profile.special[1]},
   signatureStatus:'unsigned_test_fixture',legalReviewStatus:'not_performed',pages:[]};
+ Object.assign(record.terms,{monthlyPetRentCents:0,petFeeRefundable:false,prorationMethod:'actual_calendar_days_inclusive_round_half_up_to_cent',firstRentDueDate:lease.startDate,firstLateFeeDate:firstLate.toISOString().slice(0,10),lastRentDueDate:lease.endDate.slice(0,7)+'-01',firstRentCents:firstRent,lastRentCents:lastRent,depositDueDate:lease.startDate,petFeeDueDate:pet?lease.startDate:null,noticeDeadline:deadline.toISOString().slice(0,10),lateFeeOncePerInstallment:true});
+ record.tenant.grossAnnualIncomeCents=profile.income*12;
+ record.paymentInstructions={payee:landlord.organization,method:'simulated_portal_transfer',destinationToken:'TEST-LANDLORD-1',reference:lease.id,livePaymentEnabled:false};
+ record.utilities={electricity:'tenant',internet:'tenant',water:'included_in_rent',ordinaryWaste:'included_in_rent',monthlyLaundryFeeCents:0};
  const acknowledgment='Tenant signature: ____________________  Date: __________\nLandlord signature: __________________  Date: __________\nUnsigned test fixture. Do not execute or use for a real tenancy.';
  const clause=leaseClauses(lease);
  const pages=[
@@ -48,7 +57,7 @@ for(const [index,lease] of leases.entries()){
    'SYNTHETIC TEST DOCUMENT — NOT FOR SIGNATURE OR LEGAL USE. Every identity, address, household detail, amount and financial/contact detail in this packet is fictional. No statutory compliance review has been performed.',
    `Document ID: ${record.documentId}\nLease ID: ${lease.id}\nTenant ID: ${tenant.id}\nProperty ID: ${property.id}\nState: North Carolina (NC)`,
    `Landlord: ${landlord.name}, for ${landlord.organization}\nPrimary tenant: ${tenant.name}\nPremises: ${property.name}, ${property.address}, Unit ${lease.unit}, ${property.city}`,
-   `Authorized residents ? complete household (${household.length}):\n${residentRoster}`,
+   `Authorized residents - complete household (${household.length}):\n${residentRoster}`,
    `Agreement date: ${signedOn}\nCommencement: ${lease.startDate}\nEnd date (inclusive): ${lease.endDate}\nLease duration: 12 calendar months\nMonthly rent: ${money(lease.rent)}\nSecurity deposit: ${money(lease.deposit)}`,
    'This is a fixed-term fictional residential lease packet for backend extraction and retrieval testing. The agreement date is a synthetic scenario date, not evidence that anyone signed. Currency is USD. No real account is connected.',
    'Packet map: household p. 2; rent and banking p. 3; deposit p. 4; utilities p. 5; occupancy p. 6; maintenance p. 7; pet annexure A p. 8; smoking annexure B p. 9; waste annexure C p. 10; unit annexure D p. 11; renewal and signatures p. 12.'
@@ -62,10 +71,12 @@ for(const [index,lease] of leases.entries()){
   ]],
   ['Rent, payment and banking instructions',[
    `3.1 ${clause[0].quote}`,
-   `3.2 Base monthly rent: ${money(lease.rent)}\nDue day: 1\nGrace period through day: 5\nFlat late fee after day 5: ${money(5000)}\nExample payment on day 6: ${money(lease.rent+5000)} = ${money(lease.rent)} + ${money(5000)}. This is arithmetic on fictional contract terms, not a lawful-fee determination or an account balance.`,
-   `3.3 Payment method: manual bank-transfer test workflow.\nFictional bank: ${record.banking.bankName}\nAccount holder: ${tenant.name}\nAccount type: ${record.banking.accountType}\nAccount display: ${record.banking.accountDisplay}\nAccount token: ${record.banking.accountToken}\nRouting token: ${record.banking.routingToken}`,
+   `3.2 Regular full-month installment (initial/final proration in 3.5). Base monthly rent: ${money(lease.rent)}\nDue day: 1\nGrace period through day: 5\nFlat late fee beginning day 6: ${money(5000)}\nExample payment on day 6: ${money(lease.rent+5000)} = ${money(lease.rent)} + ${money(5000)}. This is arithmetic on fictional contract terms, not a lawful-fee determination or an account balance.`,
+   `3.3 Payment method: simulated portal transfer only. Payee: ${landlord.organization}. Destination: TEST-LANDLORD-1. Reference: ${lease.id}. The following account belongs to the tenant, not the payee.\nFictional bank: ${record.banking.bankName}\nAccount holder: ${tenant.name}\nAccount type: ${record.banking.accountType}\nAccount display: ${record.banking.accountDisplay}\nAccount token: ${record.banking.accountToken}\nRouting token: ${record.banking.routingToken}`,
    'These tokens are deliberately nonfunctional. No actual account number, routing number, card number or online-banking credential is provided. This lease is not an ACH or automatic debit authorization; no payment should be attempted.',
-   '3.4 Rent excludes any one-time pet fee stated in annexure A. Water and ordinary shared waste service are included. There is no percentage late fee or daily compounding in this sample. Partial-month proration and current balances are not specified; do not infer them.'
+   '3.4 Rent excludes any one-time pet fee stated in annexure A. Water and ordinary shared waste service are included. There is no percentage late fee or daily compounding in this sample. Current balances are not asserted. A late fee applies once per late rent installment, never compounds, and is not deducted from a later rent payment to create another default.',
+   `3.5 First rent: ${money(firstRent)}, due ${lease.startDate}. Final calendar-month rent: ${money(lastRent)}, due ${record.terms.lastRentDueDate}. Partial months use monthly rent times occupied calendar days divided by days in that month, including both boundary dates, rounded to the nearest cent. Full intervening months are due on day ${lease.dueDay}. As an express exception to section 3.1 for a mid-month start, the initial installment is due at commencement, with a late fee only once it is five calendar days late, counting the day after the due date as day one (first possible fee date: ${record.terms.firstLateFeeDate}).`,
+   `3.6 Security deposit ${money(lease.deposit)} and approved ordinary-pet fee ${money(record.terms.petFeeCents)} are due at commencement ${lease.startDate}. No payment is recorded. Monthly pet rent is $0.00; shared laundry is included with no machine charge.`
   ]],
   ['Security deposit and condition record',[
    `4.1 Deposit amount: ${money(lease.deposit)}. Deposit is separate from monthly rent. This packet does not assert that any transfer has occurred.`,
@@ -98,7 +109,7 @@ for(const [index,lease] of leases.entries()){
   ]],
   ['Annexure A / pets and responsibilities',[
    `8.1 ${clause[2].quote}`,
-   pet?`8.2 Approved pet: ${pet.name}\nSpecies: ${pet.species}\nBreed/description: ${pet.breed}\nWeight: ${pet.weightPounds} pounds\nApproval date (scenario): ${signedOn}\nOne-time pet fee: ${money(pet.oneTimeFeeCents)}\nMonthly pet rent: not specified.`:'8.2 No pet is registered or approved for this household at execution. Pet count: 0. Current pet fee obligation: $0.00. The conditional $250 fee in section 8.1 is not a charge due for a household with no approved pet.',
+   pet?`8.2 Approved pet: ${pet.name}\nSpecies: ${pet.species}\nBreed/description: ${pet.breed}\nWeight: ${pet.weightPounds} pounds\nApproval date (scenario): ${signedOn}\nOne-time pet fee: ${money(pet.oneTimeFeeCents)}\nMonthly pet rent: $0.00. Ordinary-pet fee is nonrefundable, separate from the refundable security deposit, and due at commencement; no payment is recorded.`:'8.2 No pet is registered or approved for this household at execution. Pet count: 0. Current pet fee obligation: $0.00. The conditional $250 fee in section 8.1 is not a charge due for a household with no approved pet.',
    '8.3 Clean up pet waste immediately. Keep an approved pet leashed in shared areas. Prevent nuisance and document damage using section 4.2. Any later pet request requires its own recorded approval; do not infer approval from a general policy.',
    '8.4 This annexure describes ordinary pets only. It does not classify assistance animals, decide accommodation requests or determine whether a fee is legally permitted. Those questions require a separate review.',
    `Annexure A applies to ${lease.id}, ${property.name}, Unit ${lease.unit}.\nAuthorized residents: ${residentNames}.\n${acknowledgment}`
@@ -120,13 +131,13 @@ for(const [index,lease] of leases.entries()){
   ['Annexure D / unit-specific conditions',[
    `11.1 ${profile.special[0]}\n${profile.special[1]}`,
    `11.2 This condition is specific to ${property.name}, Unit ${lease.unit}, ${lease.id}. It must not be attached to any other unit during ingestion, retrieval or answer generation.`,
-   '11.3 This annexure does not modify base rent, security deposit, approved household count, the conditional pet fee or the fixed term. Any unspecified charge remains unspecified.',
+   '11.3 Shared laundry has no separate charge. This annexure does not modify base rent, security deposit, approved household count, the conditional pet fee or the fixed term. Any unspecified charge remains unspecified.',
    '11.4 Document hierarchy for this test fixture: agreement sections control general terms; the annexures provide the stated pet, smoking, waste and unit details. An apparent contradiction requires clarification, not an invented rule. No later policy version automatically amends this signed-date scenario.',
    `Authorized residents: ${residentNames}.\nSeparate acknowledgment requested for the unit condition above.\n${acknowledgment}`
   ]],
   ['Renewal, notice and signature schedule',[
    `12.1 ${clause[3].quote}`,
-   `12.2 Fixed term: ${lease.startDate} through ${lease.endDate}, inclusive; 12 calendar months. Notice period in this fictional contract: ${lease.noticeDays} days. No automatic renewal rent or month-to-month conversion is specified.`,
+   `12.2 Fixed term: ${lease.startDate} through ${lease.endDate}, inclusive; 12 calendar months. Notice period in this fictional contract: ${lease.noticeDays} days. Written notice must reach management through the resident portal by ${record.terms.noticeDeadline}. This is a scenario deadline calculated by subtracting ${lease.noticeDays} calendar days from the inclusive end date. The fixed term expires on that end date; any extension requires a new written agreement. Holding over and statutory early termination require legal review.`,
    '12.3 Attachments: Annexure A (pets, p. 8); Annexure B (smoking/vaping, p. 9); Annexure C (waste/recycling, p. 10); Annexure D (unit conditions, p. 11). Each has a separate unsigned acknowledgment block.',
    `12.4 Primary tenant: ${tenant.name}\nAll authorized residents: ${residentNames}\nLandlord representative: ${landlord.name}, ${landlord.organization}\nScenario agreement date: ${signedOn}\nSignature status: UNSIGNED TEST FIXTURE.`,
    acknowledgment,

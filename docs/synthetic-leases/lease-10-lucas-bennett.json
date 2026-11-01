@@ -1,6 +1,6 @@
 {
   "synthetic": true,
-  "datasetVersion": "1.0.1",
+  "datasetVersion": "1.1.0",
   "documentId": "lease-document-10",
   "leaseId": "lease-10",
   "tenantId": "tenant-10",
@@ -20,7 +20,8 @@
     "ageAsOf": "2026-08-25",
     "occupation": "Logistics planner",
     "grossMonthlyIncomeCents": 880000,
-    "smokingHabits": "Does not smoke or vape"
+    "smokingHabits": "Does not smoke or vape",
+    "grossAnnualIncomeCents": 10560000
   },
   "property": {
     "name": "Cedar Court",
@@ -74,7 +75,19 @@
     "lateFeeCents": 5000,
     "lateFeeAfterDay": 5,
     "noticeDays": 60,
-    "petFeeCents": 0
+    "petFeeCents": 0,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2026-09-01",
+    "firstLateFeeDate": "2026-09-06",
+    "lastRentDueDate": "2027-08-01",
+    "firstRentCents": 230000,
+    "lastRentCents": 230000,
+    "depositDueDate": "2026-09-01",
+    "petFeeDueDate": null,
+    "noticeDeadline": "2027-07-02",
+    "lateFeeOncePerInstallment": true
   },
   "pets": [],
   "specialConditions": {
@@ -132,5 +145,19 @@
       "page": 12,
       "title": "Renewal, notice and signature schedule"
     }
-  ]
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-10",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
 }

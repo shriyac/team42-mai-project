@@ -2,7 +2,7 @@
 
 Ten fictional, unsigned North Carolina lease packets for backend ingestion and retrieval testing. Each packet has 12 native-text PDF pages, a matching Markdown copy, printable HTML and JSON expected extraction results. All four annexures are inside each packet, not separate files. Every authorized resident, including children, is named on the agreement cover, household roster, occupancy section, every annexure and the signature schedule. The primary tenant remains identified separately; listing a resident does not make them a signatory.
 
-These are test documents, not legal lease forms or government-approved policies. No legal compliance review was performed. State-law verification being disabled in the app does not certify these documents. Do not use them for a real tenancy, payment or signature request.
+These are test documents, not legal lease forms or government-approved policies. No attorney compliance review was performed. See [REVIEW.md](REVIEW.md) for the three-loop consistency audit, supplied scenario assumptions and legal examination checklist. State-law verification being disabled in the app does not certify these documents. Do not use them for a real tenancy, payment or signature request.
 
 ## Start here
 
@@ -18,13 +18,17 @@ The API contract currently has no lease-upload route. The backend team should us
 
 - Rents, deposits, names, IDs, properties, units and fixed-term dates come from the current frontend fixtures. All ten terms span 12 calendar months, with inclusive end dates; one starts mid-month.
 - New fictional details include tenant age, occupation, personal income, adult/child household roster, smoking/vaping disclosures, pets, test banking details, telephone numbers and emergency contacts. Household totals include the named tenant. Ages are measured on the stated scenario agreement date, not today's date; no birth dates are inferred.
-- Money is USD integer cents in JSON and formatted dollars in documents. Income is the named tenant's gross personal income, not household income. Annual income is monthly income multiplied by 12. Missing rates and charges are explicitly unspecified.
+- Money is USD integer cents in JSON and formatted dollars in documents. Income is the named tenant's gross personal income, not household income. Annual income is monthly income multiplied by 12. Monthly pet rent and shared laundry charges are explicitly $0. External electricity/internet rates and actual payment balances remain unknown, rather than being invented.
 - Phone numbers use the reserved fictional `202-555-01xx` range. Emails use `.example` or `.test`. Banking identifiers contain `TEST` and are intentionally nonfunctional; no real routing/account number, credential or automatic-debit authorization is supplied.
 - Ages, children, income and smoking disclosures are parser test fields; they are not tenant-screening criteria or reasons for different fees. No medical, nationality, government-ID or Social Security data is generated.
-- Signature blocks are blank and labeled unsigned. The scenario agreement date is seven days before commencement, not a historical signature assertion. Corpus creation date is October 31, 2026.
-- Annexure A records an approved pet or explicitly no approved pets. Five households have one pet; all recorded weights are below 50 pounds. A conditional $250 pet fee is distinguished from a current $0 pet fee for no-pet households. These terms are fictional, not legal-fee determinations.
+- Signature blocks are blank and labeled unsigned. The scenario agreement date is seven days before commencement, not a historical signature assertion. Corpus creation date is October 31, 2026; version 1.1.0 was revised November 1, 2026.
+- Annexure A records an approved pet or explicitly no approved pets. Five households have one pet; all recorded weights are below 50 pounds. A conditional $250 pet fee is distinguished from a current $0 pet fee for no-pet households. The ordinary-pet fee is nonrefundable and due at commencement. These terms are fictional, not legal-fee determinations.
 - Annexure B covers smoking and vaping, annexure C trash/recycling, and annexure D a distinct unit-specific condition with separate acknowledgment lines. No minor signs an annexure. Emergency contacts are not guarantors.
 - These packets do not automatically incorporate later policy-library revisions. Lease clauses and separately versioned property policies must remain distinguishable in retrieval.
+
+Proration uses actual occupied calendar days divided by the days in the calendar month, with inclusive boundaries and cent rounding. Isabella owes a scenario first installment of $1,290.32 on December 16, 2025 and a final installment of $1,209.68 on December 1, 2026. Regular installments remain due on the first. Section 3.5 expressly overrides section 3.1 for the initial mid-month installment. A late fee can apply once the installment is five calendar days late. All packets specify notice receipt deadlines as inclusive end date minus 60 calendar days.
+
+The tenant bank token identifies the fictional funding account. The distinct `paymentInstructions` object identifies Alder Living as payee and `TEST-LANDLORD-1` as the nonfunctional destination; neither enables payments. New fields are extraction answer-key extensions, not production API changes.
 
 ## Suggested acceptance queries
 
@@ -49,6 +53,8 @@ From the repository root, use Node.js 22+:
 node scripts/build-synthetic-leases.mjs
 node scripts/print-synthetic-leases.mjs
 npm.cmd test
+# Independent full PDF text comparison (requires pypdf):
+python scripts/audit-synthetic-leases.py
 ```
 
 The first script reads the existing UI fixtures and deterministic enrichment profiles; it writes JSON, Markdown, HTML and the manifest. The second prints PDFs and adds PDF hashes/page counts to the manifest. Run both after changing fixtures. The layout deliberately preserves existing page citations.

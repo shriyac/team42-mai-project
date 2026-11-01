@@ -1,6 +1,6 @@
 {
   "synthetic": true,
-  "datasetVersion": "1.0.1",
+  "datasetVersion": "1.1.0",
   "documentId": "lease-document-3",
   "leaseId": "lease-3",
   "tenantId": "tenant-3",
@@ -20,7 +20,8 @@
     "ageAsOf": "2025-12-25",
     "occupation": "Data analyst",
     "grossMonthlyIncomeCents": 780000,
-    "smokingHabits": "Does not smoke or vape"
+    "smokingHabits": "Does not smoke or vape",
+    "grossAnnualIncomeCents": 9360000
   },
   "property": {
     "name": "Willow House",
@@ -74,7 +75,19 @@
     "lateFeeCents": 5000,
     "lateFeeAfterDay": 5,
     "noticeDays": 60,
-    "petFeeCents": 25000
+    "petFeeCents": 25000,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2026-01-01",
+    "firstLateFeeDate": "2026-01-06",
+    "lastRentDueDate": "2026-12-01",
+    "firstRentCents": 205000,
+    "lastRentCents": 205000,
+    "depositDueDate": "2026-01-01",
+    "petFeeDueDate": "2026-01-01",
+    "noticeDeadline": "2026-11-01",
+    "lateFeeOncePerInstallment": true
   },
   "pets": [
     {
@@ -142,5 +155,19 @@
       "page": 12,
       "title": "Renewal, notice and signature schedule"
     }
-  ]
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-3",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
 }
