@@ -13,11 +13,14 @@ reference_files = [
     "contracts/openapi.json", "contracts/examples.json", "contracts/integration-examples.json",
     "docs/API_HANDOFF.md", "docs/BACKEND_CONNECTION.md", "docs/INTERFACE_CONTRACT.md", "docs/TEAM_BOUNDARIES.md",
     "frontend/src/services/httpGateway.js", "frontend/src/services/errors.js",
-    "frontend/src/lib/apiBase.js", "frontend/src/lib/compliance.js", "frontend/.env.example",
+    "frontend/src/lib/apiBase.js", "frontend/src/lib/compliance.js", "frontend/src/lib/features.js", "frontend/.env.example",
     "src/laga/__init__.py", "src/laga/compliance.py", "tests/test_compliance.py",
     f"docs/Laga-Backend-Integration-Guide-v{version}.pdf",
     "docs/integration-guide-examples.json", "docs/integration-guide-manifest.json",
 ]
+# Include tenant lease fixtures in backend handoffs; these are not public UI assets.
+reference_files.extend(file.relative_to(root).as_posix()
+                       for file in sorted((root / "docs/synthetic-leases").glob("*")) if file.is_file())
 for filename in reference_files:
     if not (root / filename).is_file():
         raise SystemExit(f"Missing handoff file: {filename}")

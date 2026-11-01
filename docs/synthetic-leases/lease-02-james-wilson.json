@@ -1,0 +1,131 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.0.0",
+  "documentId": "lease-document-2",
+  "leaseId": "lease-2",
+  "tenantId": "tenant-2",
+  "propertyId": "property-1",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "James Wilson",
+    "email": "james@example.test",
+    "phone": "202-555-0103",
+    "age": 46,
+    "ageAsOf": "2025-11-24",
+    "occupation": "Library coordinator",
+    "grossMonthlyIncomeCents": 620000,
+    "smokingHabits": "Smokes cigarettes outdoors only"
+  },
+  "property": {
+    "name": "Willow House",
+    "address": "128 Willow Lane",
+    "city": "Raleigh, NC 27601",
+    "state": "NC",
+    "unit": "101"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "James Wilson",
+        "age": 46,
+        "relationship": "Named tenant"
+      }
+    ],
+    "totalMembers": 1,
+    "children": 0,
+    "adults": 1,
+    "ageAsOf": "2025-11-24"
+  },
+  "emergencyContact": {
+    "name": "Morgan Wilson",
+    "relationship": "Sibling",
+    "phone": "202-555-0153"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "James Wilson",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0002",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST02",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2025-11-24",
+    "startDate": "2025-12-01",
+    "endDate": "2026-11-30",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 185000,
+    "depositCents": 185000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 0
+  },
+  "pets": [],
+  "specialConditions": {
+    "title": "Ground-floor patio",
+    "text": "Unit 101 includes patio P-101. Keep the access path clear; no permanent fixtures, grills or open flames. No separate patio charge."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ]
+}

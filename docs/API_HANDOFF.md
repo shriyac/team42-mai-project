@@ -75,3 +75,7 @@ Run `npm test` (PowerShell users may need `npm.cmd test`) for adapter/schema com
 Verify both tenant and landlord flows in API mode, especially cross-tenant/organization isolation, session expiry, CSRF, NC property registration, upload state mismatch, concurrent versions, effective-date boundaries, cancellation, blocked legal guidance, and exact answer-review hashes. Pending ingestion or review must never revive an expired predecessor.
 
 Refresh status through `GET /workspace`. Job polling, retries, PDF download endpoints, streaming, pagination, and separate law-cache/review endpoints are not specified yet; coordinate any additions before changing the frontend contract.
+
+## Tenant lease ingestion fixtures
+
+See [synthetic-leases/README.md](synthetic-leases/README.md) and `synthetic-leases/manifest.json` for ten tenant-scoped lease packets, one per existing mock lease. PDFs contain native text; matching JSON files are expected extraction answers. Keep those answer keys out of retrieval evaluation. This contract does not yet specify a lease-upload endpoint: use an internal ingestion job, not the organization policy-upload route. The files are included in backend handoff archives and can be packaged separately with `python scripts/package-synthetic-leases.py`.

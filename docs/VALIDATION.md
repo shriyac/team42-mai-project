@@ -59,3 +59,5 @@ Ask Laga uses a viewport-sized desktop chat panel with an internally scrolling c
 See `replit.md` for publishing settings, environment timing, real-backend options and post-publish verification. The frontend demo/API Explorer is deployable; tenant production auth/storage/ingestion/legal review still require the actual backend.
 
 - State-verification flag: defaults off for both roles; regression tests exercise enabled and disabled gateway behavior, ready-document gating, state/date boundaries and backend refusals. Browser checks assert tenant review cards and landlord review controls are hidden by default.
+
+- Synthetic lease corpus: all ten PDFs have twelve pages, native text operators, tagged structure, verified hashes and no browser-detected layout overflow. Fixture consistency checks cover identifiers, rents, deposits, dates, source-clause page locations, household arithmetic, pet charges and nonfunctional contact/banking details. Total frontend checks: 36 passing. Representative household page visually reviewed.

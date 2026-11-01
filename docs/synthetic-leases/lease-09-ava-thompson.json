@@ -1,0 +1,151 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.0.0",
+  "documentId": "lease-document-9",
+  "leaseId": "lease-9",
+  "tenantId": "tenant-9",
+  "propertyId": "property-3",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Ava Thompson",
+    "email": "ava@example.test",
+    "phone": "202-555-0110",
+    "age": 33,
+    "ageAsOf": "2026-06-24",
+    "occupation": "Account coordinator",
+    "grossMonthlyIncomeCents": 800000,
+    "smokingHabits": "Smokes cigarettes outdoors only"
+  },
+  "property": {
+    "name": "Cedar Court",
+    "address": "810 Cedar Avenue",
+    "city": "Raleigh, NC 27604",
+    "state": "NC",
+    "unit": "2"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Ava Thompson",
+        "age": 33,
+        "relationship": "Named tenant"
+      },
+      {
+        "name": "Drew Thompson",
+        "age": 34,
+        "relationship": "Adult household member"
+      },
+      {
+        "name": "Emery Thompson",
+        "age": 5,
+        "relationship": "Child"
+      }
+    ],
+    "totalMembers": 3,
+    "children": 1,
+    "adults": 2,
+    "ageAsOf": "2026-06-24"
+  },
+  "emergencyContact": {
+    "name": "Robin Thompson",
+    "relationship": "Sibling",
+    "phone": "202-555-0160"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Ava Thompson",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0009",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST09",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2026-06-24",
+    "startDate": "2026-07-01",
+    "endDate": "2027-06-30",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 210000,
+    "depositCents": 210000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 25000
+  },
+  "pets": [
+    {
+      "name": "Scout",
+      "species": "Dog",
+      "breed": "Spaniel mix",
+      "weightPounds": 32,
+      "approved": true,
+      "approvalDate": "2026-06-24",
+      "oneTimeFeeCents": 25000
+    }
+  ],
+  "specialConditions": {
+    "title": "Laundry access",
+    "text": "Unit 2 receives laundry access token C-2. Follow posted machine instructions and remove belongings promptly. Machine charges, if any, are outside this sample lease; no numeric charge is specified."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ]
+}
