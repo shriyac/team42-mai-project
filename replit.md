@@ -1,126 +1,58 @@
-# Replit deployment runbook
+# Replit setup and publishing
 
-Laga currently deploys as a **frontend demo plus API Explorer**, not a completed tenant-service backend. Use the repository root as the Replit project root. No publishing has been performed by this review.
+The repository is configured for the API-backed UI: tenant/landlord login, automatic fictional-data bootstrap, and same-origin `/api/v1` routing. Import the complete Laga project root, including `src/`, `contracts/`, `docs/`, `frontend/`, scripts and lockfiles. Do not import local SQLite data, credentials, `.venv`, or `node_modules`.
 
-## What is configured
+## Preview
 
-- Node.js 22 through `.replit`; the imported Python module is retained. No Python or browser installation is needed to build or serve the frontend.
-- Development Run workflow: `npm run dev -- --port 5000`, bound to `0.0.0.0:5000`. Select Run and open Preview; the API Explorer is at `/api-docs/`. Local `npm run dev` still defaults to port 5174.
-- Autoscale publishing target: `cloudrun`.
-- Publishing build: `npm ci --include=dev && npm run build`.
-- Publishing run: `node scripts/serve.mjs` (a long-running production server, not Vite).
-- One public port: internal `5000` mapped to external `80`; `PORT=5000` is configured in Replit.
-- The production server respects `PORT`, binds to `0.0.0.0`, validates its build output before opening the port, and handles shutdown signals.
-- `/healthz` reports only frontend-server readiness. It is not a check of the backend, legal reviewer, database or government sources.
+The Run button installs Node and Python API dependencies, then runs `npm run dev:local`. It starts Vite on public port 5000 and Python privately on loopback port 8001. Bootstrap creates 11 users, 10 leases and their PDFs, three properties, nine policy PDFs and four requests. No manual provisioning is needed.
 
-## 1. Import the correct files
+Choose Tenant login or Landlord login and enter an account email and the password in `data/backend-bootstrap-login.json`. The optional `LAGA_BOOTSTRAP_PASSWORD` secret can supply the initial password instead; it must contain at least 24 characters and at most 1024 UTF-8 bytes. The same initial password applies to all fictional accounts. Existing accounts and passwords are preserved on restart.
 
-Import the repository root, or upload/extract `laga-replit-source-v0.1.0.zip` into the project root. Do not import only the `frontend/` directory. The build also imports `contracts/` and documentation assets outside that directory.
+## Publishing
 
-Required items include `.replit`, `package.json`, `package-lock.json`, `vite.config.js`, `frontend/`, `contracts/`, `scripts/serve.mjs` and the documentation PDF/connection guide. The source bundle includes the full relevant source and tests. It excludes local credentials, `.git/`, `node_modules/`, `dist/`, browser profiles, uploaded files and generated ZIP archives.
+The `.replit` build installs `.[api]` Python dependencies and builds the UI in API mode. Publishing runs `node scripts/start-app.mjs`, which starts Python privately, waits for its readiness, then serves the built frontend and proxies `/api` over the single public port. API Explorer remains available at `/api-docs/`. Production cookies retain Secure and HttpOnly; plain localhost development uses the HTTP cookie option, while Replit HTTPS Preview also uses Secure cookies.
 
-If importing through Git, commit/push the intended source first: untracked local files are not included by Git import. This workspace's review did not create a commit or push.
+Before publishing, configure deployment Secrets:
 
-The pre-generated PDF at `docs/Laga-Backend-Integration-Guide-v1.1.0.pdf` is a build input for the API Explorer's download link. Keep it in the import. **Do not run the PDF renderer or `npm run api:kit` as a Replit deployment build command**; those are local document/packaging workflows and have additional tooling requirements.
+| Variable | Purpose |
+| --- | --- |
+| `LAGA_BOOTSTRAP_PASSWORD` | Choose the initial fictional-account password for a fresh deployment, since its generated credential file is separate from Preview. Never put it in a `VITE_*` variable. |
+| `LAGA_ALLOWED_ORIGINS` | Exact HTTPS published origin, plus any custom domains, comma-separated. Recommended explicit setting. |
+| `PORT` | Public listener; configured as 5000. |
+| `VITE_LAGA_MODE` | Build-time setting: `api`, configured in `.replit`. |
+| `VITE_LAGA_API_BASE` | Build-time setting: `/api/v1`, configured in `.replit`. |
 
-## 2. Verify development Preview
+When origins are not explicitly set, the backend derives them from `REPLIT_DEV_DOMAIN` and comma-separated `REPLIT_DOMAINS`, plus local development origins. Unknown origins remain rejected. Rebuild after changing frontend variables. Changing the bootstrap secret does not reset an existing database password.
 
-In Replit's Shell, from the project root:
+### Storage scope
+
+The current `cloudrun` configuration is suitable for disposable fictional-data demonstrations. Every fresh filesystem bootstraps its own SQLite database. Replit advises against relying on writes to a published app filesystem: changes, sessions and generated credentials can disappear or differ across instances. Do not use this configuration for durable tenant records. Durable/shared database and document storage must be integrated before that use; selecting a Reserved VM alone is not a persistence guarantee. See [Replit publishing documentation](https://docs.replit.com/learn/projects-and-artifacts/replit-deployments).
+
+Preview and published deployments are separate installations. Preview's generated password is not automatically the published password. A deployment bootstrap secret makes the published initial password known without logging it. No credentials are served as public assets.
+
+## Checks
 
 ```sh
 npm ci --include=dev
+python -m pip install ".[api,test]"
 npm test
 npm run check:deploy
+python -m unittest discover -s tests
+python scripts/package-replit.py
 ```
 
-Then select Run and open Preview. The commands must finish successfully before publishing. `--include=dev` is intentional: Vite and the explorer's schema compiler are build dependencies even if `NODE_ENV=production` is set. The lockfile includes the platform-specific Linux build packages; do not copy Windows `node_modules` into Replit.
+`check:deploy` checks build assets and the standalone static server. `tests/test_replit.py` separately verifies the production launcher, first-run bootstrap, published-origin login, secure cookies, workspace access and logout through the production proxy. Proxy regressions cover request bytes, CSRF, cookies, API Explorer routing and upstream failure. The launcher also offers `node scripts/start-app.mjs --check` for a temporary startup check; use an isolated database for this check.
 
-`npm run check:deploy` rebuilds and starts a short-lived local smoke-test server. It checks built app/docs entries, all emitted assets, the PDF, health response, API errors and the Replit config. It does not contact or certify a real backend.
+After publishing, check `/`, `/api-docs/`, `/healthz`, and `/api/v1/auth/session`; then sign in, reload, open the workspace and sign out for both roles. `/healthz` covers the frontend listener; it does not certify ingestion, legal review or source availability. Policy ingestion and reviewed chat responses retain their existing backend implementation limits.
 
-## 3. Publish the frontend demo
+## Source bundle
 
-In Publishing, use **Autoscale** with these values (also recorded in `.replit`):
+`python scripts/package-replit.py` produces `laga-replit-source-v0.1.0.zip`, excluding runtime accounts, passwords, uploads and dependencies. Extract it into the Replit project root. If using Git import instead, newly created local source files must be committed/pushed first. This review has not published or pushed the application.
 
-| Setting | Value |
-| --- | --- |
-| Build | `npm ci --include=dev && npm run build` |
-| Run | `node scripts/serve.mjs` |
-| Internal port | `5000` |
-| External port | `80` |
-| `PORT` | `5000` |
+## Three-round readiness review (November 1, 2026)
 
-Keep the configured internal port and `PORT` aligned. The server accepts a different valid runtime port, but when explicit `.replit` port mappings are used, the mapping must match the actual listener. Do not expose extra test-backend/debugger ports in the deployment.
+1. Configuration/build/package: parsed Replit TOML, checked module/port/API-mode settings, built the production UI, ran frontend/deployment regressions, and rebuilt the source-only archive.
+2. Preview: started a fresh SQLite installation from an unrelated launch directory with a simulated Replit HTTPS domain. Verified API-mode Vite, same-origin API routing, bootstrap login, Secure cookies, workspace access, logout and clean launcher completion. Relocation/origin tests passed.
+3. Production and failures: verified both roles through the production proxy, tenant scope, session restoration, missing-CSRF and foreign-origin rejection, logout/replay protection, invalid/colliding ports, missing Python, missing build output and an occupied public port. Existing proxy tests cover multipart bytes, upstream failure and forwarded-IP spoof protection.
 
-Default configuration is mock mode. There are ten fictional residents and a landlord; state is kept in browser memory and resets on reload. Files are not uploaded/parsed, and legal guidance remains withheld while review is unavailable. The mock server needs no model keys, database or external font/image service.
-
-The production process must serve quickly; it reads the completed build and does not run ingestion, fetch laws, generate documents or start workers at startup.
-
-## 4. Set environment values deliberately
-
-| Variable | When it is used | Default / meaning |
-| --- | --- | --- |
-| `PORT` | Server runtime | `5000` in Replit, otherwise `5174`; integer 1-65535 |
-| `VITE_LAGA_MODE` | Frontend build / Vite dev | `mock`; set `api` only after backend acceptance |
-| `VITE_LAGA_API_BASE` | Frontend build / Vite dev | `/api/v1`; full HTTPS API URL for direct remote access |
-| `LAGA_API_PROXY` | Vite development server only | Upstream origin, default `http://127.0.0.1:8001` |
-| `LAGA_CSP` | Production response header, optional | Custom CSP only if deliberately configured/tested |
-
-Review the **production** environment/secrets in Publishing; do not assume development workspace values are present. `VITE_*` values become public browser JavaScript even if entered in a Secrets UI. Keep service credentials in the backend environment only. Changing a `VITE_*` setting requires rebuilding and republishing; changing only runtime values after a build will not rewrite the frontend.
-
-The default server adds `nosniff`, a referrer policy, non-cacheable HTML and immutable caching for build assets. If setting a custom CSP, test both the app and API Explorer: the explorer compiles JSON schemas at runtime, so a policy that prohibits all dynamic compilation needs precompiled validators rather than an untested header copied from another app.
-
-## 5. Connect a real backend later
-
-The included production server **does not implement or proxy `/api`**. The development proxy is not included in the production build.
-
-**Direct remote API:** set these in the publishing build environment, rebuild and publish:
-
-```dotenv
-VITE_LAGA_MODE=api
-VITE_LAGA_API_BASE=https://your-api.example.com/api/v1
-```
-
-The backend must allow the actual published frontend origin (and any test/Preview origins you intend to support), credentialed CORS, the CSRF header and compatible cookies. HTTPS is required for production; verify browser cookie behavior, not just curl responses. Configure the explorer's server separately when testing it.
-
-**Same-origin `/api/v1`:** keep `VITE_LAGA_API_BASE=/api/v1`, but route `/api` to a real service before requests reach this static server, or have the backend serve the built UI itself. A backend on another physical server can still be reverse-proxied through the application origin. Do not merely set `LAGA_API_PROXY` in Publishing and expect the Node production server to forward API traffic.
-
-See `docs/BACKEND_CONNECTION.md` and the PDF handbook for topology examples, CORS/cookie/CSRF requirements and acceptance checks. The API Explorer is at `/api-docs/`; the Developer Tools entry appears on login/home screens as requested. Its presence is not an authorization mechanism.
-
-For real data, the backend must provide authentication, ownership checks, private document storage, ingestion, review and audit. Use durable database/object storage for tenant files and shared state. Published app-local files are not durable application storage; the reference SQLite law cache needs an appropriate persistent/shared replacement or deployment strategy before production backend use.
-
-## 6. Post-publish checks
-
-On the published origin, verify:
-
-1. `/` loads the UI and mock profiles work (or real login works if intentionally configured).
-2. `/api-docs/` and `/api-docs` load the explorer; they are not captured by API routing.
-3. Developer Tools on login/home reveals a stable API Docs link, and other pages stay free of that control.
-4. The PDF handbook downloads from the explorer's connection guide; JS, CSS and fonts return 200.
-5. `/healthz` returns HTTP 200 with `service: "laga-frontend"`.
-6. In the standalone frontend configuration, `/api/v1/auth/session` and API mutations return JSON 503 `BACKEND_NOT_CONNECTED`, rather than HTML or demo API data. This is expected until routing/backend integration is supplied.
-7. Ask Laga's composer is visible at supported desktop/mobile sizes and the policy library has no horizontal overflow.
-
-For API mode, additionally run both roles against the actual published backend, including session refresh/logout, tenant isolation, upload concurrency, NC state inheritance and legal-review failure cases.
-
-## Recovery checks
-
-| Symptom | Action |
-| --- | --- |
-| Vite missing during build | Use the exact `npm ci --include=dev` command; do not build after an omit-dev install |
-| Missing PDF or outside-root import | Import the full source bundle/root, including docs and contracts |
-| Build missing or incomplete at startup | Confirm the build ran and includes `dist/index.html` plus `dist/api-docs/index.html` |
-| Preview works, deployment fails | Review publishing build/run settings, production environment and port mapping |
-| Failed port promotion | Listener must bind `0.0.0.0`; explicit `localPort` must match `PORT`, external port 80 |
-| `/api` is 503 or login cannot work | Supply real backend routing or a full remote API base; static server is frontend-only |
-| Cross-origin login loses its session | Check CORS origin, credentials, cookies, SameSite/Secure and CSRF/origin checks |
-| Old frontend mode persists | Rebuild/republish after changing `VITE_*`; those settings are baked into assets |
-
-## Platform references
-
-Checked against Replit documentation on October 31, 2026:
-
-- [Project configuration](https://docs.replit.com/features/project-setup/configuration)
-- [Deployment types](https://docs.replit.com/features/publishing/deployment-types)
-- [Publishing troubleshooting: ports, production settings and persistence](https://docs.replit.com/build/troubleshooting)
-
-State-law verification is disabled by default for both landlord and tenant experiences. Set `VITE_LAGA_STATE_VERIFICATION=true` in the build environment to enable review cards, policy review status and review-based answer/policy gating. Restart development or rebuild/redeploy production after changing it. When off, document processing, effective dates, state tagging and authorization remain enforced; answers carry no claim of legal verification. This public frontend flag does not disable a backend?s independent legal checks or start/stop its law-fetching jobs. Configure those separately in the backend; no flag is sent as a client-controlled permission bypass. The API contract and review metadata remain unchanged.
+Fixed Preview Secure cookies, strict port parsing, equal public/API port rejection, and nonzero failure status when a child exits unexpectedly. These checks simulate Replit runtime settings locally; the application has not been published or tested on a live Replit deployment. Filesystem durability remains the storage limitation described above.

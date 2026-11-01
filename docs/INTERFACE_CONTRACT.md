@@ -78,3 +78,7 @@ Implement all routes and response envelopes; run generated OpenAPI validation pl
 ### Review identity and freshness
 
 A passed answer review includes `kind: answer`, `scopeKey` (`lease:<id>` or `portfolio:all`), `state`, exact `asOf`, UTC `checkedAt` / `expiresAt`, 64-character SHA-256 `lawRevision` and `contentHash`, and official `citations` with statute sections. The frontend verifies the hash against the final answer text. The server must validate calculations together with that answer and authorize scope independently. Policy reviews use `kind: policy`, `scopeKey: property:<id>` or `state:NC`, and a hash matching `PolicyVersion.contentHash`. Missing, expired or mismatched metadata blocks use. A review for a different reference date cannot establish applicable law for the requested date. The Python review boundary now requires explicit `scope_key`.
+
+## Included reference API implementation
+
+The source checkout now includes the SQLite service described in [BACKEND_IMPLEMENTATION.md](BACKEND_IMPLEMENTATION.md). Local account authentication/session handling and structured persistence are implemented. Assistant retrieval/generation, document extraction/indexing, external review and production operations remain backend work. This implementation uses America/New_York as the default NC business timezone; the mock preview retains its existing America/Chicago fixture timezone. Public route/DTO signatures remain unchanged.

@@ -1,12 +1,14 @@
 modules = ["python-3.11", "web", "nodejs-22"]
-run = "npm run dev -- --port 5000"
+run = "npm ci --include=dev && python -m pip install \".[api]\" && npm run dev:local"
 
 [env]
 PORT = "5000"
+VITE_LAGA_MODE = "api"
+VITE_LAGA_API_BASE = "/api/v1"
 
 [deployment]
-build = ["sh", "-c", "npm ci --include=dev && npm run build"]
-run = ["node", "scripts/serve.mjs"]
+build = ["sh", "-c", "npm ci --include=dev && python -m pip install \".[api]\" && npm run build"]
+run = ["node", "scripts/start-app.mjs"]
 deploymentTarget = "cloudrun"
 
 [[ports]]
@@ -34,7 +36,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm run dev -- --port 5000"
+args = "npm ci --include=dev && python -m pip install \".[api]\" && npm run dev:local"
 waitForPort = 5000
 
 [workflows.workflow.metadata]

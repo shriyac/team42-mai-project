@@ -14,7 +14,8 @@ export function deploymentPort(value=process.env.PORT||'5174'){
  return port;
 }
 
-export async function createStaticServer({root=defaultRoot,csp=process.env.LAGA_CSP}={}){
+export async function createStaticServer({root=defaultRoot,csp=process.env.LAGA_CSP,apiOrigin}={}){
+ if(apiOrigin&&!/^http:\/\/127\.0\.0\.1:\d+$/.test(apiOrigin))throw new Error('API upstream must be a loopback HTTP origin.');
  if(csp)http.validateHeaderValue('Content-Security-Policy',csp);
  let publicRoot;
  try{
@@ -32,6 +33,14 @@ export async function createStaticServer({root=defaultRoot,csp=process.env.LAGA_
    const url=new URL(req.url,'http://localhost');
    const decoded=decodeURIComponent(url.pathname);
    if(decoded.includes('\0'))return send(400,'Invalid request');
+   if(apiOrigin&&(decoded==='/api'||decoded.startsWith('/api/'))){
+    const upstream=http.request(apiOrigin+req.url,{method:req.method,headers:{...req.headers,host:new URL(apiOrigin).host,'x-forwarded-for':req.socket.remoteAddress,'x-forwarded-proto':'https'}},response=>{
+     res.writeHead(response.statusCode,{...common,...response.headers});response.pipe(res);
+    });
+    upstream.setTimeout(30000,()=>upstream.destroy());
+    upstream.on('error',()=>{if(res.headersSent)res.destroy();else send(503,JSON.stringify({error:{code:'BACKEND_UNAVAILABLE',message:'The backend is unavailable. Please try again.',requestId:randomUUID(),fields:{}}}),'application/json')});
+    req.on('aborted',()=>upstream.destroy());req.pipe(upstream);return;
+   }
    if(decoded==='/api'||decoded.startsWith('/api/'))return send(503,JSON.stringify({error:{code:'BACKEND_NOT_CONNECTED',message:'This server serves the frontend only. Configure a backend API origin or route /api to your backend.',requestId:randomUUID(),fields:{}}}),'application/json');
    if(!['GET','HEAD'].includes(req.method))return send(405,'Method not allowed','text/plain; charset=utf-8',{Allow:'GET, HEAD'});
    if(decoded==='/healthz')return send(200,JSON.stringify({status:'ok',service:'laga-frontend'}),'application/json');

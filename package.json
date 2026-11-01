@@ -12,7 +12,8 @@
     "api:kit": "npm run build && python scripts/package-api-kit.py",
     "check:deploy": "npm run build && node scripts/check-deployment.mjs",
     "test:deployment": "node --test frontend/tests/deployment.test.js",
-    "replit:package": "python scripts/package-replit.py"
+    "replit:package": "python scripts/package-replit.py",
+    "dev:local": "node scripts/dev-local.mjs"
   },
   "dependencies": {
     "@fontsource-variable/manrope": "^5.3.0",

@@ -7,7 +7,10 @@ import zipfile
 
 root = Path(__file__).resolve().parents[1]
 config = tomllib.loads((root / ".replit").read_text(encoding="utf-8"))
-assert config["modules"] == ["nodejs-22"]
+assert "nodejs-22" in config["modules"]
+assert "python-3.11" in config["modules"]
+assert config["env"]["VITE_LAGA_MODE"] == "api"
+assert config["deployment"]["run"] == ["node", "scripts/start-app.mjs"]
 assert config["env"]["PORT"] == str(config["ports"][0]["localPort"])
 assert config["ports"][0]["externalPort"] == 80
 version = json.loads((root / "package.json").read_text(encoding="utf-8"))["version"]
@@ -17,7 +20,7 @@ for folder in ["frontend", "contracts", "docs", "scripts", "src", "tests"]:
     for file in (root / folder).rglob("*"):
         relative = file.relative_to(root)
         if (not file.is_file() or file.is_symlink()
-                or any(part in {"node_modules", "__pycache__"} for part in relative.parts)
+                or any(part in {"node_modules", "__pycache__", "laga.egg-info"} for part in relative.parts)
                 or file.suffix in {".pyc", ".pyo", ".zip"}
                 or (file.name.lower().startswith(".env") and file.name != ".env.example")):
             continue

@@ -10,10 +10,14 @@ if not (root / "dist/api-docs/index.html").is_file():
     raise SystemExit("Run npm run build before packaging the API kit.")
 
 reference_files = [
-    "contracts/openapi.json", "contracts/examples.json", "contracts/integration-examples.json",
+    "contracts/bootstrap.json", "contracts/openapi.json", "contracts/examples.json", "contracts/integration-examples.json",
     "docs/API_HANDOFF.md", "docs/BACKEND_CONNECTION.md", "docs/INTERFACE_CONTRACT.md", "docs/TEAM_BOUNDARIES.md",
     "frontend/src/services/httpGateway.js", "frontend/src/services/errors.js",
     "frontend/src/lib/apiBase.js", "frontend/src/lib/compliance.js", "frontend/src/lib/features.js", "frontend/.env.example",
+    "pyproject.toml", "src/laga/api.py", "src/laga/backend_api.py", "src/laga/bootstrap.py", "src/laga/paths.py", "tests/test_api.py", "tests/test_api_limits.py", "tests/test_bootstrap.py", "tests/test_portability.py",
+    "scripts/check-portability.py", "scripts/export-bootstrap-fixtures.mjs", "scripts/export-contract-examples.mjs",
+    "frontend/src/data/fixtures.js", "frontend/src/services/mockGateway.js", "frontend/src/lib/format.js", "frontend/src/lib/policies.js",
+    "docs/PORTABILITY.md", "docs/BOOTSTRAP.md", "docs/BACKEND_METHODS.md", "docs/BACKEND_IMPLEMENTATION.md", "docs/BACKEND_TODO.md", "docs/BACKEND_TEST_REVIEW.md", "docs/backend-user.example.json",
     "src/laga/__init__.py", "src/laga/compliance.py", "tests/test_compliance.py",
     f"docs/Laga-Backend-Integration-Guide-v{version}.pdf",
     "docs/integration-guide-examples.json", "docs/integration-guide-manifest.json",
@@ -52,7 +56,8 @@ Read docs/BACKEND_CONNECTION.md for testing and same-origin/cross-origin setup.
 Import contracts/openapi.json into other OpenAPI 3.1-compatible tools if desired.
 
 The archive contains a built explorer/application preview and reference code,
-not an implemented backend. The application preview remains in mock mode.
+plus the SQLite API scaffold described in docs/BACKEND_IMPLEMENTATION.md.
+The application preview remains in mock mode.
 Explorer target changes do not alter the application. To connect the actual
 application, configure and rebuild the original repository as the guide explains.
 The static server does not proxy /api; use a full backend URL or a reverse proxy.
@@ -63,7 +68,8 @@ Restrict the developer tool's hosting audience according to your environment.
 
 Start with docs/API_HANDOFF.md and docs/BACKEND_CONNECTION.md.
 Import contracts/openapi.json into an OpenAPI 3.1-compatible tool.
-This archive contains specs, fictional examples and reference code, not a backend.
+This archive contains specs, fictional examples and a runnable SQLite API scaffold.
+See docs/BACKEND_IMPLEMENTATION.md for Python setup and docs/BACKEND_TODO.md for pending integrations.
 The companion api-testing-kit archive includes a built interactive API Explorer.
 Run frontend compatibility checks from the original application repository.
 """

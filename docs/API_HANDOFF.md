@@ -79,3 +79,7 @@ Refresh status through `GET /workspace`. Job polling, retries, PDF download endp
 ## Tenant lease ingestion fixtures
 
 See [synthetic-leases/README.md](synthetic-leases/README.md) and `synthetic-leases/manifest.json` for ten tenant-scoped lease packets, one per existing mock lease. PDFs contain native text; matching JSON files are expected extraction answers. Keep those answer keys out of retrieval evaluation. This contract does not yet specify a lease-upload endpoint: use an internal ingestion job, not the organization policy-upload route. The files are included in backend handoff archives and can be packaged separately with `python scripts/package-synthetic-leases.py`.
+
+## Runnable SQLite implementation
+
+Review `src/laga/backend_api.py` using [BACKEND_METHODS.md](BACKEND_METHODS.md). [BACKEND_IMPLEMENTATION.md](BACKEND_IMPLEMENTATION.md) explains startup and provisioning; [BACKEND_TODO.md](BACKEND_TODO.md) maps all UI routes to implemented methods and remaining service integrations. The canonical OpenAPI file still controls signatures.

@@ -1,0 +1,1005 @@
+{
+  "version": 1,
+  "synthetic": true,
+  "organizationId": "org-alder-demo",
+  "users": [
+    {
+      "id": "landlord-1",
+      "name": "Alex Morgan",
+      "email": "alex@alderliving.example",
+      "role": "landlord",
+      "organization": "Alder Living",
+      "permissions": [
+        "portfolio:read",
+        "leases:read",
+        "requests:write",
+        "policies:write"
+      ]
+    },
+    {
+      "id": "tenant-1",
+      "name": "Maya Chen",
+      "email": "maya@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-1",
+      "unit": "304",
+      "leaseId": "lease-1"
+    },
+    {
+      "id": "tenant-2",
+      "name": "James Wilson",
+      "email": "james@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-1",
+      "unit": "101",
+      "leaseId": "lease-2"
+    },
+    {
+      "id": "tenant-3",
+      "name": "Sofia Patel",
+      "email": "sofia@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-1",
+      "unit": "202",
+      "leaseId": "lease-3"
+    },
+    {
+      "id": "tenant-4",
+      "name": "Oliver Brooks",
+      "email": "oliver@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-1",
+      "unit": "305",
+      "leaseId": "lease-4"
+    },
+    {
+      "id": "tenant-5",
+      "name": "Amara Okafor",
+      "email": "amara@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-2",
+      "unit": "2A",
+      "leaseId": "lease-5"
+    },
+    {
+      "id": "tenant-6",
+      "name": "Ethan Rivera",
+      "email": "ethan@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-2",
+      "unit": "3B",
+      "leaseId": "lease-6"
+    },
+    {
+      "id": "tenant-7",
+      "name": "Isabella Rossi",
+      "email": "isabella@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-2",
+      "unit": "4A",
+      "leaseId": "lease-7"
+    },
+    {
+      "id": "tenant-8",
+      "name": "Noah Kim",
+      "email": "noah@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-3",
+      "unit": "1",
+      "leaseId": "lease-8"
+    },
+    {
+      "id": "tenant-9",
+      "name": "Ava Thompson",
+      "email": "ava@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-3",
+      "unit": "2",
+      "leaseId": "lease-9"
+    },
+    {
+      "id": "tenant-10",
+      "name": "Lucas Bennett",
+      "email": "lucas@example.test",
+      "role": "tenant",
+      "permissions": [
+        "lease:read",
+        "requests:create"
+      ],
+      "propertyId": "property-3",
+      "unit": "3",
+      "leaseId": "lease-10"
+    }
+  ],
+  "properties": [
+    {
+      "id": "property-1",
+      "name": "Willow House",
+      "address": "128 Willow Lane",
+      "city": "Raleigh, NC 27601",
+      "state": "NC",
+      "units": 5,
+      "style": "willow",
+      "description": "Quiet corners. Connected living.",
+      "amenities": [
+        "Pet friendly",
+        "Bike storage",
+        "Courtyard"
+      ]
+    },
+    {
+      "id": "property-2",
+      "name": "The Juniper",
+      "address": "42 Juniper Street",
+      "city": "Raleigh, NC 27602",
+      "state": "NC",
+      "units": 4,
+      "style": "juniper",
+      "description": "Room to settle into your own rhythm.",
+      "amenities": [
+        "Roof terrace",
+        "Secure entry",
+        "Parking"
+      ]
+    },
+    {
+      "id": "property-3",
+      "name": "Cedar Court",
+      "address": "810 Cedar Avenue",
+      "city": "Raleigh, NC 27604",
+      "state": "NC",
+      "units": 3,
+      "style": "cedar",
+      "description": "A little more space to call home.",
+      "amenities": [
+        "Garden",
+        "Laundry",
+        "Pet friendly"
+      ]
+    }
+  ],
+  "leases": [
+    {
+      "lease": {
+        "id": "lease-1",
+        "tenantId": "tenant-1",
+        "tenantName": "Maya Chen",
+        "propertyId": "property-1",
+        "unit": "304",
+        "rent": 220000,
+        "deposit": 220000,
+        "startDate": "2026-02-01",
+        "endDate": "2027-01-31",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-1"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-1-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2200.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-1"
+        },
+        {
+          "id": "lease-1-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2200.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-1"
+        },
+        {
+          "id": "lease-1-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-1"
+        },
+        {
+          "id": "lease-1-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-1"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-2",
+        "tenantId": "tenant-2",
+        "tenantName": "James Wilson",
+        "propertyId": "property-1",
+        "unit": "101",
+        "rent": 185000,
+        "deposit": 185000,
+        "startDate": "2025-12-01",
+        "endDate": "2026-11-30",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-2"
+        ],
+        "renewalStatus": "awaiting_response"
+      },
+      "clauses": [
+        {
+          "id": "lease-2-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $1850.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-2"
+        },
+        {
+          "id": "lease-2-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $1850.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-2"
+        },
+        {
+          "id": "lease-2-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-2"
+        },
+        {
+          "id": "lease-2-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-2"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-3",
+        "tenantId": "tenant-3",
+        "tenantName": "Sofia Patel",
+        "propertyId": "property-1",
+        "unit": "202",
+        "rent": 205000,
+        "deposit": 205000,
+        "startDate": "2026-01-01",
+        "endDate": "2026-12-31",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-3"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-3-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2050.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-3"
+        },
+        {
+          "id": "lease-3-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2050.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-3"
+        },
+        {
+          "id": "lease-3-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-3"
+        },
+        {
+          "id": "lease-3-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-3"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-4",
+        "tenantId": "tenant-4",
+        "tenantName": "Oliver Brooks",
+        "propertyId": "property-1",
+        "unit": "305",
+        "rent": 240000,
+        "deposit": 240000,
+        "startDate": "2026-04-01",
+        "endDate": "2027-03-31",
+        "paymentStatus": "due",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-4"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-4-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2400.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-4"
+        },
+        {
+          "id": "lease-4-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2400.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-4"
+        },
+        {
+          "id": "lease-4-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-4"
+        },
+        {
+          "id": "lease-4-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-4"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-5",
+        "tenantId": "tenant-5",
+        "tenantName": "Amara Okafor",
+        "propertyId": "property-2",
+        "unit": "2A",
+        "rent": 265000,
+        "deposit": 265000,
+        "startDate": "2026-03-01",
+        "endDate": "2027-02-28",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-5"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-5-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2650.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-5"
+        },
+        {
+          "id": "lease-5-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2650.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-5"
+        },
+        {
+          "id": "lease-5-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-5"
+        },
+        {
+          "id": "lease-5-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-5"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-6",
+        "tenantId": "tenant-6",
+        "tenantName": "Ethan Rivera",
+        "propertyId": "property-2",
+        "unit": "3B",
+        "rent": 225000,
+        "deposit": 225000,
+        "startDate": "2026-06-01",
+        "endDate": "2027-05-31",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-6"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-6-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2250.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-6"
+        },
+        {
+          "id": "lease-6-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2250.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-6"
+        },
+        {
+          "id": "lease-6-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-6"
+        },
+        {
+          "id": "lease-6-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-6"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-7",
+        "tenantId": "tenant-7",
+        "tenantName": "Isabella Rossi",
+        "propertyId": "property-2",
+        "unit": "4A",
+        "rent": 250000,
+        "deposit": 250000,
+        "startDate": "2025-12-16",
+        "endDate": "2026-12-15",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-7"
+        ],
+        "renewalStatus": "not_started"
+      },
+      "clauses": [
+        {
+          "id": "lease-7-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2500.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-7"
+        },
+        {
+          "id": "lease-7-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2500.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-7"
+        },
+        {
+          "id": "lease-7-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-7"
+        },
+        {
+          "id": "lease-7-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-7"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-8",
+        "tenantId": "tenant-8",
+        "tenantName": "Noah Kim",
+        "propertyId": "property-3",
+        "unit": "1",
+        "rent": 195000,
+        "deposit": 195000,
+        "startDate": "2026-05-01",
+        "endDate": "2027-04-30",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-8"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-8-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $1950.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-8"
+        },
+        {
+          "id": "lease-8-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $1950.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-8"
+        },
+        {
+          "id": "lease-8-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-8"
+        },
+        {
+          "id": "lease-8-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-8"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-9",
+        "tenantId": "tenant-9",
+        "tenantName": "Ava Thompson",
+        "propertyId": "property-3",
+        "unit": "2",
+        "rent": 210000,
+        "deposit": 210000,
+        "startDate": "2026-07-01",
+        "endDate": "2027-06-30",
+        "paymentStatus": "due",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-9"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-9-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2100.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-9"
+        },
+        {
+          "id": "lease-9-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2100.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-9"
+        },
+        {
+          "id": "lease-9-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-9"
+        },
+        {
+          "id": "lease-9-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-9"
+        }
+      ]
+    },
+    {
+      "lease": {
+        "id": "lease-10",
+        "tenantId": "tenant-10",
+        "tenantName": "Lucas Bennett",
+        "propertyId": "property-3",
+        "unit": "3",
+        "rent": 230000,
+        "deposit": 230000,
+        "startDate": "2026-09-01",
+        "endDate": "2027-08-31",
+        "paymentStatus": "current",
+        "status": "active",
+        "currency": "USD",
+        "dueDay": 1,
+        "noticeDays": 60,
+        "documents": [
+          "lease-document-10"
+        ],
+        "renewalStatus": "not_due"
+      },
+      "clauses": [
+        {
+          "id": "lease-10-rent",
+          "title": "Rent and payment",
+          "section": "3.1",
+          "page": 3,
+          "quote": "Monthly rent is $2300.00, payable on the first day of each calendar month. A flat late fee of $50 applies if payment is received after the fifth day.",
+          "documentId": "lease-document-10"
+        },
+        {
+          "id": "lease-10-deposit",
+          "title": "Security deposit",
+          "section": "4.2",
+          "page": 4,
+          "quote": "The security deposit is $2300.00. Documented damage beyond ordinary wear may be deducted, subject to the terms of the agreement.",
+          "documentId": "lease-document-10"
+        },
+        {
+          "id": "lease-10-pets",
+          "title": "Pets and responsibilities",
+          "section": "8.1",
+          "page": 8,
+          "quote": "One pet weighing up to 50 pounds is permitted with prior written approval and a one-time $250 pet fee. The resident remains responsible for pet-related damage as described in section 4.2.",
+          "documentId": "lease-document-10"
+        },
+        {
+          "id": "lease-10-notice",
+          "title": "Renewal and notice",
+          "section": "12.1",
+          "page": 12,
+          "quote": "Residents must provide written notice at least 60 days before the lease end date if they intend to vacate. Renewal is subject to a new written agreement.",
+          "documentId": "lease-document-10"
+        }
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "id": "policy-tenant-v1",
+      "familyId": "family-tenant",
+      "title": "Tenant handbook",
+      "name": "Tenant handbook - v1.pdf",
+      "category": "tenant",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 1,
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": "2026-07-01",
+      "uploadedAt": "2025-12-15T10:00:00Z",
+      "size": 284000,
+      "pageCount": 10,
+      "uploadedBy": "Alex Morgan",
+      "description": "The original resident handbook.",
+      "excerpt": "Residents must keep shared corridors clear and submit non-emergency requests through the resident portal."
+    },
+    {
+      "id": "policy-tenant-v2",
+      "familyId": "family-tenant",
+      "title": "Tenant handbook",
+      "name": "Tenant handbook - v2.pdf",
+      "category": "tenant",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 2,
+      "effectiveFrom": "2026-07-01",
+      "effectiveTo": null,
+      "uploadedAt": "2026-06-15T10:00:00Z",
+      "size": 296000,
+      "pageCount": 12,
+      "uploadedBy": "Alex Morgan",
+      "description": "Your guide to a smooth rental experience.",
+      "excerpt": "Residents must keep shared corridors clear. Routine requests should be submitted through the resident portal. Emergency issues should be reported using the emergency contact in the maintenance guide."
+    },
+    {
+      "id": "policy-pets-v1",
+      "familyId": "family-pets",
+      "title": "Pet policy",
+      "name": "Pet policy - v1.pdf",
+      "category": "pets",
+      "propertyId": "property-1",
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 1,
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": "2026-10-15",
+      "uploadedAt": "2025-12-12T10:00:00Z",
+      "size": 165000,
+      "pageCount": 3,
+      "uploadedBy": "Alex Morgan",
+      "description": "Previous pet policy.",
+      "excerpt": "Pets require written approval."
+    },
+    {
+      "id": "policy-pets-v2",
+      "familyId": "family-pets",
+      "title": "Pet policy",
+      "name": "Pet policy - v2.pdf",
+      "category": "pets",
+      "propertyId": "property-1",
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 2,
+      "effectiveFrom": "2026-10-15",
+      "effectiveTo": null,
+      "uploadedAt": "2026-10-01T10:00:00Z",
+      "size": 186000,
+      "pageCount": 4,
+      "uploadedBy": "Alex Morgan",
+      "description": "Approvals, care and shared spaces.",
+      "excerpt": "One pet up to 50 pounds requires prior written approval. Residents must clean up pet waste immediately and keep pets leashed in shared areas."
+    },
+    {
+      "id": "policy-utilities-v1",
+      "familyId": "family-utilities",
+      "title": "Utilities usage",
+      "name": "Utilities usage - v1.pdf",
+      "category": "utilities",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 1,
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": "2026-11-15",
+      "uploadedAt": "2025-12-12T10:00:00Z",
+      "size": 176000,
+      "pageCount": 4,
+      "uploadedBy": "Alex Morgan",
+      "description": "Responsibility for services and sensible usage.",
+      "excerpt": "Residents arrange and pay for electricity and internet. Water is included in base rent. Please report leaks promptly."
+    },
+    {
+      "id": "policy-utilities-v2",
+      "familyId": "family-utilities",
+      "title": "Utilities usage",
+      "name": "Utilities usage - v2.pdf",
+      "category": "utilities",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 2,
+      "effectiveFrom": "2026-11-15",
+      "effectiveTo": null,
+      "uploadedAt": "2026-10-25T10:00:00Z",
+      "size": 192000,
+      "pageCount": 5,
+      "uploadedBy": "Alex Morgan",
+      "description": "Updated reporting process, effective November 15.",
+      "excerpt": "Residents arrange and pay for electricity and internet. Water remains included in base rent. Leaks should be reported through the portal as soon as noticed."
+    },
+    {
+      "id": "policy-waste-v1",
+      "familyId": "family-waste",
+      "title": "Waste and recycling",
+      "name": "Waste and recycling.pdf",
+      "category": "waste",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 1,
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "uploadedAt": "2025-12-12T10:00:00Z",
+      "size": 148000,
+      "pageCount": 3,
+      "uploadedBy": "Alex Morgan",
+      "description": "A cleaner community starts with small habits.",
+      "excerpt": "Place household waste in tied bags in the designated bins. Separate clean recyclables. Do not leave bulky items in the waste room; arrange a collection with management."
+    },
+    {
+      "id": "policy-community-v1",
+      "familyId": "family-community",
+      "title": "Community living",
+      "name": "Community living guidelines.pdf",
+      "category": "community",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 1,
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "uploadedAt": "2025-12-12T10:00:00Z",
+      "size": 248000,
+      "pageCount": 8,
+      "uploadedBy": "Alex Morgan",
+      "description": "Shared spaces, quiet hours and good neighbors.",
+      "excerpt": "Quiet hours are 10 p.m. to 8 a.m. Keep personal belongings out of common hallways and leave shared spaces ready for the next resident."
+    },
+    {
+      "id": "policy-maintenance-v1",
+      "familyId": "family-maintenance",
+      "title": "Maintenance and emergencies",
+      "name": "Maintenance and emergency guide.pdf",
+      "category": "maintenance",
+      "propertyId": null,
+      "state": "NC",
+      "compliance": {
+        "status": "pending"
+      },
+      "status": "ready",
+      "version": 1,
+      "effectiveFrom": "2026-01-01",
+      "effectiveTo": null,
+      "uploadedAt": "2025-12-12T10:00:00Z",
+      "size": 312000,
+      "pageCount": 6,
+      "uploadedBy": "Alex Morgan",
+      "description": "The right help, at the right time.",
+      "excerpt": "Submit routine maintenance requests through the resident portal. For an immediate threat to safety, contact emergency services first and then notify management."
+    }
+  ],
+  "requests": [
+    {
+      "id": "request-1",
+      "tenantId": "tenant-1",
+      "leaseId": "lease-1",
+      "category": "lease",
+      "subject": "Can I renew for another year?",
+      "message": "I would love to stay. Could you share the next steps for renewal?",
+      "status": "open",
+      "createdAt": "2026-10-28T14:00:00Z",
+      "reply": null
+    },
+    {
+      "id": "request-2",
+      "tenantId": "tenant-6",
+      "leaseId": "lease-6",
+      "category": "policy",
+      "subject": "Clarification on guest parking",
+      "message": "Is overnight guest parking available on weekends?",
+      "status": "open",
+      "createdAt": "2026-10-29T09:00:00Z",
+      "reply": null
+    },
+    {
+      "id": "request-3",
+      "tenantId": "tenant-9",
+      "leaseId": "lease-9",
+      "category": "rent",
+      "subject": "October payment confirmation",
+      "message": "Could you confirm that my bank transfer has arrived?",
+      "status": "open",
+      "createdAt": "2026-10-30T08:00:00Z",
+      "reply": null
+    },
+    {
+      "id": "request-4",
+      "tenantId": "tenant-1",
+      "leaseId": "lease-1",
+      "category": "policy",
+      "subject": "Where can I store my bicycle?",
+      "message": "Is there a designated bicycle area?",
+      "status": "answered",
+      "createdAt": "2026-10-23T11:00:00Z",
+      "reply": "Yes, the secure bike room is on the ground floor. Please keep hallways clear."
+    }
+  ]
+}

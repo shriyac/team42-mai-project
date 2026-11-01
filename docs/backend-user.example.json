@@ -1,0 +1,13 @@
+{
+  "id": "landlord-1",
+  "name": "Alex Morgan",
+  "email": "alex@alderliving.example",
+  "role": "landlord",
+  "organization": "Alder Living",
+  "permissions": [
+    "portfolio:read",
+    "leases:read",
+    "requests:write",
+    "policies:write"
+  ]
+}

@@ -2,6 +2,10 @@
 
 A standalone React / JavaScript interface for the Lease Agreement Guard Agent. This project is unrelated to Monarch and has its own repository and runtime.
 
+## Bootstrapped local application
+
+After installing dependencies (`npm ci` and Python `pip install -e ".[api,test]"` in `.venv`), run `npm run dev:local`. This starts the Python API, automatically creates the fictional users/leases/policy PDFs in local SQLite and connects Vite in API mode. Sign in as `alex@alderliving.example` using the generated password in `data/backend-bootstrap-login.json`. No manual account provisioning or document upload is required. Choose Tenant login or Landlord login, then enter the account email and generated password. The same generated password initially applies to all 11 fictional bootstrap accounts on that installation; no credentials are pre-filled in the UI. The frontend-only mock preview does not authenticate bootstrap accounts. See [automatic bootstrap](docs/BOOTSTRAP.md) for full setup and restart behavior.
+
 ## Run locally
 
 Requires Node.js 22 or later. From this directory:
@@ -11,7 +15,7 @@ npm ci
 npm run dev
 ```
 
-Open http://localhost:5174. Choose Tenant and any of the 10 fictional residents, or Landlord for Alex Morgan's three-property portfolio. No password is needed in mock mode. Demo changes survive profile switches but reset when the page reloads. All fonts and illustrations are served locally.
+For account login, use `npm run dev:local` after installing Python API dependencies as described above. Choose Tenant login or Landlord login and enter the bootstrapped credentials. Plain `npm run dev` defaults to the frontend mock adapter and cannot authenticate accounts. All fonts and illustrations are served locally.
 
 ```sh
 npm test
@@ -44,13 +48,13 @@ Switch to the Python API by copying frontend/.env.example to frontend/.env.local
 
 ## Replit
 
-The project includes a Node.js 22 Autoscale configuration and a production server that binds to `0.0.0.0`, respects `PORT` and serves both the app and API Explorer. The publishing build is `npm ci --include=dev && npm run build`; the run command is `node scripts/serve.mjs`. The configured internal port and `PORT` are both 5000, mapped to external port 80. The Replit Run workflow uses `npm run dev -- --port 5000`; local development still defaults to 5174.
+The Replit Run workflow installs Node/Python API dependencies and starts `npm run dev:local` on port 5000. Publishing builds the frontend in API mode and runs `node scripts/start-app.mjs`, serving the UI and Python API through one public port. The Python listener stays private.
 
-Use [the Replit deployment runbook](replit.md) for import, build/publishing settings, frontend-only versus real API deployment, environment variables and smoke checks. Run `npm run check:deploy` before publishing. The generated `laga-replit-source-v0.1.0.zip` is a clean source import without local dependencies, credentials, uploads or browser data. This prepares the frontend demo/API Explorer; it does not deploy or implement the tenant backend.
+Use [the Replit runbook](replit.md) for initial-password deployment secrets, allowed origins, source import and validation. The configured Autoscale deployment is for disposable fictional-data demonstrations: SQLite files on a published filesystem are not durable/shared storage. A persistent deployment requires durable storage integration. The source bundle excludes local databases and credentials. No live publishing was performed.
 
 ## Current limits
 
-This is a UI prototype. Real authentication/registration, database persistence, document storage, PDF parsing, ingestion, RAG, model calls, email and legal validation are not implemented. Mock portfolio answers are deterministic examples. Lease and policy answers are withheld because legal validation is unavailable. Mock uploads stage metadata only and never pretend to ingest PDFs. Backend authorization is still mandatory; frontend role visibility is not a security boundary. Do not upload real tenant documents until the backend and access controls are ready.
+The reference backend implements authentication, sessions, authorization, SQLite persistence and fictional-document bootstrap. PDF ingestion, RAG, model calls, email and legal validation still require backend implementations; hosted durable/shared storage is not configured. Mock portfolio answers are deterministic examples. Lease and policy answers are withheld because legal validation is unavailable. Mock uploads stage metadata only and never pretend to ingest PDFs. Backend authorization is still mandatory; frontend role visibility is not a security boundary. Do not upload real tenant documents until the backend and access controls are ready.
 
 ## North Carolina jurisdiction and legal review
 
@@ -79,3 +83,11 @@ State-law verification is disabled by default for both landlord and tenant exper
 ## Synthetic lease documents
 
 The ten demo tenants now have searchable PDF lease packets in [docs/synthetic-leases](docs/synthetic-leases/README.md), with matching text, printable HTML, JSON extraction answer keys and a [manifest](docs/synthetic-leases/manifest.json). Each has household, income, contact, nonfunctional banking data and pet, smoking, waste and unit-specific annexures. Read the corpus README before ingestion; these are unsigned fictional fixtures, not legally validated lease forms. Build a handoff ZIP with `python scripts/package-synthetic-leases.py`.
+
+## SQLite Python API
+
+The UI now has a runnable Python API with one business implementation class, local login/session management, and SQLite-backed workspaces, properties, lease details, requests and policy versioning. Start with [backend setup](docs/BACKEND_IMPLEMENTATION.md), the [method reference](docs/BACKEND_METHODS.md), and [remaining integration work](docs/BACKEND_TODO.md). Assistant generation and document ingestion remain explicit backend tasks.
+
+## Portable setup
+
+All default application paths and persisted bootstrap location references are relative to the current Laga root or the configured data directory. Existing absolute location metadata migrates without reseeding accounts or resetting passwords. See `docs/PORTABILITY.md`; rerun `python scripts/check-portability.py --artifacts` after building handoffs.

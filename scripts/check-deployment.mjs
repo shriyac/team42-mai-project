@@ -22,5 +22,6 @@ try{
  assert.equal((await(await fetch(base+'/healthz')).json()).status,'ok');
  const config=await readFile(new URL('../.replit',import.meta.url),'utf8');assert.ok(!config.startsWith('\ufeff'),'Replit TOML must not have a BOM');
  assert.match(config,/modules\s*=\s*\[[^\]]*"nodejs-22"[^\]]*\]/);assert.match(config,/npm ci --include=dev/);assert.match(config,/externalPort\s*=\s*80/);
+ assert.match(config,/scripts\/start-app\.mjs/);assert.match(config,/VITE_LAGA_MODE\s*=\s*"api"/);assert.match(config,/pip install/);assert.match(config,/npm run dev:local/);
  console.log(`Deployment smoke check passed: built app, API Explorer, ${assets.length} assets, PDF, health, API errors and Replit configuration.`);
 }finally{server.closeAllConnections();await new Promise(resolve=>server.close(resolve))}

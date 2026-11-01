@@ -4,6 +4,7 @@ Not an HTTP service or legal reasoning engine. The ingestion/assistant service
 must call review() with extracted PDF text or the final answer before release.
 """
 from contextlib import closing
+from .paths import resolve_project_path
 from datetime import date, datetime, timedelta, timezone
 from hashlib import sha256
 import json
@@ -48,10 +49,10 @@ class LawCache:
     """
 
     def __init__(self, database, fetcher=fetch_official, now=None):
-        self.database = database
+        self.database = str(resolve_project_path(database))
         self.fetcher = fetcher
         self.now = now or (lambda: datetime.now(timezone.utc))
-        with closing(sqlite3.connect(database)) as db, db:
+        with closing(sqlite3.connect(self.database)) as db, db:
             db.execute("CREATE TABLE IF NOT EXISTS laws (state TEXT PRIMARY KEY, payload TEXT NOT NULL)")
 
     def get(self, state):

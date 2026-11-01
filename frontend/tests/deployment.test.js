@@ -80,3 +80,20 @@ test('production CLI honors PORT and serves dist relative to the script from ano
  assert.match(output,new RegExp('0\\.0\\.0\\.0:'+port));
  assert.match(await(await fetch(baseUrl+'/')).text(),/Laga app/);
 });
+
+test('production proxy preserves login cookies, origin, CSRF and multipart bytes',async t=>{
+ const {root}=await fixture(t);
+ const upstream=http.createServer((req,res)=>{let body=[];req.on('data',part=>body.push(part));req.on('end',()=>{res.writeHead(201,{'Content-Type':'application/json','Set-Cookie':'session=test; HttpOnly; Secure; Path=/api/v1'});res.end(JSON.stringify({url:req.url,method:req.method,origin:req.headers.origin,csrf:req.headers['x-csrf-token'],cookie:req.headers.cookie,forwarded:req.headers['x-forwarded-for'],body:Buffer.concat(body).toString()}))})});
+ upstream.listen(0,'127.0.0.1');await once(upstream,'listening');
+ t.after(()=>new Promise(resolve=>{upstream.closeAllConnections();upstream.close(resolve)}));
+ const server=await createStaticServer({root,apiOrigin:'http://127.0.0.1:'+upstream.address().port});server.listen(0,'127.0.0.1');await once(server,'listening');
+ t.after(()=>new Promise(resolve=>{server.closeAllConnections();server.close(resolve)}));
+ const base='http://127.0.0.1:'+server.address().port;
+ const response=await fetch(base+'/api/v1/policies?test=1',{method:'POST',headers:{Origin:'https://demo.replit.app','X-Forwarded-For':'203.0.113.99','X-CSRF-Token':'csrf-test',Cookie:'session=input','Content-Type':'multipart/form-data; boundary=example'},body:'--example\r\nPDF bytes\r\n--example--'});
+ assert.equal(response.status,201);assert.match(response.headers.get('set-cookie'),/HttpOnly; Secure/);
+ assert.deepEqual(await response.json(),{url:'/api/v1/policies?test=1',method:'POST',origin:'https://demo.replit.app',csrf:'csrf-test',cookie:'session=input',forwarded:'127.0.0.1',body:'--example\r\nPDF bytes\r\n--example--'});
+ assert.match(await(await fetch(base+'/api-docs/')).text(),/API Explorer/);
+ await new Promise(resolve=>{upstream.closeAllConnections();upstream.close(resolve)});
+ assert.equal((await fetch(base+'/api/v1/auth/session')).status,503);
+ await assert.rejects(createStaticServer({root,apiOrigin:'https://untrusted.example'}),/loopback/);
+});
