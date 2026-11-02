@@ -1,0 +1,8 @@
+# Compatible with the existing notebook; Pinecone 7 uses the vector-index API.
+pypdf>=6,<7
+langchain-core>=0.3.86,<0.4
+langchain-text-splitters>=0.3.11,<0.4
+langchain-openai>=0.3.35,<0.4
+pinecone>=7.3,<8
+openai>=1.104,<3
+python-dotenv>=1,<2

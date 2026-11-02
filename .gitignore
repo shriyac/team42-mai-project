@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+artifacts/
+documents.json
+# Tenant-uploaded PDFs and ownership manifests contain private information.
+data/*
+!data/Free-North-Carolina-Standard-Lease-Agreement-Template.pdf
+!data/NC_general_statutes_Chapter_42.pdf
