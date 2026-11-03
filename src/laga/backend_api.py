@@ -20,7 +20,7 @@ from pathlib import Path
 import secrets
 import sqlite3
 import time
-from typing import Any, NoReturn
+from typing import Any
 
 from .paths import resolve_project_path
 
@@ -253,15 +253,27 @@ class BackendAPI:
         return {"signedOut": True}
 
     @staticmethod
-    def _todo(operation: str) -> NoReturn:
+    def _todo(operation: str, *, inputs: DTO | None = None) -> DTO:
         """Purpose: Fail explicitly when an external backend capability is not connected.
 
-        Inputs: operation: safe internal operation name, never arbitrary user content.
+        Inputs: operation: internal operation name; inputs: optional assistant method arguments for temporary UI verification.
 
-        Outputs: Never returns and performs no writes.
+        Outputs: For assistant inputs, returns an Answer DTO displaying JSON without writes or model execution.
 
-        Raises: Always APIError 503 BACKEND_NOT_IMPLEMENTED.
+        Raises: APIError 503 BACKEND_NOT_IMPLEMENTED for other operations or absent inputs.
         """
+        # TEMPORARY input verification: remove this branch after UI testing.
+        if operation == "post_assistant_messages" and inputs is not None:
+            return {
+                "id": str(uuid.uuid4()),
+                "threadId": inputs.get("threadId") or str(uuid.uuid4()),
+                "answer": "Temporary debug echo: inputs received by backend_api.post_assistant_messages\n\n" + json.dumps(inputs, indent=2, ensure_ascii=False),
+                "status": "needs_clarification",
+                "citations": [],
+                "calculations": [],
+                "activity": [{"label": "Input verification only; no assistant generation performed", "status": "attention"}],
+                "compliance": {"status": "unavailable"},
+            }
         raise APIError(503, "BACKEND_NOT_IMPLEMENTED", f"Backend implementation pending: {operation}.")
 
     def get_user_id(self, *, session_token: str | None) -> str:
@@ -472,15 +484,18 @@ class BackendAPI:
 
     def post_assistant_messages(self, *, user: DTO, question: str, scope: DTO, asOf: str,
                                 threadId: str | None = None) -> DTO:
-        """Purpose: Define the backend integration boundary for reviewed answers; currently not implemented.
+        """Purpose: Temporarily echo received assistant inputs for UI verification; generation remains unimplemented.
 
         Inputs: user: authenticated User; question: 1-2000 characters; scope: {type: lease|portfolio, id: lease ID|null}; asOf: real ISO calendar date; threadId: optional owned conversation ID or None. HTTP validates scope shape and portfolio role; implementation must authorize records/thread before retrieval.
 
-        Outputs: Future result: Answer DTO with id, threadId, answer, status, citations, calculations, activity and compliance. Currently never returns a fabricated answer.
+        Outputs: Answer DTO containing a labeled JSON echo of all method inputs in answer; no retrieval, model execution or persistence.
 
-        Raises: Currently always APIError 503 BACKEND_NOT_IMPLEMENTED. Future implementation must use 404 for invisible threads/leases and needs_clarification for insufficient evidence; HTTP may reject invalid input with 422 or permissions with 403.
+        Raises: HTTP may reject invalid input with 422 or permissions with 403. This temporary echo does not retrieve or authorize lease/thread records.
         """
-        self._todo("post_assistant_messages")
+        return self._todo("post_assistant_messages", inputs={
+            "user": user, "question": question, "scope": scope,
+            "asOf": asOf, "threadId": threadId,
+        })
 
     def post_requests(self, *, user: DTO, leaseId: str, category: str, subject: str, message: str) -> DTO:
         """Purpose: Persist a tenant clarification request for an owned lease.
