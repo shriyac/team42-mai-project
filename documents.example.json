@@ -1,0 +1,19 @@
+{
+  "documents": [
+    {
+      "path": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+      "document_id": "demo-tenant-lease-001",
+      "tenant_name": "Demo Tenant",
+      "access": "tenant",
+      "document_type": "lease_template",
+      "document_status": "unfilled_template",
+      "document_title": "North Carolina Standard Lease Agreement"
+    },
+    {
+      "path": "NC_general_statutes_Chapter_42.pdf",
+      "document_id": "nc-chapter-42",
+      "access": "shared",
+      "document_title": "North Carolina General Statutes — Chapter 42"
+    }
+  ]
+}

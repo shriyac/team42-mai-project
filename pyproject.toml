@@ -10,6 +10,14 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
     "langgraph>=1.2.19",
+    # RAG uses the LangChain 1.x family required by the existing LangGraph.
+    "pypdf>=6,<7",
+    "langchain-core>=1.4.7,<2",
+    "langchain-text-splitters>=1,<2",
+    "langchain-openai>=1,<2",
+    "pinecone>=7.3,<8",
+    "openai>=1.104,<3",
+    "python-dotenv>=1,<2",
 ]
 
 [project.optional-dependencies]

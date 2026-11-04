@@ -20,3 +20,13 @@ build/
 /frontend/.env
 /frontend/.env.*
 !/frontend/.env.example
+
+# Keep only Monica's public RAG test PDFs; all other local data stays private.
+!/data/
+/data/*
+!/data/Free-North-Carolina-Standard-Lease-Agreement-Template.pdf
+!/data/NC_general_statutes_Chapter_42.pdf
+
+# Operator ownership manifests and generated RAG snapshots/embedding caches.
+/documents.json
+/artifacts/lease_rag_local/

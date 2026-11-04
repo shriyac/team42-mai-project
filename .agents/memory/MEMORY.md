@@ -1,1 +1,2 @@
 - [Team integration ownership](team-integration-ownership.md) — separate UI/backend, RAG, and LangGraph branches; do not invent missing teammates' implementations.
+- [RAG dependency compatibility](rag-dependency-compatibility.md) — reconcile legacy upstream LangChain pins without downgrading the agent or changing retrieval algorithms.
