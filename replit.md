@@ -4,7 +4,7 @@ The repository is configured for the API-backed UI: tenant/landlord login, autom
 
 ## Preview
 
-The Run button installs Node and Python API dependencies, then runs `npm run dev:local`. Python packages go into `.pythonlibs/lib/python3.11/site-packages` rather than the read-only Nix system Python; no virtual environment is needed. It starts Vite on public port 5000 and Python privately on loopback port 8001. Bootstrap creates 11 users, 10 leases and their PDFs, three properties, nine policy PDFs and four requests. No manual provisioning is needed.
+The Run button restores Node dependencies with `npm ci --include=dev`, then runs `uv run --extra api --extra test node scripts/dev-local.mjs`. This uses the existing managed Python environment and avoids requiring pip in it; no separate environment is created. It starts Vite on public port 5000 and Python privately on loopback port 8001. Bootstrap creates 11 users, 10 leases and their PDFs, three properties, nine policy PDFs and four requests. No manual provisioning is needed. Assistant retrieval is deliberately unconfigured by default: authorized chat returns `503 RAG_UNAVAILABLE` until a real retriever is explicitly connected. Bundled fictional clauses are not silently used as agent evidence.
 
 Choose Tenant login or Landlord login and enter an account email and the password in `data/backend-bootstrap-login.json`. The optional `LAGA_BOOTSTRAP_PASSWORD` secret can supply the initial password instead; it must contain at least 24 characters and at most 1024 UTF-8 bytes. The same initial password applies to all fictional accounts. Existing accounts and passwords are preserved on restart.
 

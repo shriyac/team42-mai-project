@@ -28,6 +28,7 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import JSONResponse
 
 from .backend_api import APIError, BackendAPI, DEFAULT_DATABASE
+from .assistant_integration import call_in_assistant_session
 from .paths import resolve_project_path
 
 COOKIE = "laga_session"
@@ -279,6 +280,11 @@ def create_app(service: BackendAPI | None = None, *, contract_path=None,
                     result = session
                 elif name == "post_auth_logout":
                     result = await run_in_threadpool(service.post_auth_logout, session_token=token)
+                elif name == "post_assistant_messages":
+                    result = await run_in_threadpool(
+                        call_in_assistant_session, service.post_assistant_messages,
+                        session_token=token, user=user, **payload,
+                    )
                 else:
                     result = await run_in_threadpool(getattr(service, name), user=user, **request.path_params, **payload)
                 wrapped = {"data": result}

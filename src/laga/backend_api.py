@@ -1,7 +1,8 @@
 """The backend team's implementation surface. Operation names match OpenAPI IDs.
 
 SQLite implements account, portfolio, lease, request and policy persistence.
-Assistant generation and document ingestion remain explicit backend integration tasks.
+Assistant chat uses LangGraph with explicit server-side retriever injection.
+Live retrieval and document ingestion remain external integration tasks.
 Keep keyword names aligned with contracts/openapi.json and the UI HTTP gateway.
 Authentication uses a local SQLite store. Application startup can bootstrap the bundled fictional dataset.
 """
@@ -50,10 +51,11 @@ class BackendAPI:
     Synchronous methods run in a worker thread so DB work does not block the event loop.
     """
 
-    def __init__(self, database: str | Path, *, session_seconds: int = 28800, now=time.time, time_zone: str = "America/New_York"):
+    def __init__(self, database: str | Path, *, session_seconds: int = 28800, now=time.time, time_zone: str = "America/New_York",
+                 assistant_retriever_factory=None):
         """Purpose: Initialize persistent account/session and portfolio tables, indexes and additive membership migration.
 
-        Inputs: database: filesystem SQLite path (not :memory:); session_seconds: integer absolute session lifetime from 1 through 2147483647 seconds, default 28800; now: injectable epoch-seconds clock; time_zone: IANA business timezone, default America/New_York.
+        Inputs: database: filesystem SQLite path (not :memory:); session_seconds: integer absolute session lifetime from 1 through 2147483647 seconds, default 28800; now: injectable epoch-seconds clock; time_zone: IANA business timezone, default America/New_York; assistant_retriever_factory: optional server-injected tenant/lease-scoped retriever factory, never a browser field. None fails safely without using mocks.
 
         Outputs: A BackendAPI instance; creates the parent directory and missing tables. No users or synthetic leases are seeded.
 
@@ -67,6 +69,11 @@ class BackendAPI:
         self.session_seconds, self.now = session_seconds, now
         self.time_zone = time_zone
         ZoneInfo(time_zone)
+        from .assistant_integration import AssistantIntegration
+        self._assistant = AssistantIntegration(
+            retriever_factory=assistant_retriever_factory, now=now,
+            session_seconds=session_seconds,
+        )
         Path(self.database).parent.mkdir(parents=True, exist_ok=True)
         self._dummy_salt = secrets.token_hex(16)
         self._dummy_hash = self._hash_password("nonexistent-account", self._dummy_salt)
@@ -256,24 +263,12 @@ class BackendAPI:
     def _todo(operation: str, *, inputs: DTO | None = None) -> DTO:
         """Purpose: Fail explicitly when an external backend capability is not connected.
 
-        Inputs: operation: internal operation name; inputs: optional assistant method arguments for temporary UI verification.
+        Inputs: operation: internal operation name; inputs: reserved optional arguments.
 
-        Outputs: For assistant inputs, returns an Answer DTO displaying JSON without writes or model execution.
+        Outputs: No response data; unavailable capabilities fail explicitly.
 
-        Raises: APIError 503 BACKEND_NOT_IMPLEMENTED for other operations or absent inputs.
+        Raises: APIError 503 BACKEND_NOT_IMPLEMENTED.
         """
-        # TEMPORARY input verification: remove this branch after UI testing.
-        if operation == "post_assistant_messages" and inputs is not None:
-            return {
-                "id": str(uuid.uuid4()),
-                "threadId": inputs.get("threadId") or str(uuid.uuid4()),
-                "answer": "Temporary debug echo: inputs received by backend_api.post_assistant_messages\n\n" + json.dumps(inputs, indent=2, ensure_ascii=False),
-                "status": "needs_clarification",
-                "citations": [],
-                "calculations": [],
-                "activity": [{"label": "Input verification only; no assistant generation performed", "status": "attention"}],
-                "compliance": {"status": "unavailable"},
-            }
         raise APIError(503, "BACKEND_NOT_IMPLEMENTED", f"Backend implementation pending: {operation}.")
 
     def get_user_id(self, *, session_token: str | None) -> str:
@@ -484,18 +479,31 @@ class BackendAPI:
 
     def post_assistant_messages(self, *, user: DTO, question: str, scope: DTO, asOf: str,
                                 threadId: str | None = None) -> DTO:
-        """Purpose: Temporarily echo received assistant inputs for UI verification; generation remains unimplemented.
+        """Purpose: Answer an authenticated tenant's authorized lease question using LangGraph.
 
-        Inputs: user: authenticated User; question: 1-2000 characters; scope: {type: lease|portfolio, id: lease ID|null}; asOf: real ISO calendar date; threadId: optional owned conversation ID or None. HTTP validates scope shape and portfolio role; implementation must authorize records/thread before retrieval.
+        Inputs: user: transport-authenticated User re-read by _principal; question: 1-2000 characters; scope: tenant lease scope only; asOf: real ISO calendar date; threadId: optional conversation owned by this principal, organization, lease and session. Internal callers have a separate thread namespace.
 
-        Outputs: Answer DTO containing a labeled JSON echo of all method inputs in answer; no retrieval, model execution or persistence.
+        Outputs: OpenAPI-validated Answer DTO with grounded citations, integer-cent calculations, unavailable compliance, and an ephemeral process-local thread ID. No mock fallback, transcript persistence, or SQLite schema changes.
 
-        Raises: HTTP may reject invalid input with 422 or permissions with 403. This temporary echo does not retrieve or authorize lease/thread records.
+        Raises: APIError 401/403 for invalid principal/tenant permissions; 422 UNSUPPORTED_SCOPE for portfolio or validation errors; 404 for invisible lease/thread; 503 RAG_UNAVAILABLE, ASSISTANT_UNAVAILABLE or BACKEND_CONTRACT_ERROR; 429 for thread capacity; SQLite storage errors.
         """
-        return self._todo("post_assistant_messages", inputs={
-            "user": user, "question": question, "scope": scope,
-            "asOf": asOf, "threadId": threadId,
-        })
+        with closing(self._connect()) as db:
+            current, org = self._principal(db, user if isinstance(user, dict) else {})
+            self._validate("AskInput", {
+                "question": question, "scope": scope, "asOf": asOf, "threadId": threadId,
+            })
+            if scope["type"] != "lease":
+                raise APIError(422, "UNSUPPORTED_SCOPE", "Assistant chat supports tenant lease scope only.")
+            if current["role"] != "tenant" or "lease:read" not in current["permissions"]:
+                raise APIError(403, "FORBIDDEN", "Assistant chat is available to authorized tenants only.")
+            if not scope["id"] or not scope["id"].strip():
+                raise APIError(422, "VALIDATION_ERROR", "Choose a valid lease.")
+            lease, _ = self._lease(db, org, current, scope["id"])
+        return self._assistant.answer(
+            principal=current, organization_id=org, lease=lease, question=question,
+            as_of=asOf, thread_id=threadId,
+            validate_response=lambda response: self._validate("Answer", response),
+        )
 
     def post_requests(self, *, user: DTO, leaseId: str, category: str, subject: str, message: str) -> DTO:
         """Purpose: Persist a tenant clarification request for an owned lease.

@@ -1,5 +1,5 @@
 modules = ["python-base-3.13", "web", "nodejs-22"]
-run = "npm ci --include=dev && python -m pip install --target .pythonlibs/lib/python3.11/site-packages --upgrade \".[api]\" && npm run dev:local"
+run = "npm ci --include=dev && uv run --extra api --extra test node scripts/dev-local.mjs"
 
 [env]
 PORT = "5000"
@@ -39,7 +39,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "npm ci --include=dev && python -m pip install --target .pythonlibs/lib/python3.11/site-packages --upgrade \".[api]\" && npm run dev:local"
+args = "npm ci --include=dev && uv run --extra api --extra test node scripts/dev-local.mjs"
 waitForPort = 5000
 
 [workflows.workflow.metadata]

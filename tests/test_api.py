@@ -55,23 +55,15 @@ class APITests(unittest.TestCase):
             for label in ["Purpose:", "Inputs:", "Outputs:", "Raises:"]:
                 self.assertIn(label, doc, name)
 
-    def test_temporary_assistant_echo_displays_actual_inputs(self):
+    def test_assistant_mvp_rejects_landlord_and_portfolio_without_debug_echo(self):
         self.login()
         for scope in [{"type": "lease", "id": "lease-1"}, {"type": "portfolio", "id": None}]:
             for thread_id in [None, "existing-thread"]:
                 payload = {**EXAMPLES["ask"], "scope": scope, "threadId": thread_id}
                 response = self.mutation("POST", "/assistant/messages", json=payload)
-                self.assertEqual(response.status_code, 200, response.text)
-                answer = response.json()["data"]
-                echoed = json.loads(answer["answer"].split("\n\n", 1)[1])
-                self.assertEqual(echoed, {"user": PROFILE, **payload})
-                self.assertEqual(answer["status"], "needs_clarification")
-                self.assertEqual(answer["citations"], [])
-                self.assertEqual(answer["calculations"], [])
-                self.assertEqual(answer["compliance"]["status"], "unavailable")
-                self.assertTrue(answer["threadId"])
-                if thread_id:
-                    self.assertEqual(answer["threadId"], thread_id)
+                self.assertEqual(response.status_code, 403 if scope["type"] == "lease" else 422)
+                self.assertNotIn("Temporary debug echo", response.text)
+                validate(load_contract(), {"$ref": "#/components/schemas/Error"}, response.json())
 
     def test_contract_signatures_and_route_inventory(self):
         contract = load_contract()
@@ -149,7 +141,7 @@ class APITests(unittest.TestCase):
                  ("POST", "/assistant/messages", EXAMPLES["ask"]),
                  ("POST", "/requests/request-1/reply", EXAMPLES["landlordReply"]),
                  ("DELETE", "/policies/policy-1", None)]
-        for (method, path, body), status in zip(cases, [200, 200, 404, 404]):
+        for (method, path, body), status in zip(cases, [200, 403, 404, 404]):
             r = self.mutation(method, path, **({"json": body} if body else {}))
             self.assertEqual(r.status_code, status, r.text)
             if status != 200:
@@ -296,9 +288,10 @@ assert.equal(policy.version,1);
 await api.deletePolicy(policy.id);
 assert.equal((await api.getWorkspace()).policies.length,0);
 await assert.rejects(api.getLease('foreign'),e=>e.code==='NOT_FOUND');
-const echo=await api.ask({question:'Evidence?',scope:{type:'portfolio',id:null},asOf:'2026-11-01'});
-assert.equal(echo.status,'needs_clarification');
-assert.equal(JSON.parse(echo.answer.slice(echo.answer.indexOf('{'))).question,'Evidence?');
+await assert.rejects(
+ api.ask({question:'Evidence?',scope:{type:'portfolio',id:null},asOf:'2026-11-01'}),
+ e=>e.code==='UNSUPPORTED_SCOPE'
+);
 await api.logout();
 assert.equal((await api.getSession()).user,null);
 console.log('PASS real frontend HTTP gateway against live Python API');
