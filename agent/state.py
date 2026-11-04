@@ -12,6 +12,7 @@ class EvidenceBundle(TypedDict, total=False):
     subquestion: str
     query: str
     documents: list[Any]
+    error: str
 
 
 class AnswerPart(TypedDict, total=False):
@@ -44,10 +45,9 @@ class LAGAState(TypedDict, total=False):
     citations: list[dict[str, Any]]
     validation_status: str
     validation_errors: list[str]
+    input_errors: list[str]
+    fee_errors: list[str]
     retry_count: int
     retry_subquestions: list[str]
     retry_queries: dict[str, str]
     tool_activity: list[dict[str, str]]
-    answer_generator: Any
-    llm: Any
-    fee_calculator: Any

@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from collections.abc import Mapping, Sequence
 from typing import Any
 
 from langgraph.graph import END, START, StateGraph
 
-from tools.fee_calculator import FeeCalculationResult, calculate_late_fee
+from tools.fee_calculator import calculate_late_fee
 
 from .nodes import (
     AnswerGenerator,
@@ -129,6 +128,8 @@ def run_laga_agent(
 def _validation_route(state: LAGAState) -> str:
     if state.get("validation_status") == "passed":
         return "done"
+    if state.get("input_errors"):
+        return "abstain"
     if int(state.get("retry_count", 0)) < 1:
         return "retry"
     return "abstain"

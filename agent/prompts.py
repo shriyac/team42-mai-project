@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+import json
 from typing import Any
 
 
@@ -35,8 +36,8 @@ def build_answer_prompt(
         f"{SYSTEM_PROMPT}\n"
         f"Reference date: {as_of}\n"
         f"Tenant question: {question}\n"
-        f"Evidence JSON: {list(evidence)!r}\n"
-        f"Deterministic calculation JSON: {dict(calculation) if calculation else None!r}\n"
+        f"Evidence JSON: {json.dumps(list(evidence))}\n"
+        f"Deterministic calculation JSON: {json.dumps(dict(calculation) if calculation else None)}\n"
     )
 
 

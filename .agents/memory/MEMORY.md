@@ -1,0 +1,1 @@
+- [Team integration ownership](team-integration-ownership.md) — separate UI/backend, RAG, and LangGraph branches; do not invent missing teammates' implementations.
