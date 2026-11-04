@@ -2,7 +2,9 @@
 name = "laga"
 version = "0.1.0"
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "langgraph>=1.2.19",
+]
 
 [project.optional-dependencies]
 test = ["pytest>=9.2,<10"]
