@@ -55,7 +55,7 @@ class BackendAPI:
                  assistant_retriever_factory=None):
         """Purpose: Initialize persistent account/session and portfolio tables, indexes and additive membership migration.
 
-        Inputs: database: filesystem SQLite path (not :memory:); session_seconds: integer absolute session lifetime from 1 through 2147483647 seconds, default 28800; now: injectable epoch-seconds clock; time_zone: IANA business timezone, default America/New_York; assistant_retriever_factory: optional server-injected tenant/lease-scoped retriever factory, never a browser field. None fails safely without using mocks.
+        Inputs: database: filesystem SQLite path (not :memory:); session_seconds: integer absolute session lifetime from 1 through 2147483647 seconds, default 28800; now: injectable epoch-seconds clock; time_zone: IANA business timezone, default America/New_York; assistant_retriever_factory: optional server-injected tenant/lease-scoped retriever factory, never a browser field. None uses explicitly enabled production configuration or fails safely without using mocks.
 
         Outputs: A BackendAPI instance; creates the parent directory and missing tables. No users or synthetic leases are seeded.
 
@@ -70,6 +70,9 @@ class BackendAPI:
         self.time_zone = time_zone
         ZoneInfo(time_zone)
         from .assistant_integration import AssistantIntegration
+        if assistant_retriever_factory is None:
+            from .rag_integration import production_factory_from_environment
+            assistant_retriever_factory = production_factory_from_environment(self)
         self._assistant = AssistantIntegration(
             retriever_factory=assistant_retriever_factory, now=now,
             session_seconds=session_seconds,

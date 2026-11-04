@@ -13,6 +13,8 @@ import uuid
 
 from .backend_api import APIError
 from .assistant_adapter import adapt_answer
+from .rag_configuration import RAGIntegrationError
+from .rag_integration import ProductionRetrieverFactory
 
 
 _SESSION_BINDING = ContextVar("laga_assistant_session_binding", default=None)
@@ -103,9 +105,21 @@ class AssistantIntegration:
         ):
             raise APIError(503, "RAG_UNAVAILABLE", "No authorized lease documents are available.")
 
+        configured_factory = self.retriever_factory
+        if isinstance(configured_factory, ProductionRetrieverFactory):
+            try:
+                configured_factory = configured_factory.for_authorized_lease(
+                    principal=principal, organization_id=organization_id, lease=lease,
+                )
+                # Only a verified, server-owned production scope may translate
+                # backend document IDs to different immutable Pinecone IDs.
+                allowed_documents = list(configured_factory.document_ids)
+            except RAGIntegrationError as error:
+                raise APIError(503, error.code, error.public_message) from None
+            except Exception:
+                raise APIError(503, "RAG_UNAVAILABLE", "Production lease retrieval is unavailable.") from None
         evidence = []
         trusted = (principal["id"], principal["name"], lease["id"])
-        configured_factory = self.retriever_factory
         allowed_ids = frozenset(allowed_documents)
 
         def scoped_factory(tenant_id, tenant_name, lease_id):
@@ -139,7 +153,7 @@ class AssistantIntegration:
                             continue
                         identity = {k: v for k, v in record.items() if k != "source_id"}
                         section_title = metadata.get("section_title")
-                        clause = record["clause_id"]
+                        clause = record["clause_id"] or metadata.get("section_id") or ""
                         section = clause
                         if isinstance(section_title, str) and section_title.strip():
                             section = (
@@ -163,6 +177,11 @@ class AssistantIntegration:
                 503, "ASSISTANT_UNAVAILABLE",
                 "The lease assistant could not complete this request. Please try again.",
             ) from None
+        if isinstance(self.retriever_factory, ProductionRetrieverFactory):
+            try:
+                configured_factory.check_failure()
+            except RAGIntegrationError as error:
+                raise APIError(503, error.code, error.public_message) from None
         try:
             response = adapt_answer(result, thread_id=response_thread, evidence=evidence)
             validate_response(response)
