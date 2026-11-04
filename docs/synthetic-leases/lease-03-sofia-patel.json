@@ -1,0 +1,173 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.1.0",
+  "documentId": "lease-document-3",
+  "leaseId": "lease-3",
+  "tenantId": "tenant-3",
+  "propertyId": "property-1",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Sofia Patel",
+    "email": "sofia@example.test",
+    "phone": "202-555-0104",
+    "age": 29,
+    "ageAsOf": "2025-12-25",
+    "occupation": "Data analyst",
+    "grossMonthlyIncomeCents": 780000,
+    "smokingHabits": "Does not smoke or vape",
+    "grossAnnualIncomeCents": 9360000
+  },
+  "property": {
+    "name": "Willow House",
+    "address": "128 Willow Lane",
+    "city": "Raleigh, NC 27601",
+    "state": "NC",
+    "unit": "202"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Sofia Patel",
+        "age": 29,
+        "relationship": "Named tenant"
+      },
+      {
+        "name": "Dev Patel",
+        "age": 31,
+        "relationship": "Adult household member"
+      }
+    ],
+    "totalMembers": 2,
+    "children": 0,
+    "adults": 2,
+    "ageAsOf": "2025-12-25"
+  },
+  "emergencyContact": {
+    "name": "Nisha Patel",
+    "relationship": "Sibling",
+    "phone": "202-555-0154"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Sofia Patel",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0003",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST03",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2025-12-25",
+    "startDate": "2026-01-01",
+    "endDate": "2026-12-31",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 205000,
+    "depositCents": 205000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 25000,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2026-01-01",
+    "firstLateFeeDate": "2026-01-06",
+    "lastRentDueDate": "2026-12-01",
+    "firstRentCents": 205000,
+    "lastRentCents": 205000,
+    "depositDueDate": "2026-01-01",
+    "petFeeDueDate": "2026-01-01",
+    "noticeDeadline": "2026-11-01",
+    "lateFeeOncePerInstallment": true
+  },
+  "pets": [
+    {
+      "name": "Pippin",
+      "species": "Dog",
+      "breed": "Beagle mix",
+      "weightPounds": 28,
+      "approved": true,
+      "approvalDate": "2025-12-25",
+      "oneTimeFeeCents": 25000
+    }
+  ],
+  "specialConditions": {
+    "title": "Reserved parking",
+    "text": "Parking bay W-202 is assigned to this unit. Display the test permit. Visitors must use marked guest bays. Parking is included in base rent."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-3",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
+}

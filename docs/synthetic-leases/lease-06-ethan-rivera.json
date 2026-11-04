@@ -1,0 +1,173 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.1.0",
+  "documentId": "lease-document-6",
+  "leaseId": "lease-6",
+  "tenantId": "tenant-6",
+  "propertyId": "property-2",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Ethan Rivera",
+    "email": "ethan@example.test",
+    "phone": "202-555-0107",
+    "age": 27,
+    "ageAsOf": "2026-05-25",
+    "occupation": "Software tester",
+    "grossMonthlyIncomeCents": 710000,
+    "smokingHabits": "Vapes outdoors only",
+    "grossAnnualIncomeCents": 8520000
+  },
+  "property": {
+    "name": "The Juniper",
+    "address": "42 Juniper Street",
+    "city": "Raleigh, NC 27602",
+    "state": "NC",
+    "unit": "3B"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Ethan Rivera",
+        "age": 27,
+        "relationship": "Named tenant"
+      },
+      {
+        "name": "Sam Rivera",
+        "age": 26,
+        "relationship": "Adult household member"
+      }
+    ],
+    "totalMembers": 2,
+    "children": 0,
+    "adults": 2,
+    "ageAsOf": "2026-05-25"
+  },
+  "emergencyContact": {
+    "name": "Alexis Rivera",
+    "relationship": "Sibling",
+    "phone": "202-555-0157"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Ethan Rivera",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0006",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST06",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2026-05-25",
+    "startDate": "2026-06-01",
+    "endDate": "2027-05-31",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 225000,
+    "depositCents": 225000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 25000,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2026-06-01",
+    "firstLateFeeDate": "2026-06-06",
+    "lastRentDueDate": "2027-05-01",
+    "firstRentCents": 225000,
+    "lastRentCents": 225000,
+    "depositDueDate": "2026-06-01",
+    "petFeeDueDate": "2026-06-01",
+    "noticeDeadline": "2027-04-01",
+    "lateFeeOncePerInstallment": true
+  },
+  "pets": [
+    {
+      "name": "Luna",
+      "species": "Dog",
+      "breed": "Terrier mix",
+      "weightPounds": 19,
+      "approved": true,
+      "approvalDate": "2026-05-25",
+      "oneTimeFeeCents": 25000
+    }
+  ],
+  "specialConditions": {
+    "title": "Guest parking",
+    "text": "For Unit 3B, one overnight guest permit may be requested through the portal, subject to marked-space availability. No guaranteed guest space or additional charge is created by this annexure."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-6",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
+}

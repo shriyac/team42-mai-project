@@ -1,0 +1,168 @@
+{
+  "synthetic": true,
+  "datasetVersion": "1.1.0",
+  "documentId": "lease-document-8",
+  "leaseId": "lease-8",
+  "tenantId": "tenant-8",
+  "propertyId": "property-3",
+  "state": "NC",
+  "landlord": {
+    "name": "Alex Morgan",
+    "organization": "Alder Living",
+    "email": "alex@alderliving.example",
+    "phone": "202-555-0100"
+  },
+  "tenant": {
+    "name": "Noah Kim",
+    "email": "noah@example.test",
+    "phone": "202-555-0109",
+    "age": 24,
+    "ageAsOf": "2026-04-24",
+    "occupation": "Technical support specialist",
+    "grossMonthlyIncomeCents": 590000,
+    "smokingHabits": "Does not smoke or vape",
+    "grossAnnualIncomeCents": 7080000
+  },
+  "property": {
+    "name": "Cedar Court",
+    "address": "810 Cedar Avenue",
+    "city": "Raleigh, NC 27604",
+    "state": "NC",
+    "unit": "1"
+  },
+  "household": {
+    "members": [
+      {
+        "name": "Noah Kim",
+        "age": 24,
+        "relationship": "Named tenant"
+      }
+    ],
+    "totalMembers": 1,
+    "children": 0,
+    "adults": 1,
+    "ageAsOf": "2026-04-24"
+  },
+  "emergencyContact": {
+    "name": "Min Kim",
+    "relationship": "Sibling",
+    "phone": "202-555-0159"
+  },
+  "banking": {
+    "bankName": "TEST ONLY Community Bank (fictional)",
+    "accountHolder": "Noah Kim",
+    "accountType": "Checking",
+    "accountToken": "TEST-ACCOUNT-0008",
+    "routingToken": "TEST-NOT-ROUTABLE",
+    "accountDisplay": "**** TEST08",
+    "automaticDebitAuthorized": false
+  },
+  "terms": {
+    "executionDate": "2026-04-24",
+    "startDate": "2026-05-01",
+    "endDate": "2027-04-30",
+    "durationMonths": 12,
+    "endDateInclusive": true,
+    "rentCents": 195000,
+    "depositCents": 195000,
+    "currency": "USD",
+    "dueDay": 1,
+    "lateFeeCents": 5000,
+    "lateFeeAfterDay": 5,
+    "noticeDays": 60,
+    "petFeeCents": 25000,
+    "monthlyPetRentCents": 0,
+    "petFeeRefundable": false,
+    "prorationMethod": "actual_calendar_days_inclusive_round_half_up_to_cent",
+    "firstRentDueDate": "2026-05-01",
+    "firstLateFeeDate": "2026-05-06",
+    "lastRentDueDate": "2027-04-01",
+    "firstRentCents": 195000,
+    "lastRentCents": 195000,
+    "depositDueDate": "2026-05-01",
+    "petFeeDueDate": "2026-05-01",
+    "noticeDeadline": "2027-03-01",
+    "lateFeeOncePerInstallment": true
+  },
+  "pets": [
+    {
+      "name": "Bean",
+      "species": "Cat",
+      "breed": "Domestic longhair",
+      "weightPounds": 9,
+      "approved": true,
+      "approvalDate": "2026-04-24",
+      "oneTimeFeeCents": 25000
+    }
+  ],
+  "specialConditions": {
+    "title": "Garden equipment",
+    "text": "Unit 1 may use the shared garden tool cabinet after orientation. Return tools clean and do not store them in common walkways. No separate garden fee."
+  },
+  "signatureStatus": "unsigned_test_fixture",
+  "legalReviewStatus": "not_performed",
+  "pages": [
+    {
+      "page": 1,
+      "title": "Residential lease / agreement particulars"
+    },
+    {
+      "page": 2,
+      "title": "Household and tenant information"
+    },
+    {
+      "page": 3,
+      "title": "Rent, payment and banking instructions"
+    },
+    {
+      "page": 4,
+      "title": "Security deposit and condition record"
+    },
+    {
+      "page": 5,
+      "title": "Utilities and service responsibilities"
+    },
+    {
+      "page": 6,
+      "title": "Occupancy, shared areas and access"
+    },
+    {
+      "page": 7,
+      "title": "Maintenance, safety and contacts"
+    },
+    {
+      "page": 8,
+      "title": "Annexure A / pets and responsibilities"
+    },
+    {
+      "page": 9,
+      "title": "Annexure B / smoking and vaping"
+    },
+    {
+      "page": 10,
+      "title": "Annexure C / waste, recycling and shared spaces"
+    },
+    {
+      "page": 11,
+      "title": "Annexure D / unit-specific conditions"
+    },
+    {
+      "page": 12,
+      "title": "Renewal, notice and signature schedule"
+    }
+  ],
+  "paymentInstructions": {
+    "payee": "Alder Living",
+    "method": "simulated_portal_transfer",
+    "destinationToken": "TEST-LANDLORD-1",
+    "reference": "lease-8",
+    "livePaymentEnabled": false
+  },
+  "utilities": {
+    "electricity": "tenant",
+    "internet": "tenant",
+    "water": "included_in_rent",
+    "ordinaryWaste": "included_in_rent",
+    "monthlyLaundryFeeCents": 0
+  }
+}
