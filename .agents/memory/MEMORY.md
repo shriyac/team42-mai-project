@@ -1,3 +1,4 @@
 - [Team integration ownership](team-integration-ownership.md) — separate UI/backend, RAG, and LangGraph branches; do not invent missing teammates' implementations.
 - [RAG dependency compatibility](rag-dependency-compatibility.md) — reconcile legacy upstream LangChain pins without downgrading the agent or changing retrieval algorithms.
 - [Verified RAG activation](verified-rag-activation.md) — production activation requires approved identity bindings and genuine service verification, not just credentials or mocked tests.
+- [Preview private-file security](preview-file-security.md) — Git exclusions do not protect runtime files from HTTP filesystem routes; preserve separate preview access checks.
