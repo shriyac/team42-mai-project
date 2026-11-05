@@ -4,7 +4,8 @@ import json
 from pathlib import Path
 
 from lease_rag.config import Settings
-from lease_rag.retrieval import TenantHybridRetriever, authorized_scope, generate_answer, load_snapshot
+from lease_rag.retrieval import (CitationValidationError, TenantHybridRetriever,
+                                 authorized_scope, generate_answer, load_snapshot)
 from lease_rag.storage import ACTIVE_PATH
 
 
@@ -35,7 +36,10 @@ def main():
     if args.retrieve_only:
         print(json.dumps([doc.model_dump() for doc in documents], ensure_ascii=False, indent=2))
         return
-    result = generate_answer(args.question, documents, settings.chat_model())
+    try:
+        result = generate_answer(args.question, documents, settings.chat_model())
+    except CitationValidationError as exc:
+        raise SystemExit(f'Answer withheld: {exc}') from None
     if args.json:
         print(json.dumps(result, ensure_ascii=False, indent=2))
         return

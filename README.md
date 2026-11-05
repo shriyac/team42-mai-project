@@ -171,8 +171,10 @@ the LLM prompt. Tenant names embedded in a question never change the filter.
 
 The answer prompt distinguishes statutes from lease terms, preserves uncertainty
 about blanks and checkboxes, and requires source references. The output includes
-document IDs, filenames, pages, and detected sections/clauses. Invalid citation IDs
-cause the answer to be withheld. Citation validation checks identity and references;
+document IDs, filenames, pages, and detected sections/clauses. Grouped citations
+such as `[S1, S2]` are normalized. If JSON or citation validation fails, the model
+gets one correction attempt using the same retrieved evidence. References must
+match the supplied source IDs and the inline markers; otherwise the answer is withheld. Citation validation checks identity and references;
 it cannot prove that every generated claim is entailed by the source. The Maya synthetic fixture states a $250 one-time nonrefundable ordinary-pet fee
 and $0 monthly pet rent, with prior written approval and a one-pet/50 lb limit.
 It approves Miso the cat; it does not approve a later dog request or establish

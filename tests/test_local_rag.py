@@ -179,6 +179,46 @@ class LocalRagTests(unittest.TestCase):
         self.assertEqual(generate_answer('pets', [], unused)['citations'], [])
         unused.assert_not_called()
 
+    def test_answer_retries_missing_inline_references_with_same_evidence(self):
+        prompts = []
+        responses = iter([
+            {'answer': 'The deposit is $200.', 'citations': ['S1']},
+            {'answer': 'The deposit is $200 [S1].', 'citations': ['S1']},
+        ])
+        def respond(prompt):
+            prompts.append(prompt.to_messages())
+            return AIMessage(content=json.dumps(next(responses)))
+        result = generate_answer('Pet deposit?', [self.documents[0]], RunnableLambda(respond))
+        self.assertEqual(result['answer'], 'The deposit is $200 [S1].')
+        self.assertEqual(len(prompts), 2)
+        self.assertEqual(prompts[0][1].content, prompts[1][1].content)
+        self.assertIn('no inline references', prompts[1][-1].content)
+        self.assertEqual(result['citations'][0]['document_id'], 'alice-lease')
+
+    def test_grouped_citations_normalized_without_retry(self):
+        calls = []
+        def respond(prompt):
+            calls.append(prompt)
+            return AIMessage(content=json.dumps({'answer': 'See these terms [ S1, S2 ].',
+                                                 'citations': ['S1', 'S2']}))
+        result = generate_answer('pets', [self.documents[0], self.documents[2]], RunnableLambda(respond))
+        self.assertEqual(result['answer'], 'See these terms [S1][S2].')
+        self.assertEqual(len(calls), 1)
+        self.assertEqual([c['document_id'] for c in result['citations']], ['alice-lease', 'nc-law'])
+
+    def test_invalid_answer_is_withheld_after_one_correction_attempt(self):
+        for raw in ['not json', json.dumps({'answer': 'Missing markers', 'citations': ['S1']}),
+                    json.dumps({'answer': 'Wrong source [S1, S99]', 'citations': ['S1']}),
+                    json.dumps({'answer': 'Unsupported range [S1-S9]', 'citations': ['S1']}),
+                    json.dumps({'answer': 'Mismatch [S1]', 'citations': ['S1', 'S2']})]:
+            calls = []
+            def respond(prompt):
+                calls.append(prompt)
+                return AIMessage(content=raw)
+            with self.assertRaisesRegex(ValueError, 'two attempts'):
+                generate_answer('pets', [self.documents[0], self.documents[2]], RunnableLambda(respond))
+            self.assertEqual(len(calls), 2)
+
     def test_ingestion_query_roundtrip_and_failed_snapshot_publication(self):
         dense, sparse = FakeIndex(), FakeIndex()
         active = self.root / 'active.json'
