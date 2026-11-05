@@ -6,7 +6,6 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 artifacts/
-documents.json
 # Tenant-uploaded PDFs and ownership manifests contain private information.
 data/*
 !data/Free-North-Carolina-Standard-Lease-Agreement-Template.pdf

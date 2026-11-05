@@ -1,0 +1,27 @@
+{
+  "documents": [
+    {
+      "path": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+      "document_id": "lease-document-1",
+      "tenant_name": "Maya Chen",
+      "access": "tenant",
+      "document_type": "lease",
+      "document_status": "synthetic_unsigned",
+      "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+      "lease_id": "lease-1",
+      "property_id": "property-1",
+      "effective_from": "2026-02-01",
+      "effective_to": "2027-01-31",
+      "repeated_header_footer_lines": [
+        "SYNTHETIC / UNSIGNED TEST DATA - Maya Chen - lease-document-1",
+        "Transferred fields only; template boilerplate is not source-confirmed. See transfer notes, p. 14."
+      ]
+    },
+    {
+      "path": "NC_general_statutes_Chapter_42.pdf",
+      "document_id": "nc-chapter-42",
+      "access": "shared",
+      "document_title": "North Carolina General Statutes — Chapter 42"
+    }
+  ]
+}

@@ -24,6 +24,8 @@ def load_snapshot(settings, path=ACTIVE_PATH):
     if (snapshot['dense_index'] != settings.dense_index_name
             or snapshot['sparse_index'] != settings.sparse_index_name):
         raise ValueError('The active snapshot belongs to different indexes. Check .env.')
+    if settings.namespace and snapshot['namespace'] != settings.namespace:
+        raise ValueError('The active snapshot belongs to a different namespace. Re-ingest with this configuration.')
     return snapshot
 
 
@@ -47,6 +49,8 @@ def authorized_scope(snapshot, tenant_name, document_ids=None):
             {'access': {'$eq': 'shared'}},
         ]},
     ]}
+    if snapshot.get('corpus_id'):
+        metadata_filter['$and'].append({'corpus_id': {'$eq': snapshot['corpus_id']}})
     return tenant, owned, shared, metadata_filter
 
 
@@ -61,7 +65,7 @@ class TenantHybridRetriever(BaseRetriever):
     document_ids: list[str] | None = None
     k: int = 6
     fetch_k: int = 24
-    dense_weight: float = 0.5
+    dense_weight: float = 0.7
 
     def _get_relevant_documents(self, query: str, *, run_manager: CallbackManagerForRetrieverRun):
         if not query.strip() or len(query) > 8000:
@@ -86,6 +90,8 @@ class TenantHybridRetriever(BaseRetriever):
             for rank, match in enumerate(matches, 1):
                 doc = restore_document(match)
                 meta = doc.metadata
+                if self.snapshot.get('corpus_id') and meta.get('corpus_id') != self.snapshot['corpus_id']:
+                    raise PermissionError('Search returned evidence from an inactive corpus version.')
                 allowed = ((meta['access'] == 'tenant' and meta['tenant_name'] == tenant
                             and meta['document_id'] in owned)
                            or (meta['access'] == 'shared' and meta['document_id'] in shared

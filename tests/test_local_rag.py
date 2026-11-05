@@ -219,6 +219,40 @@ class LocalRagTests(unittest.TestCase):
         with patch('lease_rag.storage.time.sleep'), self.assertRaisesRegex(RuntimeError, 'not visible'):
             verify_records(index, ['missing'], 'test', attempts=1)
 
+    def test_fixed_namespace_filters_old_versions_and_keeps_previous_on_failure(self):
+        settings = Settings({'PINECONE_INDEX_NAME': 'laga-rag',
+                             'PINECONE_NAMESPACE': 'laga-hydrid'}, root=self.root)
+        dense, sparse = FakeIndex(), FakeIndex()
+        active = self.root / 'active.json'
+        indexes = lambda pc, name, **kw: sparse if kw['sparse'] else dense
+        with patch('lease_rag.storage.prepare_index', side_effect=indexes), redirect_stdout(io.StringIO()):
+            old = ingest_documents(self.documents, settings, active_path=active,
+                                   clients=(self.pc, self.embeddings))
+            changed = copy.deepcopy(self.documents)
+            changed[0].page_content = 'Updated pet deposit: $300.'
+            with patch('lease_rag.storage.verify_records', side_effect=[None, RuntimeError('incomplete')]):
+                with self.assertRaises(RuntimeError):
+                    ingest_documents(changed, settings, active_path=active, clients=(self.pc, self.embeddings))
+            retriever = self.retriever(dense, sparse)
+            retriever.snapshot = load_snapshot(settings, active)
+            self.assertEqual(retriever.snapshot, old)
+            self.assertIn('$200', next(d.page_content for d in retriever.invoke('pets')
+                                      if d.metadata['document_id'] == 'alice-lease'))
+            new = ingest_documents(changed, settings, active_path=active, clients=(self.pc, self.embeddings))
+            self.assertEqual(new['namespace'], 'laga-hydrid')
+            self.assertEqual(new['sparse_index'], 'laga-rag-sparse')
+            self.assertNotEqual(old['corpus_id'], new['corpus_id'])
+            self.assertEqual(len(dense.records['laga-hydrid']), 6)
+            retriever.snapshot = new
+            hits = retriever.invoke('pets')
+            self.assertEqual(len(hits), 2)
+            self.assertIn('$300', next(d.page_content for d in hits
+                                      if d.metadata['document_id'] == 'alice-lease'))
+            for index in (dense, sparse):
+                self.assertIn({'corpus_id': {'$eq': new['corpus_id']}}, index.calls[-1]['filter']['$and'])
+            with self.assertRaisesRegex(ValueError, 'namespace'):
+                load_snapshot(Settings({**settings.values, 'PINECONE_NAMESPACE': 'other'}), active)
+
     def test_manifest_rejects_unassigned_shared_private_and_path_traversal(self):
         (self.root / 'lease.pdf').write_bytes(b'%PDF-test')
         path = self.root / 'manifest.json'
@@ -235,7 +269,7 @@ class LocalRagTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Unassigned'):
             read_manifest(path, self.root)
 
-    def test_real_pdfs_preserve_citations_blank_pet_fields_and_unique_ownership(self):
+    def test_real_pdfs_preserve_maya_pet_terms_citations_and_unique_ownership(self):
         records = read_manifest(ROOT / 'documents.example.json', ROOT / 'data')
         lease_chunks = None
         for record in records:
@@ -255,7 +289,14 @@ class LocalRagTests(unittest.TestCase):
                 lease_chunks = chunks
                 pet = next(d for d in chunks if d.metadata['section_id'] == '11')
                 self.assertEqual(pet.metadata['page_numbers'], [2])
-                self.assertTrue(pet.metadata['has_unfilled_fields'])
+                self.assertEqual(pet.metadata['tenant_name'], 'maya chen')
+                self.assertEqual(pet.metadata['document_status'], 'synthetic_unsigned')
+                self.assertEqual(pet.metadata['field_states']['maximum_pet_weight_lb']['value'], 50)
+                self.assertEqual(pet.metadata['field_states']['number_of_pets']['value'], 1)
+                self.assertTrue(pet.metadata['field_states']['pets_allowed']['value'])
+                self.assertIn('One-time pet fee: $250.00', pet.page_content)
+                self.assertIn('monthly pet rent: $0.00', pet.page_content)
+                self.assertNotIn('pet_deposit_amount', pet.metadata['field_states'])
                 other = dict(record, tenant_name='another tenant', document_id='another-lease')
                 others, _ = chunk_pdf(record['pdf_path'], other, ROOT / 'data')
                 self.assertFalse({d.metadata['chunk_id'] for d in chunks}

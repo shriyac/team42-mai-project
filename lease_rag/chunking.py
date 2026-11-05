@@ -28,7 +28,7 @@ def extract_document(path, config, root):
     reader = PdfReader(path)
     digest = sha256(path.read_bytes()).hexdigest()
     doc_id = config['document_id']
-    warnings = []
+    warnings = list(config.get('warnings', []))
     if not config:
         warnings.append('Unconfigured document: confirm type, jurisdiction, applicability and access scope.')
     pages = []
@@ -39,6 +39,10 @@ def extract_document(path, config, root):
         printed_label = None
         for line in raw.splitlines():
             line = re.sub(r'[^\S\n]+', ' ', line).strip()
+            # Explicitly configured repeating banners are provenance, not clause text.
+            # Their meaning is retained in document status and review warnings.
+            if line in config.get('repeated_header_footer_lines', []):
+                continue
             footer = FOOTER.fullmatch(line)
             if footer:
                 printed_label = footer.group(1)

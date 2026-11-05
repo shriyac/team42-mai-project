@@ -15,7 +15,8 @@ def main():
     parser.add_argument('--document-id', action='append', help='Optional tenant lease ID; repeat for multiple leases.')
     parser.add_argument('--top-k', type=int, default=6)
     parser.add_argument('--fetch-k', type=int, default=24, help='Candidates per search before rank fusion.')
-    parser.add_argument('--dense-weight', type=float, default=0.5)
+    parser.add_argument('--dense-weight', type=float, default=0.7,
+                        help='Dense rank-fusion weight (default: 0.7); sparse weight is 1 minus this value.')
     parser.add_argument('--env', type=Path)
     parser.add_argument('--active-file', type=Path, default=ACTIVE_PATH)
     parser.add_argument('--retrieve-only', action='store_true', help='Return evidence without calling the generation model.')

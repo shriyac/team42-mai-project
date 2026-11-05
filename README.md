@@ -22,7 +22,10 @@ environment variables do not override the file. Do not overwrite your existing k
 
 Required settings are `PINECONE_API_KEY`, `NEBIUS_API_KEY`, and
 `PINECONE_INDEX_NAME`. The dense index must have cosine metric and 4,096 dimensions.
-The sparse index defaults to `<PINECONE_INDEX_NAME>-sparse`; optionally set
+The project is configured with dense index `laga-rag`, sparse index
+`laga-rag-sparse`, and namespace `laga-hydrid` in both indexes. Set the exact
+namespace through `PINECONE_NAMESPACE`. The sparse index defaults to
+`<PINECONE_INDEX_NAME>-sparse`; optionally set
 `PINECONE_SPARSE_INDEX_NAME`. It must be a sparse index with dotproduct metric.
 Missing indexes are created in AWS `us-east-1` by default. Existing incompatible
 indexes are rejected; they are never deleted or reconfigured.
@@ -70,8 +73,12 @@ Edit `documents.json` before ingesting real tenant leases. Every PDF in `data/`
 ```
 
 This example illustrates ownership; use the actual files present in your data
-folder. The supplied `documents.example.json` maps the existing lease template to
-`Demo Tenant` and correctly marks it as an unfilled template, not a signed lease.
+folder. The supplied `documents.example.json` maps the completed template to
+`Maya Chen` as document `lease-document-1` with status `synthetic_unsigned`.
+The PDF has 13 template pages, a transfer-notes page, and the 12-page original
+Maya source packet. Unsupported fields and signatures remain blank. Template
+boilerplate is not source-confirmed; its limitations are described in the PDF's transfer notes.
+The unfilled original and transfer provenance are saved in `artifacts/maya_chen/`.
 Only the Chapter 42 PDF is permitted to be shared. Document IDs must be globally
 unique and stable; keep the ID when replacing the same document with a new version.
 Tenant names are normalized for case and whitespace; display names are retained.
@@ -119,27 +126,29 @@ fail explicitly rather than silently truncating lease conditions. Both cloud
 embedding calls send chunk text to the respective providers and incur their usage.
 
 Ingestion snapshots the **entire manifest**. It hashes content, ownership, metadata,
-and model configuration into a namespace, then fetch-verifies all IDs in both
+and model configuration into a corpus version, writes immutable versioned records
+to `PINECONE_NAMESPACE` (or a generated namespace if unset), then fetch-verifies all IDs in both
 indexes before atomically updating `artifacts/lease_rag_local/active.json`.
 Keep all current tenants in the manifest on each run. Add new uploads to the
 manifest and rerun ingestion. To remove a document, remove its manifest entry and
 move its PDF outside `data/`, then re-ingest. Old snapshots remain in Pinecone but
-are not searched by this application's active snapshot. This is not a physical
+are not searched by this application's active snapshot: both searches filter by the
+active corpus version as well as tenant ownership. This is not a physical
 data-deletion workflow. Run one ingestion process at a time.
 
 ## 2. Ask a tenant's question
 
 ```bash
-python ask_lease.py --tenant-name "Demo Tenant" \
+python ask_lease.py --tenant-name "Maya Chen" \
   --question "For a 50 lb dog, what additional pet charge applies?" --top-k 6
 
 # Inspect the retrieved chunks and citation metadata without an LLM call.
-python ask_lease.py --tenant-name "Demo Tenant" \
+python ask_lease.py --tenant-name "Maya Chen" \
   --question "What is the pet policy?" --retrieve-only
 
 # Optionally select one of the tenant's leases and return structured JSON.
-python ask_lease.py --tenant-name "Demo Tenant" \
-  --document-id demo-tenant-lease-001 \
+python ask_lease.py --tenant-name "Maya Chen" \
+  --document-id lease-document-1 \
   --question "What is the pet deposit?" --json
 ```
 
@@ -152,7 +161,10 @@ same metadata filter: the requesting tenant's leases **or** the shared Chapter 4
 document, restricted to document IDs in the active manifest. Both queries fetch
 24 candidates by default. Weighted reciprocal rank fusion deduplicates and ranks
 their union; the top 6 chunks are passed to the LLM. Adjust `--fetch-k`, `--top-k`,
-and `--dense-weight` (default 0.5) after evaluating real tenant questions.
+and `--dense-weight` (default 0.7) after evaluating real tenant questions. Sparse
+weight is `1 - dense_weight`, or 0.3 by default. These weights apply to reciprocal
+ranks, not raw embedding scores: `0.7 / (60 + dense_rank) + 0.3 / (60 + sparse_rank)`,
+with a contribution only from searches where the chunk was returned.
 Unknown tenants and attempts to select another tenant's document are rejected
 before search. Returned ownership is checked again before any evidence enters
 the LLM prompt. Tenant names embedded in a question never change the filter.
@@ -161,8 +173,10 @@ The answer prompt distinguishes statutes from lease terms, preserves uncertainty
 about blanks and checkboxes, and requires source references. The output includes
 document IDs, filenames, pages, and detected sections/clauses. Invalid citation IDs
 cause the answer to be withheld. Citation validation checks identity and references;
-it cannot prove that every generated claim is entailed by the source. The supplied
-unfilled template cannot establish an actual tenant's pet fee.
+it cannot prove that every generated claim is entailed by the source. The Maya synthetic fixture states a $250 one-time nonrefundable ordinary-pet fee
+and $0 monthly pet rent, with prior written approval and a one-pet/50 lb limit.
+It approves Miso the cat; it does not approve a later dog request or establish
+real-world obligations.
 
 ## Verification
 
