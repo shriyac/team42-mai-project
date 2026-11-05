@@ -18,8 +18,9 @@ def _field(value, name):
     return value[name] if isinstance(value, Mapping) else getattr(value, name)
 
 
-def _indexes(pc, config, snapshot):
+def _indexes(pc, config, scope):
     """Describe existing resources only. Never call ingestion/prepare/create."""
+    snapshot = scope.snapshot
     indexes = []
     try:
         for sparse, name in [
@@ -40,10 +41,42 @@ def _indexes(pc, config, snapshot):
             index = pc.Index(host=_field(description, "host"))
             namespaces = _field(index.describe_index_stats(), "namespaces")
             count = _field(namespaces[snapshot["namespace"]], "vector_count")
-            if type(count) is not int or count != snapshot["chunk_count"]:
+            if type(count) is not int or (
+                count < snapshot["chunk_count"] if snapshot.get("corpus_id")
+                else count != snapshot["chunk_count"]
+            ):
                 raise RAGIntegrationError(
                     CONFIG_ERROR, "The pinned Pinecone namespace is incomplete or inconsistent.",
                 )
+            if snapshot.get("corpus_id"):
+                # Namespace totals include inactive versions. Fetch every authorized
+                # canonical record in both indexes before querying; counts alone
+                # must never approve a partially uploaded active corpus.
+                from lease_rag.storage import restore_document
+                ids = [key + ":" + snapshot["corpus_id"][:24] for key in scope.chunks]
+                for start in range(0, len(ids), 100):
+                    batch = ids[start:start + 100]
+                    vectors = _field(index.fetch(
+                        ids=batch, namespace=snapshot["namespace"],
+                    ), "vectors")
+                    if set(vectors) != set(batch):
+                        raise RAGIntegrationError(
+                            CONFIG_ERROR, "The authorized active-corpus records are incomplete.",
+                        )
+                    for key in batch:
+                        vector = vectors[key]
+                        if _field(vector, "id") != key:
+                            raise RAGIntegrationError(
+                                EVIDENCE_ERROR, "Stored corpus record identity is inconsistent.",
+                            )
+                        try:
+                            normalize_document(restore_document(vector), scope)
+                        except RAGIntegrationError:
+                            raise
+                        except Exception:
+                            raise RAGIntegrationError(
+                                EVIDENCE_ERROR, "Stored corpus record metadata is inconsistent.",
+                            ) from None
             indexes.append(index)
         return indexes
     except RAGIntegrationError:
@@ -67,6 +100,15 @@ def normalize_document(document, scope):
         meta = deepcopy(document.metadata)
         row = scope.bindings[meta["document_id"]]
         canonical = scope.chunks[meta["chunk_id"]]
+        corpus = scope.snapshot.get("corpus_id")
+        if corpus:
+            if (
+                meta.get("corpus_id") != corpus
+                or meta.get("record_id") != meta["chunk_id"] + ":" + corpus[:24]
+            ):
+                raise ValueError("Stored record does not belong to the pinned corpus.")
+        elif "corpus_id" in meta or "record_id" in meta:
+            raise ValueError("Corpus records require a corpus-pinned snapshot.")
         if document.page_content != canonical.page_content:
             raise ValueError("Stored chunk text differs from the verified PDF extraction.")
         for key, expected in canonical.metadata.items():
@@ -214,7 +256,7 @@ class ProductionRetrieverFactory:
             raise RAGIntegrationError(
                 "RAG_UNAVAILABLE", "Production retrieval clients could not be initialized.",
             ) from None
-        dense, sparse = _indexes(pc, config, scope.snapshot)
+        dense, sparse = _indexes(pc, config, scope)
         from lease_rag.retrieval import TenantHybridRetriever
         delegate = TenantHybridRetriever(
             dense_index=dense, sparse_index=sparse, embeddings=embeddings, pc=pc,

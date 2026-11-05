@@ -61,6 +61,10 @@ class Settings:
     def sparse_index_name(self):
         return self.get('PINECONE_SPARSE_INDEX_NAME', self.dense_index_name + '-sparse')
 
+    @property
+    def namespace(self):
+        return self.get('PINECONE_NAMESPACE')
+
     def clients(self):
         profile = self.profile
         key_name = PROVIDERS[profile['provider']][0]

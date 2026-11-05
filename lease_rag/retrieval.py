@@ -9,6 +9,7 @@ from langchain_core.callbacks import CallbackManagerForRetrieverRun
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.retrievers import BaseRetriever
 from langchain_core.output_parsers import JsonOutputParser
+from langchain_core.exceptions import OutputParserException
 
 from .manifest import tenant_key
 from .storage import ACTIVE_PATH, encode_sparse, restore_document, response_field
@@ -24,6 +25,8 @@ def load_snapshot(settings, path=ACTIVE_PATH):
     if (snapshot['dense_index'] != settings.dense_index_name
             or snapshot['sparse_index'] != settings.sparse_index_name):
         raise ValueError('The active snapshot belongs to different indexes. Check .env.')
+    if settings.namespace and snapshot['namespace'] != settings.namespace:
+        raise ValueError('The active snapshot belongs to a different namespace. Re-ingest with this configuration.')
     return snapshot
 
 
@@ -47,6 +50,8 @@ def authorized_scope(snapshot, tenant_name, document_ids=None):
             {'access': {'$eq': 'shared'}},
         ]},
     ]}
+    if snapshot.get('corpus_id'):
+        metadata_filter['$and'].append({'corpus_id': {'$eq': snapshot['corpus_id']}})
     return tenant, owned, shared, metadata_filter
 
 
@@ -61,7 +66,7 @@ class TenantHybridRetriever(BaseRetriever):
     document_ids: list[str] | None = None
     k: int = 6
     fetch_k: int = 24
-    dense_weight: float = 0.5
+    dense_weight: float = 0.7
 
     def _get_relevant_documents(self, query: str, *, run_manager: CallbackManagerForRetrieverRun):
         if not query.strip() or len(query) > 8000:
@@ -86,6 +91,8 @@ class TenantHybridRetriever(BaseRetriever):
             for rank, match in enumerate(matches, 1):
                 doc = restore_document(match)
                 meta = doc.metadata
+                if self.snapshot.get('corpus_id') and meta.get('corpus_id') != self.snapshot['corpus_id']:
+                    raise PermissionError('Search returned evidence from an inactive corpus version.')
                 allowed = ((meta['access'] == 'tenant' and meta['tenant_name'] == tenant
                             and meta['document_id'] in owned)
                            or (meta['access'] == 'shared' and meta['document_id'] in shared
@@ -121,6 +128,8 @@ weight limits, permission, deposit versus recurring fees, and exceptions; if any
 necessary fact is absent, say what is missing rather than inventing an amount.
 If clauses conflict or multiple leases apply, explain that ambiguity and cite each.
 Use inline evidence references such as [S1] for every supported factual claim.
+Put these references inside the answer string, not just in the citations list.
+For multiple sources, use separate markers such as [S1][S2].
 If evidence is insufficient, say so and cite relevant evidence showing missing terms.
 Return ONLY a JSON object with keys "answer" (string) and "citations" (list of the
 source IDs actually cited, e.g. ["S1", "S2"]). Use only supplied source IDs.
@@ -147,23 +156,63 @@ def evidence_packet(documents):
     return context, sources
 
 
+class CitationValidationError(ValueError):
+    """An answer must not be displayed until its source references are valid."""
+
+
+def validate_answer(result, sources):
+    if (not isinstance(result, dict) or not isinstance(result.get('answer'), str)
+            or not result['answer'].strip()):
+        raise CitationValidationError('Return a nonempty answer string in a JSON object.')
+    citations = result.get('citations')
+    if (not isinstance(citations, list) or not citations or
+            any(not isinstance(source_id, str) or source_id not in sources for source_id in citations)):
+        raise CitationValidationError('The citations list must contain only supplied source IDs and cannot be empty.')
+
+    def normalize_marker(match):
+        body = match.group(1).strip()
+        if not re.search(r'\bS\d+\b', body):
+            return match.group(0)
+        if not re.fullmatch(r'S\d+(?:\s*[,;]\s*S\d+)*', body):
+            raise CitationValidationError('Use individual inline markers such as [S1][S2], without ranges.')
+        return ''.join(f'[{source_id}]' for source_id in re.findall(r'S\d+', body))
+
+    answer = re.sub(r'\[([^\[\]\n]*)\]', normalize_marker, result['answer'])
+    inline = set(re.findall(r'\[(S\d+)\]', answer))
+    if not inline:
+        raise CitationValidationError('The answer text has no inline references. Add [S1]-style markers to supported claims.')
+    if not inline <= sources.keys():
+        raise CitationValidationError('The answer contains an unknown inline source ID.')
+    if inline != set(citations):
+        raise CitationValidationError('Inline references and citation IDs must match exactly.')
+    return {'answer': answer,
+            'citations': [dict(source_id=source_id, **sources[source_id]) for source_id in dict.fromkeys(citations)]}
+
+
 def generate_answer(question, documents, llm):
     if not documents:
         return {'answer': 'No relevant evidence was retrieved for this tenant.', 'citations': []}
     context, sources = evidence_packet(documents)
-    prompt = ChatPromptTemplate.from_messages([
+    messages = [
         ('system', SYSTEM_PROMPT),
         ('human', 'Tenant question:\n{question}\n\nEvidence (JSON):\n{context}'),
-    ])
-    result = (prompt | llm | JsonOutputParser()).invoke({'question': question, 'context': context})
-    if not isinstance(result, dict) or not isinstance(result.get('answer'), str):
-        raise ValueError('LLM did not return an answer object.')
-    citations = result.get('citations')
-    if (not isinstance(citations, list) or not citations or
-            any(not isinstance(source_id, str) or source_id not in sources for source_id in citations)):
-        raise ValueError('LLM returned missing or unknown citation IDs; answer withheld.')
-    inline = set(re.findall(r'\[(S\d+)\]', result['answer']))
-    if inline != set(citations):
-        raise ValueError('Inline references and citation IDs do not match; answer withheld.')
-    return {'answer': result['answer'],
-            'citations': [dict(source_id=source_id, **sources[source_id]) for source_id in dict.fromkeys(citations)]}
+    ]
+    inputs = {'question': question, 'context': context}
+    parser = JsonOutputParser()
+    for attempt in range(2):
+        response = (ChatPromptTemplate.from_messages(messages) | llm).invoke(inputs)
+        try:
+            return validate_answer(parser.invoke(response), sources)
+        except (CitationValidationError, OutputParserException) as exc:
+            reason = str(exc) if isinstance(exc, CitationValidationError) else 'Return valid JSON with answer and citations keys.'
+            if attempt == 1:
+                raise CitationValidationError(f'Citation validation failed after two attempts: {reason}') from None
+            # Reuse exactly the authorized evidence. Do not fabricate references
+            # or automatically attach an ungrounded draft to arbitrary sources.
+            content = response.content if hasattr(response, 'content') else response
+            inputs.update(previous_response=content if isinstance(content, str) else json.dumps(content),
+                          correction=f'{reason} Recheck every factual claim against the supplied evidence. '
+                          'Return a corrected JSON object with inline source markers in the answer and a '
+                          'citations list containing exactly those IDs. Cite only sources that support the '
+                          'associated claims. Do not add facts, retrieve new evidence, or guess missing terms.')
+            messages += [('ai', '{previous_response}'), ('human', '{correction}')]

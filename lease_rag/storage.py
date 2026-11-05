@@ -88,7 +88,10 @@ def restore_document(match):
     for key in ('chunk_id', 'document_id', 'tenant_name', 'access'):
         if evidence.get(key) != meta.get(key):
             raise ValueError('Stored citation identity does not match filterable metadata.')
-    if response_field(match, 'id') != evidence['chunk_id']:
+    for key in ('corpus_id', 'record_id'):
+        if meta.get(key) != evidence.get(key):
+            raise ValueError('Stored corpus identity does not match filterable metadata.')
+    if response_field(match, 'id') != evidence.get('record_id', evidence['chunk_id']):
         raise ValueError('Stored vector identity does not match chunk identity.')
     return Document(page_content=meta['text'], metadata=evidence)
 
@@ -115,7 +118,17 @@ def ingest_documents(documents, settings, *, active_path=ACTIVE_PATH, clients=No
         raise ValueError('Duplicate chunk IDs.')
     profile = settings.profile
     corpus_hash = fingerprint({'profile': profile, 'documents': sorted(zip(ids, metadata))})
-    namespace = 'leases-v1-' + corpus_hash[:24]
+    namespace = settings.namespace or 'leases-v1-' + corpus_hash[:24]
+    # Immutable records allow an exact, reusable namespace without mixing versions
+    # or overwriting the active corpus while a new upload is still incomplete.
+    for i, meta in enumerate(metadata):
+        ids[i] = ids[i] + ':' + corpus_hash[:24]
+        evidence = json.loads(meta['evidence_json'])
+        evidence.update(corpus_id=corpus_hash, record_id=ids[i])
+        meta.update(corpus_id=corpus_hash, record_id=ids[i],
+                    evidence_json=json.dumps(evidence, ensure_ascii=False))
+        if len(json.dumps(meta, ensure_ascii=False).encode()) > 38_000:
+            raise ValueError('Chunk metadata exceeds the budget after adding corpus identity.')
     if settings.dense_index_name == settings.sparse_index_name:
         raise ValueError('Dense and sparse indexes must have different names.')
     pc, embeddings = clients or settings.clients()
@@ -140,7 +153,7 @@ def ingest_documents(documents, settings, *, active_path=ACTIVE_PATH, clients=No
     registry = {doc.metadata['document_id']: {
         'tenant_name': doc.metadata['tenant_name'], 'access': doc.metadata['access']}
         for doc in documents}
-    snapshot = dict(schema_version=1, namespace=namespace, profile=profile,
+    snapshot = dict(schema_version=1, namespace=namespace, profile=profile, corpus_id=corpus_hash,
                     dense_index=settings.dense_index_name, sparse_index=settings.sparse_index_name,
                     documents=registry, chunk_count=len(ids))
     atomic_json(active_path, snapshot)

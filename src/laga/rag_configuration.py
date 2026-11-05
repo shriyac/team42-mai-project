@@ -26,6 +26,7 @@ KEYS = (
     "PINECONE_INDEX_NAME", "PINECONE_SPARSE_INDEX_NAME", "PINECONE_API_KEY",
     "NEBIUS_API_KEY", "FIREWORKS_API_KEY",
     "LAGA_RAG_SYNTHETIC_DEMO_ENABLED",
+    "PINECONE_NAMESPACE",
 )
 
 
@@ -87,6 +88,11 @@ def load_configuration(environ=None):
                 raise ValueError("Invalid Pinecone index name.")
         if settings.dense_index_name == settings.sparse_index_name:
             raise ValueError("Dense and sparse index names must differ.")
+        if settings.namespace and (
+            len(settings.namespace.encode("utf-8")) > 512
+            or any(ord(char) < 32 or ord(char) == 127 for char in settings.namespace)
+        ):
+            raise ValueError("Invalid Pinecone namespace.")
         settings.require("PINECONE_API_KEY")
         settings.require(PROVIDERS[settings.profile["provider"]][0])
         return RuntimeRAGConfiguration(

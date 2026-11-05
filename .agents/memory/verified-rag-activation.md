@@ -16,6 +16,19 @@ tenant's executed contractual terms.
 bindings, corpus/snapshot provenance and genuine service checks are approved.
 Mock tests establish code behavior only; do not describe them as live Pinecone
 verification or use them to approve real mappings.
+
+Upstream format compatibility is not proof of compatibility with the actual
+indexed corpus. Keep independent ingestion provenance and approval gates even
+after importing teammate code.
+
+**Why:** The same snapshot schema and embedding profile can accompany different
+chunk extraction behavior, record identities, or reused namespace contents.
+Matching code or total namespace counts cannot prove which corpus is active.
+
+**How to apply:** Compare actual pinned ingestion inputs and corpus identities,
+and verify authorized records in both indexes. Fail closed on stale canonical
+citations; never generate an operational snapshot or approve a binding just
+to make compatibility tests pass.
 The user approved a disabled-by-default synthetic-demo exception for the
 explicitly reviewed fixture, not general eligibility for unsigned documents.
 

@@ -29,6 +29,42 @@ class VerifiedScope:
     synthetic_document_ids: frozenset = frozenset()
 
 
+def verify_corpus(snapshot, manifest, config):
+    """Recompute upstream's pre-upload fingerprint, without embeddings or writes.
+
+    Reused namespaces cannot prove active corpus completeness by total count.
+    Reproduce the exact upstream metadata/text ledger for the pinned snapshot.
+    Legacy snapshots retain their original namespace/count checks.
+    """
+    from lease_rag.chunking import chunk_pdf
+    from lease_rag.config import fingerprint
+    from lease_rag.storage import pinecone_metadata
+
+    if "corpus_id" not in snapshot:
+        return
+    documents = [
+        chunk for record in manifest.values()
+        for chunk in chunk_pdf(record["pdf_path"], record, config.data_dir)[0]
+    ]
+    ids = [doc.metadata["chunk_id"] for doc in documents]
+    registry = {
+        doc.metadata["document_id"]: {
+            "access": doc.metadata["access"], "tenant_name": doc.metadata["tenant_name"],
+        } for doc in documents
+    }
+    actual = fingerprint({
+        "profile": config.settings.profile,
+        "documents": sorted(zip(ids, [pinecone_metadata(doc) for doc in documents])),
+    })
+    if (
+        len(set(ids)) != len(ids) or len(ids) != snapshot["chunk_count"]
+        or registry != snapshot["documents"] or actual != snapshot["corpus_id"]
+        or (not config.settings.namespace
+            and snapshot["namespace"] != "leases-v1-" + actual[:24])
+    ):
+        raise ValueError("The pinned corpus differs from the canonical ingestion inputs.")
+
+
 def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
     """Neither filenames, PDF content, nor a client-provided identity grant access."""
     from lease_rag.manifest import read_manifest, tenant_key
@@ -62,7 +98,15 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
         if (
             type(snapshot["schema_version"]) is not int or snapshot["schema_version"] != 1
             or snapshot_hash != digest(config.snapshot_path)
-            or not re.fullmatch(r"leases-v1-[0-9a-f]{24}", snapshot["namespace"])
+            or not isinstance(snapshot["namespace"], str) or not snapshot["namespace"]
+            or len(snapshot["namespace"].encode("utf-8")) > 512
+            or any(ord(char) < 32 or ord(char) == 127 for char in snapshot["namespace"])
+            or ("corpus_id" in snapshot and (
+                not isinstance(snapshot["corpus_id"], str)
+                or not re.fullmatch(r"[0-9a-f]{64}", snapshot["corpus_id"])
+            ))
+            or ("corpus_id" not in snapshot
+                and not re.fullmatch(r"leases-v1-[0-9a-f]{24}", snapshot["namespace"]))
             or type(snapshot["chunk_count"]) is not int or snapshot["chunk_count"] < 1
             or not isinstance(snapshot["documents"], dict) or not snapshot["documents"]
         ):
@@ -93,6 +137,7 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
         }
         if manifest_hash != digest(config.manifest_path):
             raise ValueError("Manifest changed during verification.")
+        verify_corpus(snapshot, manifest, config)
         fields = {
             "organization_id", "tenant_id", "tenant_name", "lease_id",
             "backend_document_id", "pinecone_document_id", "document_sha256",
@@ -163,6 +208,11 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
         ):
             raise ValueError("Every backend lease document requires a verified mapping.")
         authorized_scope(snapshot, principal["name"], list(selected))
+        if (
+            snapshot_hash != digest(config.snapshot_path)
+            or manifest_hash != digest(config.manifest_path)
+        ):
+            raise ValueError("Pinned ingestion inputs changed during verification.")
         # Preserve Monica's algorithm; narrow its registry so shared references
         # and other leases cannot enter either dense or sparse query filters.
         scoped = deepcopy(snapshot)

@@ -111,7 +111,9 @@ class LocalRagTests(unittest.TestCase):
         a, _, law = self.documents
         dense = Mock(query=Mock(return_value={'matches': [match(a), match(law)]}))
         sparse = Mock(query=Mock(return_value={'matches': [match(law)]}))
-        result = self.retriever(dense, sparse, k=2).invoke('What about Bob and my pet deposit?')
+        # This equal-weight fusion case intentionally overrides upstream's new
+        # 0.7 default; default-weight ordering is covered separately.
+        result = self.retriever(dense, sparse, k=2, dense_weight=0.5).invoke('What about Bob and my pet deposit?')
         self.assertEqual([d.metadata['chunk_id'] for d in result], ['law', 'alice-pets'])
         dense_filter = dense.query.call_args.kwargs['filter']
         self.assertEqual(dense_filter, sparse.query.call_args.kwargs['filter'])
@@ -204,6 +206,80 @@ class LocalRagTests(unittest.TestCase):
             self.assertEqual(active.read_text(), before)
             self.assertEqual(len(dense.records), 2)  # New ownership gets a different snapshot.
             self.assertEqual(load_snapshot(self.settings, active)['namespace'], state['namespace'])
+
+    def test_answer_retries_missing_inline_references_with_same_evidence(self):
+        prompts = []
+        responses = iter([
+            {'answer': 'The deposit is $200.', 'citations': ['S1']},
+            {'answer': 'The deposit is $200 [S1].', 'citations': ['S1']},
+        ])
+        def respond(prompt):
+            prompts.append(prompt.to_messages())
+            return AIMessage(content=json.dumps(next(responses)))
+        result = generate_answer('Pet deposit?', [self.documents[0]], RunnableLambda(respond))
+        self.assertEqual(result['answer'], 'The deposit is $200 [S1].')
+        self.assertEqual(len(prompts), 2)
+        self.assertEqual(prompts[0][1].content, prompts[1][1].content)
+        self.assertIn('no inline references', prompts[1][-1].content)
+        self.assertEqual(result['citations'][0]['document_id'], 'alice-lease')
+
+    def test_grouped_citations_normalized_without_retry(self):
+        calls = []
+        def respond(prompt):
+            calls.append(prompt)
+            return AIMessage(content=json.dumps({'answer': 'See these terms [ S1, S2 ].',
+                                                 'citations': ['S1', 'S2']}))
+        result = generate_answer('pets', [self.documents[0], self.documents[2]], RunnableLambda(respond))
+        self.assertEqual(result['answer'], 'See these terms [S1][S2].')
+        self.assertEqual(len(calls), 1)
+        self.assertEqual([c['document_id'] for c in result['citations']], ['alice-lease', 'nc-law'])
+
+    def test_invalid_answer_is_withheld_after_one_correction_attempt(self):
+        for raw in ['not json', json.dumps({'answer': 'Missing markers', 'citations': ['S1']}),
+                    json.dumps({'answer': 'Wrong source [S1, S99]', 'citations': ['S1']}),
+                    json.dumps({'answer': 'Unsupported range [S1-S9]', 'citations': ['S1']}),
+                    json.dumps({'answer': 'Mismatch [S1]', 'citations': ['S1', 'S2']})]:
+            calls = []
+            def respond(prompt):
+                calls.append(prompt)
+                return AIMessage(content=raw)
+            with self.assertRaisesRegex(ValueError, 'two attempts'):
+                generate_answer('pets', [self.documents[0], self.documents[2]], RunnableLambda(respond))
+            self.assertEqual(len(calls), 2)
+
+    def test_fixed_namespace_filters_old_versions_and_keeps_previous_on_failure(self):
+        settings = Settings({'PINECONE_INDEX_NAME': 'laga-rag',
+                             'PINECONE_NAMESPACE': 'laga-hydrid'}, root=self.root)
+        dense, sparse = FakeIndex(), FakeIndex()
+        active = self.root / 'active.json'
+        indexes = lambda pc, name, **kw: sparse if kw['sparse'] else dense
+        with patch('lease_rag.storage.prepare_index', side_effect=indexes), redirect_stdout(io.StringIO()):
+            old = ingest_documents(self.documents, settings, active_path=active,
+                                   clients=(self.pc, self.embeddings))
+            changed = copy.deepcopy(self.documents)
+            changed[0].page_content = 'Updated pet deposit: $300.'
+            with patch('lease_rag.storage.verify_records', side_effect=[None, RuntimeError('incomplete')]):
+                with self.assertRaises(RuntimeError):
+                    ingest_documents(changed, settings, active_path=active, clients=(self.pc, self.embeddings))
+            retriever = self.retriever(dense, sparse)
+            retriever.snapshot = load_snapshot(settings, active)
+            self.assertEqual(retriever.snapshot, old)
+            self.assertIn('$200', next(d.page_content for d in retriever.invoke('pets')
+                                      if d.metadata['document_id'] == 'alice-lease'))
+            new = ingest_documents(changed, settings, active_path=active, clients=(self.pc, self.embeddings))
+            self.assertEqual(new['namespace'], 'laga-hydrid')
+            self.assertEqual(new['sparse_index'], 'laga-rag-sparse')
+            self.assertNotEqual(old['corpus_id'], new['corpus_id'])
+            self.assertEqual(len(dense.records['laga-hydrid']), 6)
+            retriever.snapshot = new
+            hits = retriever.invoke('pets')
+            self.assertEqual(len(hits), 2)
+            self.assertIn('$300', next(d.page_content for d in hits
+                                      if d.metadata['document_id'] == 'alice-lease'))
+            for index in (dense, sparse):
+                self.assertIn({'corpus_id': {'$eq': new['corpus_id']}}, index.calls[-1]['filter']['$and'])
+            with self.assertRaisesRegex(ValueError, 'namespace'):
+                load_snapshot(Settings({**settings.values, 'PINECONE_NAMESPACE': 'other'}), active)
 
     def test_fetch_sdk_response_retries_missing_ids_and_fails_if_incomplete(self):
         index = Mock()
