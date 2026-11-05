@@ -8,6 +8,7 @@ import json
 import re
 
 from .rag_configuration import CONFIG_ERROR, MAPPING_ERROR, RAGIntegrationError
+from .synthetic_demo import eligible_status
 
 
 def digest(path):
@@ -24,6 +25,8 @@ class VerifiedScope:
     bindings: dict
     snapshot: dict
     chunks: dict
+    property_id: str = ""
+    synthetic_document_ids: frozenset = frozenset()
 
 
 def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
@@ -95,6 +98,7 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
             "backend_document_id", "pinecone_document_id", "document_sha256",
         }
         seen_backend, seen_pinecone, selected, chunks = set(), set(), {}, {}
+        synthetic_ids = set()
         for row in bindings["documents"]:
             if (
                 not isinstance(row, dict) or set(row) != fields
@@ -118,7 +122,17 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
             record = manifest[row["pinecone_document_id"]]
             if (
                 record["access"] != "tenant" or record["document_type"] != "lease"
-                or record["document_status"] != "signed"
+                or not eligible_status(
+                    record["document_status"], enabled=config.synthetic_demo_enabled,
+                    organization_id=organization_id, tenant_id=tenant_id,
+                    tenant_name=principal["name"], lease_id=lease_id,
+                    property_id=lease["propertyId"],
+                    backend_document_id=row["backend_document_id"],
+                    pinecone_document_id=row["pinecone_document_id"],
+                    document_sha256=row["document_sha256"],
+                )
+                or (record["document_status"] == "synthetic_unsigned"
+                    and record.get("property_id") != lease["propertyId"])
                 or record["tenant_name"] != tenant_key(principal["name"])
                 or any(record.get(key) != row[key] for key in (
                     "organization_id", "tenant_id", "lease_id", "backend_document_id",
@@ -141,6 +155,8 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
                     raise ValueError("Duplicate canonical chunk.")
                 chunks[chunk.metadata["chunk_id"]] = chunk
             selected[row["pinecone_document_id"]] = deepcopy(row)
+            if record["document_status"] == "synthetic_unsigned":
+                synthetic_ids.add(row["pinecone_document_id"])
         if (
             {row["backend_document_id"] for row in selected.values()} != set(documents)
             or not chunks or len(chunks) > snapshot["chunk_count"]
@@ -158,6 +174,7 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
             organization_id=organization_id, backend_document_ids=frozenset(documents),
             bindings=selected, snapshot=scoped,
             chunks=chunks,
+            property_id=lease["propertyId"], synthetic_document_ids=frozenset(synthetic_ids),
         )
     except Exception:
         raise RAGIntegrationError(

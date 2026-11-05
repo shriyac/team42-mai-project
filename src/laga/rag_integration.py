@@ -7,6 +7,7 @@ from .rag_configuration import (
     CONFIG_ERROR, EVIDENCE_ERROR, RAGIntegrationError, activation_requested, load_configuration,
 )
 from .rag_mapping import verify_scope
+from .synthetic_demo import eligible_status
 
 
 def production_factory_from_environment(backend):
@@ -75,7 +76,16 @@ def normalize_document(document, scope):
                 raise ValueError("Stored source provenance differs from the verified PDF extraction.")
         if (
             meta.get("access") != "tenant" or meta.get("document_type") != "lease"
-            or meta.get("document_status") != "signed"
+            or not eligible_status(
+                meta.get("document_status"),
+                enabled=meta["document_id"] in scope.synthetic_document_ids,
+                organization_id=scope.organization_id, tenant_id=scope.tenant_id,
+                tenant_name=scope.tenant_name, lease_id=scope.lease_id,
+                property_id=scope.property_id,
+                backend_document_id=row["backend_document_id"],
+                pinecone_document_id=meta["document_id"],
+                document_sha256=meta.get("document_sha256"),
+            )
             or meta.get("tenant_name") != tenant_key(scope.tenant_name)
             or meta.get("document_sha256") != row["document_sha256"]
             or not isinstance(meta.get("chunk_id"), str) or not meta["chunk_id"].strip()
@@ -136,6 +146,7 @@ class BoundRetrieverFactory:
     def __init__(self, scope, delegate):
         self.scope, self.delegate, self.failure = scope, delegate, None
         self.document_ids = frozenset(scope.bindings)
+        self.is_synthetic_demo = bool(scope.synthetic_document_ids)
 
     def __call__(self, tenant_id, tenant_name, lease_id):
         if (tenant_id, tenant_name, lease_id) != (

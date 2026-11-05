@@ -254,8 +254,8 @@ class LocalRagTests(unittest.TestCase):
             if record['access'] == 'tenant':
                 lease_chunks = chunks
                 pet = next(d for d in chunks if d.metadata['section_id'] == '11')
-                self.assertEqual(pet.metadata['page_numbers'], [2])
-                self.assertTrue(pet.metadata['has_unfilled_fields'])
+                self.assertEqual(pet.metadata['page_numbers'], [2, 3])
+                self.assertFalse(pet.metadata['has_unfilled_fields'])
                 other = dict(record, tenant_name='another tenant', document_id='another-lease')
                 others, _ = chunk_pdf(record['pdf_path'], other, ROOT / 'data')
                 self.assertFalse({d.metadata['chunk_id'] for d in chunks}

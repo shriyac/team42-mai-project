@@ -16,9 +16,16 @@ tenant's executed contractual terms.
 bindings, corpus/snapshot provenance and genuine service checks are approved.
 Mock tests establish code behavior only; do not describe them as live Pinecone
 verification or use them to approve real mappings.
-Preserve the source's synthetic/unsigned status. Any test-only eligibility
-needs a separate explicit policy decision, not relabelling the fixture as signed
-to bypass production safeguards.
+The user approved a disabled-by-default synthetic-demo exception for the
+explicitly reviewed fixture, not general eligibility for unsigned documents.
+
+**Why:** Controlled fixture demos are needed without weakening real production
+eligibility or pretending an unsigned document is legally signed.
+
+**How to apply:** Pin the exact approved identity and PDF hash, retain the
+synthetic/unsigned status, visibly disclose demo status, and preserve all
+ownership, manifest, snapshot, resource and evidence checks. Source eligibility
+never approves ingestion or bindings. Do not relabel fixtures as signed.
 
 Backend document identities and Pinecone document identities are distinct.
 Retain the original source identity rather than replacing it to make an

@@ -25,6 +25,7 @@ KEYS = (
     "LAGA_RAG_DATA_DIR", "LAGA_RAG_SNAPSHOT_FILE", "EMBEDDING_PROVIDER",
     "PINECONE_INDEX_NAME", "PINECONE_SPARSE_INDEX_NAME", "PINECONE_API_KEY",
     "NEBIUS_API_KEY", "FIREWORKS_API_KEY",
+    "LAGA_RAG_SYNTHETIC_DEMO_ENABLED",
 )
 
 
@@ -66,6 +67,7 @@ class RuntimeRAGConfiguration:
     manifest_path: Path
     bindings_path: Path
     data_dir: Path
+    synthetic_demo_enabled: bool = False
 
 
 def load_configuration(environ=None):
@@ -74,6 +76,9 @@ def load_configuration(environ=None):
         values = runtime_values(environ)
         if str(values.get("LAGA_RAG_ENABLED") or "").strip().lower() not in {"true", "1"}:
             raise ValueError("Retrieval is not explicitly enabled.")
+        demo = str(values.get("LAGA_RAG_SYNTHETIC_DEMO_ENABLED") or "false").strip().lower()
+        if demo not in {"true", "1", "false", "0"}:
+            raise ValueError("Invalid synthetic demo setting.")
         settings = Settings({
             key: value for key, value in values.items() if not key.startswith("LAGA_")
         }, root=ROOT)
@@ -91,6 +96,7 @@ def load_configuration(environ=None):
             manifest_path=resolve_project_path(values.get("LAGA_RAG_MANIFEST_FILE") or "documents.json"),
             bindings_path=resolve_project_path(values.get("LAGA_RAG_BINDINGS_FILE") or "rag_bindings.json"),
             data_dir=resolve_project_path(values.get("LAGA_RAG_DATA_DIR") or "data"),
+            synthetic_demo_enabled=demo in {"true", "1"},
         )
     except RAGIntegrationError:
         raise

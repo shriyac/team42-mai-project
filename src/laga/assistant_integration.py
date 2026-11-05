@@ -184,6 +184,12 @@ class AssistantIntegration:
                 raise APIError(503, error.code, error.public_message) from None
         try:
             response = adapt_answer(result, thread_id=response_thread, evidence=evidence)
+            if (
+                isinstance(self.retriever_factory, ProductionRetrieverFactory)
+                and configured_factory.is_synthetic_demo
+            ):
+                from .synthetic_demo import DEMO_NOTICE
+                response["answer"] = DEMO_NOTICE + response["answer"]
             validate_response(response)
         except Exception:
             raise APIError(

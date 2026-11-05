@@ -30,4 +30,5 @@ build/
 # Operator ownership manifests and generated RAG snapshots/embedding caches.
 /documents.json
 /rag_bindings.json
+/rag_bindings.pending.json
 /artifacts/lease_rag_local/
