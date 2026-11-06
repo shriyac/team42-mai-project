@@ -3,6 +3,7 @@ import {readFile,realpath,stat} from 'node:fs/promises';
 import {randomUUID} from 'node:crypto';
 import {fileURLToPath} from 'node:url';
 import path from 'node:path';
+import {isPrivateRoute} from './private-routes.mjs';
 
 const defaultRoot=fileURLToPath(new URL('../dist/',import.meta.url));
 const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.woff2':'font/woff2','.json':'application/json','.pdf':'application/pdf','.png':'image/png','.ico':'image/x-icon','.txt':'text/plain; charset=utf-8'};
@@ -30,6 +31,7 @@ export async function createStaticServer({root=defaultRoot,csp=process.env.LAGA_
    res.end(req.method==='HEAD'?undefined:bytes);
   }
   try{
+   if(isPrivateRoute(req.url))return send(403,'Forbidden');
    const url=new URL(req.url,'http://localhost');
    const decoded=decodeURIComponent(url.pathname);
    if(decoded.includes('\0'))return send(400,'Invalid request');

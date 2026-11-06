@@ -1,7 +1,8 @@
 import {defineConfig} from 'vite';
 import {fileURLToPath} from 'node:url';
+import {privateRoutesPlugin} from './scripts/private-routes.mjs';
 const projectRoot=fileURLToPath(new URL('.',import.meta.url));
-export default defineConfig({root:'frontend',build:{outDir:'../dist',emptyOutDir:true,rollupOptions:{input:{app:fileURLToPath(new URL('./frontend/index.html',import.meta.url)),apiDocs:fileURLToPath(new URL('./frontend/api-docs/index.html',import.meta.url))}}},server:{fs:{
+export default defineConfig({plugins:[privateRoutesPlugin()],root:'frontend',build:{outDir:'../dist',emptyOutDir:true,rollupOptions:{input:{app:fileURLToPath(new URL('./frontend/index.html',import.meta.url)),apiDocs:fileURLToPath(new URL('./frontend/api-docs/index.html',import.meta.url))}}},server:{fs:{
  allow:[projectRoot,fileURLToPath(new URL('.',import.meta.resolve('@fontsource-variable/manrope')))],
  // Preserve Vite's default protections and deny local runtime material even
  // through /@fs/ URLs. Git ignore rules do not control HTTP file access.
