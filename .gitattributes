@@ -1,0 +1,3 @@
+# Preserve the byte-level text hashes in the synthetic corpus on every platform.
+docs/synthetic-leases/** text eol=lf
+docs/synthetic-leases/*.pdf -text

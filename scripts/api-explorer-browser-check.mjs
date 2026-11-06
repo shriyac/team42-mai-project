@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+const targets=await(await fetch('http://127.0.0.1:9224/json')).json();
+const target=targets.find(t=>t.type==='page'&&t.url.includes('5174'));
+assert.ok(target,'Open the app in a browser with remote debugging on port 9224.');
+const socket=new WebSocket(target.webSocketDebuggerUrl);
+await new Promise(resolve=>socket.addEventListener('open',resolve,{once:true}));
+let id=0;const pending=new Map(),errors=[];
+socket.addEventListener('message',event=>{const m=JSON.parse(event.data);if(m.id){const job=pending.get(m.id);pending.delete(m.id);m.error?job.reject(m.error):job.resolve(m.result)}if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails)});
+const call=(method,params={})=>new Promise((resolve,reject)=>{const next=++id;pending.set(next,{resolve,reject});socket.send(JSON.stringify({id:next,method,params}))});
+const run=async expression=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw Error(JSON.stringify(r.exceptionDetails));return r.result.value};
+const wait=async expression=>{const end=Date.now()+15000;while(Date.now()<end){if(await run(expression))return;await new Promise(r=>setTimeout(r,100))}throw Error('Timed out: '+expression)};
+const click=async text=>{await wait(`[...document.querySelectorAll('button')].some(b=>!b.disabled&&b.textContent.trim().startsWith(${JSON.stringify(text)}))`);await run(`(()=>{const button=[...document.querySelectorAll('button')].find(b=>b.textContent.trim().startsWith(${JSON.stringify(text)}));button.focus();button.click()})()`)};
+const close=()=>run(`document.querySelector('dialog [aria-label="Close dialog"]').click()`);
+const screenshot=async name=>{await new Promise(resolve=>setTimeout(resolve,350));const shot=await call('Page.captureScreenshot',{format:'png'});await fs.writeFile('data/browser-check/'+name+'.png',Buffer.from(shot.data,'base64'))};
+
+try{
+ await call('Runtime.enable');await call('Page.enable');await call('Network.enable');
+ await call('Network.deleteCookies',{name:'laga_session',url:'http://localhost:8002'});
+ await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});
+ await call('Page.navigate',{url:'http://localhost:5174/api-docs/'});await wait(`!!document.querySelector('#api-base')`);
+ assert.equal(await run(`document.querySelectorAll('.endpoint-sidebar nav button').length`),11);await run('window.scrollTo(0,0)');await screenshot('api-explorer-overview');
+ const setInput=async(selector,value)=>{await run(`(()=>{const el=document.querySelector(${JSON.stringify(selector)});const proto=el.tagName==='TEXTAREA'?HTMLTextAreaElement.prototype:HTMLInputElement.prototype;Object.getOwnPropertyDescriptor(proto,'value').set.call(el,${JSON.stringify(value)});el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}))})()`)};
+ const select=async(path)=>{await run(`[...document.querySelectorAll('.endpoint-sidebar nav button')].find(b=>b.querySelector('span:nth-child(2)').textContent===${JSON.stringify(path)}).click()`);await wait(`document.querySelector('.endpoint-heading code').textContent===${JSON.stringify(path)}`)};
+ const send=async()=>{await click('Send request');await wait(`!document.querySelector('.request-actions button.primary').disabled&&!!document.querySelector('.validation-result')`)};
+ await setInput('#api-base','http://localhost:8002/api/v1');await click('Apply server');await send();
+ assert.equal(await run(`document.querySelector('.validation-result strong').textContent`),'Response matches contract');
+ await select('/auth/login');await setInput('textarea',JSON.stringify({email:'alex@alderliving.example',password:'fixture-password'}));await send();
+ assert.equal(await run(`document.querySelector('#csrf').value`),'fixture-csrf');
+ assert.equal(await run(`document.querySelector('.session-control label span').textContent`),'Alex Morgan');
+ await select('/workspace');await send();assert.equal(await run(`!!document.querySelector('.validation-result.valid')`),true);
+ await screenshot('api-explorer-workspace');
+ await select('/properties');await send();assert.equal(await run(`!!document.querySelector('.validation-result.valid')`),true);
+ await select('/policies');await run(`(()=>{const input=document.querySelector('input[type=file]');const data=new DataTransfer();data.items.add(new File(['%PDF-1.4 explorer browser test'],'rules.pdf',{type:'application/pdf'}));input.files=data.files;input.dispatchEvent(new Event('change',{bubbles:true}))})()`);await send();assert.equal(await run(`!!document.querySelector('.validation-result.valid')`),true);
+ await screenshot('api-explorer-upload');
+ await select('/leases/{id}');await setInput('.request-panel input','bad-json');await send();assert.equal(await run(`!!document.querySelector('.validation-result.invalid')`),true);
+ const report=await run(`(async()=>{const originalURL=URL.createObjectURL,originalClick=HTMLAnchorElement.prototype.click;let pending;URL.createObjectURL=blob=>{pending=blob.text();return 'blob:fixture'};HTMLAnchorElement.prototype.click=function(){};try{[...document.querySelectorAll('button')].find(b=>b.textContent.includes('Export test report')).click();return await pending}finally{URL.createObjectURL=originalURL;HTMLAnchorElement.prototype.click=originalClick}})()`);
+ assert.ok(report.includes('schemaMatched'));assert.ok(!report.includes('fixture-password'));assert.ok(!report.includes('fixture-csrf'));assert.ok(!report.includes('Alex Morgan'));
+ await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await screenshot('api-explorer-mobile');assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true);
+ await click('Connect to the app');await wait(`!!document.querySelector('.connection-guide')`);await screenshot('api-explorer-guide-mobile');assert.equal(await run('document.documentElement.scrollWidth<=innerWidth'),true);
+ await click('API playground');await setInput('#api-base','/api/v1');await click('Apply server');
+ assert.equal(await run(`document.querySelector('#csrf').value`),'');assert.equal(await run(`document.querySelectorAll('.endpoint-sidebar nav i').length`),0);
+ assert.deepEqual(errors,[]);console.log('PASS: 11 spec-driven endpoints, cross-origin cookies/login, CSRF capture, workspace, property mutation, binary PDF upload, invalid-response detection, target reset, guide and 390px layout; no runtime errors.');
+}finally{if(errors.length)console.error('Runtime errors:',JSON.stringify(errors));socket.close()}

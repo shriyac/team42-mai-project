@@ -1,0 +1,34 @@
+build/
+/.venv/
+/__pycache__/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+/.pytest_cache/
+/.env
+/.env.*
+!/.env.example
+/data/
+/uploads/
+/.streamlit/secrets.toml
+
+/node_modules/
+/dist/
+
+# Generated distribution bundles; recreate with the packaging scripts.
+/laga-*.zip
+/frontend/.env
+/frontend/.env.*
+!/frontend/.env.example
+
+# Keep only Monica's public RAG test PDFs; all other local data stays private.
+!/data/
+/data/*
+!/data/Free-North-Carolina-Standard-Lease-Agreement-Template.pdf
+!/data/NC_general_statutes_Chapter_42.pdf
+
+# Operator ownership manifests and generated RAG snapshots/embedding caches.
+/documents.json
+/rag_bindings.json
+/rag_bindings.pending.json
+/artifacts/lease_rag_local/

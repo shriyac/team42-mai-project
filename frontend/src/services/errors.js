@@ -1,0 +1,1 @@
+export class ApiError extends Error{constructor(message,{code='REQUEST_FAILED',requestId=null,fields={}}={}){super(message);this.name='ApiError';this.code=code;this.requestId=requestId;this.fields=fields}}

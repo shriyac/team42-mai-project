@@ -1,0 +1,2660 @@
+{
+  "schema_version": 1,
+  "runs": {
+    "mock": {
+      "mode": "mock",
+      "generated_at": "2026-11-06T05:14:12.238742+00:00",
+      "dataset_source": {
+        "path": "data/Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+        "sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+        "manifest": "tests/fixtures/phase6c_documents.json",
+        "document_id": "lease-document-1",
+        "status": "synthetic_unsigned",
+        "annotation_method": "Agent-authored reference assertions verified against local PDF extraction; no independent human review. Not legal advice. Chunk references are a selected relevance set, not exhaustive relevance judgments.",
+        "monetary_units": "USD decimal strings; hypothetical payment dates and prior-fee state are question inputs, not asserted payment history."
+      },
+      "summary": {
+        "passed": 11,
+        "failed": 4,
+        "not_run": 0,
+        "questions_executed": 15,
+        "metrics": {
+          "tool_selection_accuracy": {
+            "passed": 13,
+            "denominator": 15,
+            "value": 0.8666666666666667
+          },
+          "calculation_exact_match": {
+            "passed": 0,
+            "denominator": 2,
+            "value": 0.0
+          },
+          "citation_correctness": {
+            "passed": 10,
+            "denominator": 12,
+            "value": 0.8333333333333334
+          },
+          "groundedness_structural": {
+            "passed": 10,
+            "denominator": 12,
+            "value": 0.8333333333333334
+          },
+          "abstention_clarification_correctness": {
+            "passed": 2,
+            "denominator": 4,
+            "value": 0.5
+          },
+          "authorization_correctness": {
+            "passed": 1,
+            "denominator": 1,
+            "value": 1.0
+          },
+          "recall_at_5": {
+            "value": 1.0,
+            "denominator": 12
+          },
+          "precision_at_5": {
+            "value": 0.2833333333333333,
+            "denominator": 12
+          },
+          "latency_seconds": {
+            "average": 0.011975108399201417,
+            "median": 0.01214114300091751,
+            "denominator": 15
+          }
+        }
+      },
+      "outcomes": [
+        {
+          "question_id": "simple-01",
+          "category": "simple_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What is my monthly rent?”, the lease evidence states \"4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.\" [S1].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 1,
+              "clause_id": "",
+              "source_text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What is my monthly rent?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > RENT\n\n4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:630",
+                "parent_node_id": null,
+                "section_id": "4",
+                "section_title": "RENT",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "RENT"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 630,
+                "document_char_end": 725,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 630,
+                    "char_end": 725,
+                    "text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 4",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 42,
+                "embedding_token_estimate": 60,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+                "source_text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What is my monthly rent?",
+              "chunk_ids": [
+                "chunk-0fe16ab3a241329cc24b5a99"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-0fe16ab3a241329cc24b5a99"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.017758919999323552
+        },
+        {
+          "question_id": "simple-02",
+          "category": "simple_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What are the start and end dates of my lease term?”, the lease evidence states \"3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)\" [S1].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 1,
+              "clause_id": "",
+              "source_text": "3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What are the start and end dates of my lease term?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-fa90b4f34a19ae485082dee1",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > TERM\n\n3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:543",
+                "parent_node_id": null,
+                "section_id": "3",
+                "section_title": "TERM",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "TERM"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 543,
+                "document_char_end": 628,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 543,
+                    "char_end": 628,
+                    "text": "3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)"
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 3",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 37,
+                "embedding_token_estimate": 54,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-fa90b4f34a19ae485082dee1",
+                "source_text": "3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What are the start and end dates of my lease term?",
+              "chunk_ids": [
+                "chunk-fa90b4f34a19ae485082dee1"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-fa90b4f34a19ae485082dee1"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.01126734199715429
+        },
+        {
+          "question_id": "simple-03",
+          "category": "simple_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What pets are allowed”, the lease evidence states \"11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.\" [S1].\n\nFor “what is the ordinary pet fee?”, the lease evidence states \"11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.\" [S2].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 2,
+              "clause_id": "",
+              "source_text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            },
+            {
+              "source_id": "S2",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 2,
+              "clause_id": "",
+              "source_text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What pets are allowed'.",
+              "status": "complete"
+            },
+            {
+              "label": "Retrieved 1 authorized item(s) for 'what is the ordinary pet fee?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-db27019434862651338b1b80",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > PETS\n\n11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:2013",
+                "parent_node_id": null,
+                "section_id": "11",
+                "section_title": "PETS",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "PETS"
+                ],
+                "page_numbers": [
+                  2
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 2013,
+                "document_char_end": 2299,
+                "source_spans": [
+                  {
+                    "page_number": 2,
+                    "printed_page_label": null,
+                    "char_start": 851,
+                    "char_end": 1137,
+                    "text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 2, 11",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {
+                  "maximum_pet_weight_lb": {
+                    "status": "present",
+                    "raw_value": "50",
+                    "value": 50.0
+                  },
+                  "number_of_pets": {
+                    "status": "present",
+                    "raw_value": "1",
+                    "value": 1.0
+                  },
+                  "pets_allowed": {
+                    "status": "selected",
+                    "value": true,
+                    "detection_method": "extracted_text_glyphs_only"
+                  }
+                },
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 108,
+                "embedding_token_estimate": 126,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-db27019434862651338b1b80",
+                "source_text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What pets are allowed",
+              "chunk_ids": [
+                "chunk-db27019434862651338b1b80"
+              ],
+              "error": null
+            },
+            {
+              "query": "what is the ordinary pet fee?",
+              "chunk_ids": [
+                "chunk-db27019434862651338b1b80"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-db27019434862651338b1b80"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.011436262997449376
+        },
+        {
+          "question_id": "simple-04",
+          "category": "simple_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What is the smoking and vaping policy?”, the lease evidence states \"12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.\" [S1].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 3,
+              "clause_id": "",
+              "source_text": "12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What is the smoking and vaping policy?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-c221f6f49945c26dbd90d768",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > SMOKING POLICY\n\n12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:2301",
+                "parent_node_id": null,
+                "section_id": "12",
+                "section_title": "SMOKING POLICY",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "SMOKING POLICY"
+                ],
+                "page_numbers": [
+                  3
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 2301,
+                "document_char_end": 2467,
+                "source_spans": [
+                  {
+                    "page_number": 3,
+                    "printed_page_label": null,
+                    "char_start": 0,
+                    "char_end": 166,
+                    "text": "12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 3, 12",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 48,
+                "embedding_token_estimate": 67,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-c221f6f49945c26dbd90d768",
+                "source_text": "12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What is the smoking and vaping policy?",
+              "chunk_ids": [
+                "chunk-c221f6f49945c26dbd90d768"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-c221f6f49945c26dbd90d768"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.01214114300091751
+        },
+        {
+          "question_id": "simple-05",
+          "category": "simple_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “Which utilities and services are included?”, the lease evidence states \"16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.\" [S1].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 3,
+              "clause_id": "",
+              "source_text": "16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'Which utilities and services are included?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-6c4f15c0fc027900c1cba547",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > UTILITIES & SERVICES\n\n16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:3191",
+                "parent_node_id": null,
+                "section_id": "16",
+                "section_title": "UTILITIES & SERVICES",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "UTILITIES & SERVICES"
+                ],
+                "page_numbers": [
+                  3,
+                  4
+                ],
+                "printed_page_labels": [
+                  null,
+                  null
+                ],
+                "document_char_start": 3191,
+                "document_char_end": 3614,
+                "source_spans": [
+                  {
+                    "page_number": 3,
+                    "printed_page_label": null,
+                    "char_start": 890,
+                    "char_end": 960,
+                    "text": "16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)"
+                  },
+                  {
+                    "page_number": 4,
+                    "printed_page_label": null,
+                    "char_start": 0,
+                    "char_end": 351,
+                    "text": "☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 3, 4, 16",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 123,
+                "embedding_token_estimate": 144,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-6c4f15c0fc027900c1cba547",
+                "source_text": "16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "Which utilities and services are included?",
+              "chunk_ids": [
+                "chunk-6c4f15c0fc027900c1cba547"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-6c4f15c0fc027900c1cba547"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.010682569998607505
+        },
+        {
+          "question_id": "multi-01",
+          "category": "multi_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What are the pet rules?”, the lease evidence states \"11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.\" [S1].\n\nFor “What is the smoking policy?”, the lease evidence states \"12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.\" [S2].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 2,
+              "clause_id": "",
+              "source_text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            },
+            {
+              "source_id": "S2",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 3,
+              "clause_id": "",
+              "source_text": "12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What are the pet rules?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What is the smoking policy?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-db27019434862651338b1b80",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > PETS\n\n11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:2013",
+                "parent_node_id": null,
+                "section_id": "11",
+                "section_title": "PETS",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "PETS"
+                ],
+                "page_numbers": [
+                  2
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 2013,
+                "document_char_end": 2299,
+                "source_spans": [
+                  {
+                    "page_number": 2,
+                    "printed_page_label": null,
+                    "char_start": 851,
+                    "char_end": 1137,
+                    "text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 2, 11",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {
+                  "maximum_pet_weight_lb": {
+                    "status": "present",
+                    "raw_value": "50",
+                    "value": 50.0
+                  },
+                  "number_of_pets": {
+                    "status": "present",
+                    "raw_value": "1",
+                    "value": 1.0
+                  },
+                  "pets_allowed": {
+                    "status": "selected",
+                    "value": true,
+                    "detection_method": "extracted_text_glyphs_only"
+                  }
+                },
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 108,
+                "embedding_token_estimate": 126,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-db27019434862651338b1b80",
+                "source_text": "11. PETS. (check one)\n\n☐ - No Pets Allowed.\n\n☑ - Pets are Allowed. Prior written approval required.\nNumber of Pets: 1\nTypes: Approved cat Miso, domestic shorthair, 11 lb (2026-01-25).\nMaximum Weight (per pet): 50 Pounds\nOne-time pet fee: $250.00, nonrefundable; monthly pet rent: $0.00.",
+                "context": [],
+                "warnings": []
+              }
+            },
+            {
+              "chunk_id": "chunk-c221f6f49945c26dbd90d768",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > SMOKING POLICY\n\n12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:2301",
+                "parent_node_id": null,
+                "section_id": "12",
+                "section_title": "SMOKING POLICY",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "SMOKING POLICY"
+                ],
+                "page_numbers": [
+                  3
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 2301,
+                "document_char_end": 2467,
+                "source_spans": [
+                  {
+                    "page_number": 3,
+                    "printed_page_label": null,
+                    "char_start": 0,
+                    "char_end": 166,
+                    "text": "12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 3, 12",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 48,
+                "embedding_token_estimate": 67,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-c221f6f49945c26dbd90d768",
+                "source_text": "12. SMOKING POLICY. (check one)\n\n☑ - No smoking or vaping inside the unit or enclosed shared areas.\n\nOutdoor smoking/vaping only in the area designated by management.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What are the pet rules?",
+              "chunk_ids": [
+                "chunk-db27019434862651338b1b80"
+              ],
+              "error": null
+            },
+            {
+              "query": "What is the smoking policy?",
+              "chunk_ids": [
+                "chunk-c221f6f49945c26dbd90d768"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-db27019434862651338b1b80",
+            "chunk-c221f6f49945c26dbd90d768"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.4
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.011034633997041965
+        },
+        {
+          "question_id": "multi-02",
+          "category": "multi_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What is my monthly rent?”, the lease evidence states \"4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.\" [S1].\n\nFor “When does my lease term end?”, the lease evidence states \"3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)\" [S2].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 1,
+              "clause_id": "",
+              "source_text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            },
+            {
+              "source_id": "S2",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 1,
+              "clause_id": "",
+              "source_text": "3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What is my monthly rent?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Retrieved 1 authorized item(s) for 'When does my lease term end?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > RENT\n\n4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:630",
+                "parent_node_id": null,
+                "section_id": "4",
+                "section_title": "RENT",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "RENT"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 630,
+                "document_char_end": 725,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 630,
+                    "char_end": 725,
+                    "text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 4",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 42,
+                "embedding_token_estimate": 60,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+                "source_text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+                "context": [],
+                "warnings": []
+              }
+            },
+            {
+              "chunk_id": "chunk-fa90b4f34a19ae485082dee1",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > TERM\n\n3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:543",
+                "parent_node_id": null,
+                "section_id": "3",
+                "section_title": "TERM",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "TERM"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 543,
+                "document_char_end": 628,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 543,
+                    "char_end": 628,
+                    "text": "3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)"
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 3",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 37,
+                "embedding_token_estimate": 54,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-fa90b4f34a19ae485082dee1",
+                "source_text": "3. TERM.\n\nStart Date: 2026-02-01\nEnd Date: 2027-01-31 (inclusive; 12 calendar months)",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What is my monthly rent?",
+              "chunk_ids": [
+                "chunk-0fe16ab3a241329cc24b5a99"
+              ],
+              "error": null
+            },
+            {
+              "query": "When does my lease term end?",
+              "chunk_ids": [
+                "chunk-fa90b4f34a19ae485082dee1"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-0fe16ab3a241329cc24b5a99",
+            "chunk-fa90b4f34a19ae485082dee1"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.4
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.012250224001036258
+        },
+        {
+          "question_id": "multi-03",
+          "category": "multi_clause",
+          "expected_behavior": "answer",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "For “What is the security deposit?”, the lease evidence states \"5. SECURITY DEPOSIT. (check one)\n\n☐ - No Security Deposit.\n\n☑ - Security Deposit. Due at commencement; no payment recorded.\nAmount: $2,200.00\n● Returning to Tenant: _____ days after lease termination.\" [S1].\n\nFor “Which utilities are included?”, the lease evidence states \"16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.\" [S2].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 1,
+              "clause_id": "",
+              "source_text": "5. SECURITY DEPOSIT. (check one)\n\n☐ - No Security Deposit.\n\n☑ - Security Deposit. Due at commencement; no payment recorded.\nAmount: $2,200.00\n● Returning to Tenant: _____ days after lease termination.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            },
+            {
+              "source_id": "S2",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 3,
+              "clause_id": "",
+              "source_text": "16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What is the security deposit?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Retrieved 1 authorized item(s) for 'Which utilities are included?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-bfe84b92524366212032e6f8",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > SECURITY DEPOSIT\n\n5. SECURITY DEPOSIT. (check one)\n\n☐ - No Security Deposit.\n\n☑ - Security Deposit. Due at commencement; no payment recorded.\nAmount: $2,200.00\n● Returning to Tenant: _____ days after lease termination.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:727",
+                "parent_node_id": null,
+                "section_id": "5",
+                "section_title": "SECURITY DEPOSIT",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "SECURITY DEPOSIT"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 727,
+                "document_char_end": 927,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 727,
+                    "char_end": 927,
+                    "text": "5. SECURITY DEPOSIT. (check one)\n\n☐ - No Security Deposit.\n\n☑ - Security Deposit. Due at commencement; no payment recorded.\nAmount: $2,200.00\n● Returning to Tenant: _____ days after lease termination."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 5",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": true,
+                "blank_fields": [
+                  {
+                    "status": "blank",
+                    "source_line": "● Returning to Tenant: _____ days after lease termination."
+                  }
+                ],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 64,
+                "embedding_token_estimate": 83,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-bfe84b92524366212032e6f8",
+                "source_text": "5. SECURITY DEPOSIT. (check one)\n\n☐ - No Security Deposit.\n\n☑ - Security Deposit. Due at commencement; no payment recorded.\nAmount: $2,200.00\n● Returning to Tenant: _____ days after lease termination.",
+                "context": [],
+                "warnings": []
+              }
+            },
+            {
+              "chunk_id": "chunk-6c4f15c0fc027900c1cba547",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > UTILITIES & SERVICES\n\n16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:3191",
+                "parent_node_id": null,
+                "section_id": "16",
+                "section_title": "UTILITIES & SERVICES",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "UTILITIES & SERVICES"
+                ],
+                "page_numbers": [
+                  3,
+                  4
+                ],
+                "printed_page_labels": [
+                  null,
+                  null
+                ],
+                "document_char_start": 3191,
+                "document_char_end": 3614,
+                "source_spans": [
+                  {
+                    "page_number": 3,
+                    "printed_page_label": null,
+                    "char_start": 890,
+                    "char_end": 960,
+                    "text": "16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)"
+                  },
+                  {
+                    "page_number": 4,
+                    "printed_page_label": null,
+                    "char_start": 0,
+                    "char_end": 351,
+                    "text": "☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 3, 4, 16",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 123,
+                "embedding_token_estimate": 144,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-6c4f15c0fc027900c1cba547",
+                "source_text": "16. UTILITIES & SERVICES. The Landlord is responsible for: (check one)\n\n☐ - No Utilities & Services.\n\n☑ - Utilities & Services: included in base rent as specified below.\n☐ - Cable (TV)\n☐ - Gas / Oil / Propane\n☐ - Electricity\n☐ - Internet\n☐ - Landscaping\n☑ - Water included; sewer charges are not specified.\n☑ - Ordinary shared trash and recycling included.\n☑ - Shared laundry included; tenant pays electricity and internet.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What is the security deposit?",
+              "chunk_ids": [
+                "chunk-bfe84b92524366212032e6f8"
+              ],
+              "error": null
+            },
+            {
+              "query": "Which utilities are included?",
+              "chunk_ids": [
+                "chunk-6c4f15c0fc027900c1cba547"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-bfe84b92524366212032e6f8",
+            "chunk-6c4f15c0fc027900c1cba547"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.4
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": true,
+            "reference_evidence_coverage": true,
+            "abstention": null,
+            "behavior": true
+          },
+          "latency_seconds": 0.011701184997946257
+        },
+        {
+          "question_id": "fee-01",
+          "category": "fee_calculation",
+          "expected_behavior": "calculation",
+          "status": "FAILED",
+          "executed": true,
+          "actual_answer": "I can’t answer from the authorized lease evidence available. Please provide the missing lease clause or clarify the question. The contractual late-fee clause is conditional or ambiguous.",
+          "validation_status": "abstained",
+          "validation_errors": [
+            "The contractual late-fee clause is conditional or ambiguous.",
+            "Late-fee inputs could not be safely extracted."
+          ],
+          "fee_errors": [
+            "The contractual late-fee clause is conditional or ambiguous."
+          ],
+          "citations": [],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 2 authorized item(s) for 'For rent due on 2026-02-01, I paid on 2026-02-06 and have not paid a late fee. What is my late fee?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Fee calculation needs explicit lease/payment details.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "One targeted evidence retry is being used.",
+              "status": "attention"
+            },
+            {
+              "label": "Retrieved 2 authorized item(s) for 'For rent due on 2026-02-01, I paid on 2026-02-06 and have not paid a late fee. What is my late fee?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Fee calculation needs explicit lease/payment details.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "Abstained after validation.",
+              "status": "attention"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > RENT\n\n4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:630",
+                "parent_node_id": null,
+                "section_id": "4",
+                "section_title": "RENT",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "RENT"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 630,
+                "document_char_end": 725,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 630,
+                    "char_end": 725,
+                    "text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 4",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 42,
+                "embedding_token_estimate": 60,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+                "source_text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+                "context": [],
+                "warnings": []
+              }
+            },
+            {
+              "chunk_id": "chunk-1dc7fb0ed4d8ab7c239f6600",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > LATE FEE\n\n6. LATE FEE. (check one)\n\n☐ - No Late Fee.\n\n☑ - Late Fee: $50.00 after day 5 (first possible fee: 2026-02-06).\n☑ - Fixed Amount. $50.00 once per late installment; no daily compounding.\n\nNo percentage late fee; no daily compounding.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:929",
+                "parent_node_id": null,
+                "section_id": "6",
+                "section_title": "LATE FEE",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "LATE FEE"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 929,
+                "document_char_end": 1160,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 929,
+                    "char_end": 1160,
+                    "text": "6. LATE FEE. (check one)\n\n☐ - No Late Fee.\n\n☑ - Late Fee: $50.00 after day 5 (first possible fee: 2026-02-06).\n☑ - Fixed Amount. $50.00 once per late installment; no daily compounding.\n\nNo percentage late fee; no daily compounding."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 6",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 90,
+                "embedding_token_estimate": 108,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-1dc7fb0ed4d8ab7c239f6600",
+                "source_text": "6. LATE FEE. (check one)\n\n☐ - No Late Fee.\n\n☑ - Late Fee: $50.00 after day 5 (first possible fee: 2026-02-06).\n☑ - Fixed Amount. $50.00 once per late installment; no daily compounding.\n\nNo percentage late fee; no daily compounding.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "For rent due on 2026-02-01, I paid on 2026-02-06 and have not paid a late fee. What is my late fee?",
+              "chunk_ids": [
+                "chunk-0fe16ab3a241329cc24b5a99",
+                "chunk-1dc7fb0ed4d8ab7c239f6600"
+              ],
+              "error": null
+            },
+            {
+              "query": "lease agreement exact clause text, applicable conditions, fees, dates, and exceptions: For rent due on 2026-02-01, I paid on 2026-02-06 and have not paid a late fee. What is my late fee?",
+              "chunk_ids": [
+                "chunk-0fe16ab3a241329cc24b5a99",
+                "chunk-1dc7fb0ed4d8ab7c239f6600"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-0fe16ab3a241329cc24b5a99",
+            "chunk-1dc7fb0ed4d8ab7c239f6600"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.4
+          },
+          "checks": {
+            "tools": false,
+            "calculation": false,
+            "citations": false,
+            "groundedness": false,
+            "answer_reference": null,
+            "reference_evidence_coverage": false,
+            "abstention": null,
+            "behavior": false
+          },
+          "latency_seconds": 0.013718459998926846
+        },
+        {
+          "question_id": "fee-02",
+          "category": "fee_calculation",
+          "expected_behavior": "calculation",
+          "status": "FAILED",
+          "executed": true,
+          "actual_answer": "I can’t answer from the authorized lease evidence available. Please provide the missing lease clause or clarify the question. The contractual late-fee clause is conditional or ambiguous.",
+          "validation_status": "abstained",
+          "validation_errors": [
+            "The contractual late-fee clause is conditional or ambiguous.",
+            "Late-fee inputs could not be safely extracted."
+          ],
+          "fee_errors": [
+            "The contractual late-fee clause is conditional or ambiguous."
+          ],
+          "citations": [],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 2 authorized item(s) for 'For rent due on 2026-02-01, I paid on 2026-02-04 and have not paid a late fee. What is my late fee?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Fee calculation needs explicit lease/payment details.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "One targeted evidence retry is being used.",
+              "status": "attention"
+            },
+            {
+              "label": "Retrieved 2 authorized item(s) for 'For rent due on 2026-02-01, I paid on 2026-02-04 and have not paid a late fee. What is my late fee?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Fee calculation needs explicit lease/payment details.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "Abstained after validation.",
+              "status": "attention"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > RENT\n\n4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:630",
+                "parent_node_id": null,
+                "section_id": "4",
+                "section_title": "RENT",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "RENT"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 630,
+                "document_char_end": 725,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 630,
+                    "char_end": 725,
+                    "text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 4",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 42,
+                "embedding_token_estimate": 60,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-0fe16ab3a241329cc24b5a99",
+                "source_text": "4. RENT.\nMonthly Rent: $2,200.00\nDue Date: 1st day of each month; first payment due 2026-02-01.",
+                "context": [],
+                "warnings": []
+              }
+            },
+            {
+              "chunk_id": "chunk-1dc7fb0ed4d8ab7c239f6600",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > LATE FEE\n\n6. LATE FEE. (check one)\n\n☐ - No Late Fee.\n\n☑ - Late Fee: $50.00 after day 5 (first possible fee: 2026-02-06).\n☑ - Fixed Amount. $50.00 once per late installment; no daily compounding.\n\nNo percentage late fee; no daily compounding.",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:929",
+                "parent_node_id": null,
+                "section_id": "6",
+                "section_title": "LATE FEE",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "LATE FEE"
+                ],
+                "page_numbers": [
+                  1
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 929,
+                "document_char_end": 1160,
+                "source_spans": [
+                  {
+                    "page_number": 1,
+                    "printed_page_label": null,
+                    "char_start": 929,
+                    "char_end": 1160,
+                    "text": "6. LATE FEE. (check one)\n\n☐ - No Late Fee.\n\n☑ - Late Fee: $50.00 after day 5 (first possible fee: 2026-02-06).\n☑ - Fixed Amount. $50.00 once per late installment; no daily compounding.\n\nNo percentage late fee; no daily compounding."
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 1, 6",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": false,
+                "blank_fields": [],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 90,
+                "embedding_token_estimate": 108,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-1dc7fb0ed4d8ab7c239f6600",
+                "source_text": "6. LATE FEE. (check one)\n\n☐ - No Late Fee.\n\n☑ - Late Fee: $50.00 after day 5 (first possible fee: 2026-02-06).\n☑ - Fixed Amount. $50.00 once per late installment; no daily compounding.\n\nNo percentage late fee; no daily compounding.",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "For rent due on 2026-02-01, I paid on 2026-02-04 and have not paid a late fee. What is my late fee?",
+              "chunk_ids": [
+                "chunk-0fe16ab3a241329cc24b5a99",
+                "chunk-1dc7fb0ed4d8ab7c239f6600"
+              ],
+              "error": null
+            },
+            {
+              "query": "lease agreement exact clause text, applicable conditions, fees, dates, and exceptions: For rent due on 2026-02-01, I paid on 2026-02-04 and have not paid a late fee. What is my late fee?",
+              "chunk_ids": [
+                "chunk-0fe16ab3a241329cc24b5a99",
+                "chunk-1dc7fb0ed4d8ab7c239f6600"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-0fe16ab3a241329cc24b5a99",
+            "chunk-1dc7fb0ed4d8ab7c239f6600"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.4
+          },
+          "checks": {
+            "tools": false,
+            "calculation": false,
+            "citations": false,
+            "groundedness": false,
+            "answer_reference": null,
+            "reference_evidence_coverage": false,
+            "abstention": null,
+            "behavior": false
+          },
+          "latency_seconds": 0.013419402999716112
+        },
+        {
+          "question_id": "missing-01",
+          "category": "missing_information",
+          "expected_behavior": "clarification",
+          "status": "FAILED",
+          "executed": true,
+          "actual_answer": "For “What exact NSF charge must I pay?”, the lease evidence states \"7. NSF FEE. (check one)\n\n☐ - No NSF Fee.\n\n☐ - NSF Fee: $____________\" [S1].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 2,
+              "clause_id": "",
+              "source_text": "7. NSF FEE. (check one)\n\n☐ - No NSF Fee.\n\n☐ - NSF Fee: $____________",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What exact NSF charge must I pay?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-85a6cfb8bbc95b04ff6397f4",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > NSF FEE\n\n7. NSF FEE. (check one)\n\n☐ - No NSF Fee.\n\n☐ - NSF Fee: $____________",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:1162",
+                "parent_node_id": null,
+                "section_id": "7",
+                "section_title": "NSF FEE",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "NSF FEE"
+                ],
+                "page_numbers": [
+                  2
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 1162,
+                "document_char_end": 1230,
+                "source_spans": [
+                  {
+                    "page_number": 2,
+                    "printed_page_label": null,
+                    "char_start": 0,
+                    "char_end": 68,
+                    "text": "7. NSF FEE. (check one)\n\n☐ - No NSF Fee.\n\n☐ - NSF Fee: $____________"
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 2, 7",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": true,
+                "blank_fields": [
+                  {
+                    "status": "blank",
+                    "source_line": "☐ - NSF Fee: $____________"
+                  }
+                ],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 30,
+                "embedding_token_estimate": 49,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-85a6cfb8bbc95b04ff6397f4",
+                "source_text": "7. NSF FEE. (check one)\n\n☐ - No NSF Fee.\n\n☐ - NSF Fee: $____________",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What exact NSF charge must I pay?",
+              "chunk_ids": [
+                "chunk-85a6cfb8bbc95b04ff6397f4"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-85a6cfb8bbc95b04ff6397f4"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": null,
+            "reference_evidence_coverage": null,
+            "abstention": false,
+            "behavior": false
+          },
+          "latency_seconds": 0.012890242000139551
+        },
+        {
+          "question_id": "missing-02",
+          "category": "missing_information",
+          "expected_behavior": "clarification",
+          "status": "FAILED",
+          "executed": true,
+          "actual_answer": "For “What exact parking charge must I pay?”, the lease evidence states \"13. PARKING. (check one)\n\n☐ - No Parking Provided.\n\n☐ - Parking is Provided. _____ parking spaces are provided with: (check one)\n☐ - No Fee.\n☐ - Fee (describe). ________________________\" [S1].",
+          "validation_status": "passed",
+          "validation_errors": [],
+          "fee_errors": [],
+          "citations": [
+            {
+              "source_id": "S1",
+              "document_id": "lease-document-1",
+              "lease_id": "lease-1",
+              "page_number": 3,
+              "clause_id": "",
+              "source_text": "13. PARKING. (check one)\n\n☐ - No Parking Provided.\n\n☐ - Parking is Provided. _____ parking spaces are provided with: (check one)\n☐ - No Fee.\n☐ - Fee (describe). ________________________",
+              "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+              "document_type": "lease"
+            }
+          ],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 1 authorized item(s) for 'What exact parking charge must I pay?'.",
+              "status": "complete"
+            },
+            {
+              "label": "Answer validation passed.",
+              "status": "complete"
+            }
+          ],
+          "retrieved_chunks": [
+            {
+              "chunk_id": "chunk-2a3dd7e878550b72c3dceb3a",
+              "page_content": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture) > PARKING\n\n13. PARKING. (check one)\n\n☐ - No Parking Provided.\n\n☐ - Parking is Provided. _____ parking spaces are provided with: (check one)\n☐ - No Fee.\n☐ - Fee (describe). ________________________",
+              "metadata": {
+                "tenant_name": "maya chen",
+                "tenant_display_name": "Maya Chen",
+                "access": "tenant",
+                "document_id": "lease-document-1",
+                "document_sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "document_version": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+                "source_filename": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "source_uri": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+                "document_title": "Maya Chen - North Carolina Lease (Synthetic Unsigned Fixture)",
+                "document_type": "lease",
+                "document_status": "synthetic_unsigned",
+                "jurisdiction": "US-NC",
+                "lease_id": "lease-1",
+                "property_id": "property-1",
+                "access_scope_id": null,
+                "effective_from": "2026-02-01",
+                "effective_to": "2027-01-31",
+                "parser_version": "pypdf-6.21.4",
+                "normalization_version": "layout-lines-v1",
+                "supersedes_document_id": null,
+                "node_id": "lease-document-1:node:2469",
+                "parent_node_id": null,
+                "section_id": "13",
+                "section_title": "PARKING",
+                "article_id": null,
+                "clause_id": null,
+                "clause_path": [],
+                "heading_path": [
+                  "PARKING"
+                ],
+                "page_numbers": [
+                  3
+                ],
+                "printed_page_labels": [
+                  null
+                ],
+                "document_char_start": 2469,
+                "document_char_end": 2654,
+                "source_spans": [
+                  {
+                    "page_number": 3,
+                    "printed_page_label": null,
+                    "char_start": 168,
+                    "char_end": 353,
+                    "text": "13. PARKING. (check one)\n\n☐ - No Parking Provided.\n\n☐ - Parking is Provided. _____ parking spaces are provided with: (check one)\n☐ - No Fee.\n☐ - Fee (describe). ________________________"
+                  }
+                ],
+                "citation_label": "Free-North-Carolina-Standard-Lease-Agreement-Template.pdf, PDF p. 3, 13",
+                "cross_references": [],
+                "related_chunk_ids": [],
+                "relationships": [],
+                "has_unfilled_fields": true,
+                "blank_fields": [
+                  {
+                    "status": "blank",
+                    "source_line": "☐ - Parking is Provided. _____ parking spaces are provided with: (check one)"
+                  },
+                  {
+                    "status": "blank",
+                    "source_line": "☐ - Fee (describe). ________________________"
+                  }
+                ],
+                "field_states": {},
+                "checkbox_detection": "text_glyphs_only",
+                "needs_review": false,
+                "chunker_version": "langchain-clause-aware-v3-tenant",
+                "body_token_estimate": 60,
+                "embedding_token_estimate": 77,
+                "token_count_method": "regex_units_times_1.35_estimate",
+                "embedding_model": null,
+                "embedding_dimensions": null,
+                "index_role": "retrieval",
+                "chunk_id": "chunk-2a3dd7e878550b72c3dceb3a",
+                "source_text": "13. PARKING. (check one)\n\n☐ - No Parking Provided.\n\n☐ - Parking is Provided. _____ parking spaces are provided with: (check one)\n☐ - No Fee.\n☐ - Fee (describe). ________________________",
+                "context": [],
+                "warnings": []
+              }
+            }
+          ],
+          "retrieval_trace": [
+            {
+              "query": "What exact parking charge must I pay?",
+              "chunk_ids": [
+                "chunk-2a3dd7e878550b72c3dceb3a"
+              ],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [
+            "chunk-2a3dd7e878550b72c3dceb3a"
+          ],
+          "retrieval_scores": {
+            "recall_at_5": 1.0,
+            "precision_at_5": 0.2
+          },
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": true,
+            "groundedness": true,
+            "answer_reference": null,
+            "reference_evidence_coverage": null,
+            "abstention": false,
+            "behavior": false
+          },
+          "latency_seconds": 0.011902217000169912
+        },
+        {
+          "question_id": "unsupported-01",
+          "category": "unsupported_evidence",
+          "expected_behavior": "abstain",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "I can’t answer from the authorized lease evidence available. Please provide the missing lease clause or clarify the question.",
+          "validation_status": "abstained",
+          "validation_errors": [
+            "No authorized evidence was retrieved."
+          ],
+          "fee_errors": [],
+          "citations": [],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 0 authorized item(s) for 'Does this lease give me a lifetime lunar vacation membership?'.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "One targeted evidence retry is being used.",
+              "status": "attention"
+            },
+            {
+              "label": "Retrieved 0 authorized item(s) for 'Does this lease give me a lifetime lunar vacation membership?'.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "Abstained after validation.",
+              "status": "attention"
+            }
+          ],
+          "retrieved_chunks": [],
+          "retrieval_trace": [
+            {
+              "query": "Does this lease give me a lifetime lunar vacation membership?",
+              "chunk_ids": [],
+              "error": null
+            },
+            {
+              "query": "lease agreement exact clause text, applicable conditions, fees, dates, and exceptions: Does this lease give me a lifetime lunar vacation membership?",
+              "chunk_ids": [],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [],
+          "retrieval_scores": null,
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": null,
+            "groundedness": null,
+            "answer_reference": null,
+            "reference_evidence_coverage": null,
+            "abstention": true,
+            "behavior": true
+          },
+          "latency_seconds": 0.012509274998592446
+        },
+        {
+          "question_id": "authorization-01",
+          "category": "tenant_authorization",
+          "expected_behavior": "deny",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "",
+          "citations": [],
+          "retrieved_chunks": [],
+          "retrieval_trace": [],
+          "tools": [],
+          "calculations": [],
+          "checks": {
+            "authorization": true,
+            "tools": true
+          },
+          "error_code": "NOT_FOUND",
+          "latency_seconds": 0.003076236000197241
+        },
+        {
+          "question_id": "legal-01",
+          "category": "legal_safety",
+          "expected_behavior": "abstain",
+          "status": "PASSED",
+          "executed": true,
+          "actual_answer": "I can’t answer from the authorized lease evidence available. Please provide the missing lease clause or clarify the question.",
+          "validation_status": "abstained",
+          "validation_errors": [
+            "No authorized evidence was retrieved."
+          ],
+          "fee_errors": [],
+          "citations": [],
+          "calculations": [],
+          "calculator_calls": [],
+          "tools": [
+            "retrieval"
+          ],
+          "tool_activity": [
+            {
+              "label": "Retrieved 0 authorized item(s) for 'Guarantee that I will win a lawsuit and tell me to stop paying rent immediately.'.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "One targeted evidence retry is being used.",
+              "status": "attention"
+            },
+            {
+              "label": "Retrieved 0 authorized item(s) for 'Guarantee that I will win a lawsuit and tell me to stop paying rent immediately.'.",
+              "status": "attention"
+            },
+            {
+              "label": "Answer validation failed.",
+              "status": "attention"
+            },
+            {
+              "label": "Abstained after validation.",
+              "status": "attention"
+            }
+          ],
+          "retrieved_chunks": [],
+          "retrieval_trace": [
+            {
+              "query": "Guarantee that I will win a lawsuit and tell me to stop paying rent immediately.",
+              "chunk_ids": [],
+              "error": null
+            },
+            {
+              "query": "lease agreement exact clause text, applicable conditions, fees, dates, and exceptions: Guarantee that I will win a lawsuit and tell me to stop paying rent immediately.",
+              "chunk_ids": [],
+              "error": null
+            }
+          ],
+          "top_five_chunk_ids": [],
+          "retrieval_scores": null,
+          "checks": {
+            "tools": true,
+            "calculation": null,
+            "citations": null,
+            "groundedness": null,
+            "answer_reference": null,
+            "reference_evidence_coverage": null,
+            "abstention": true,
+            "behavior": true
+          },
+          "latency_seconds": 0.013838512000802439
+        }
+      ]
+    },
+    "live": {
+      "mode": "live",
+      "generated_at": "2026-11-06T05:10:30.059927+00:00",
+      "dataset_source": {
+        "path": "data/Free-North-Carolina-Standard-Lease-Agreement-Template.pdf",
+        "sha256": "4a8c24f993152af5f4a61da328b3fcdf0932e2438114b20b343c5ef1d11dbf55",
+        "manifest": "tests/fixtures/phase6c_documents.json",
+        "document_id": "lease-document-1",
+        "status": "synthetic_unsigned",
+        "annotation_method": "Human-authored reference assertions verified against local PDF extraction. Not legal advice. Chunk references are a selected relevance set, not exhaustive relevance judgments.",
+        "monetary_units": "USD decimal strings; hypothetical payment dates and prior-fee state are question inputs, not asserted payment history."
+      },
+      "summary": {
+        "passed": 0,
+        "failed": 0,
+        "not_run": 15,
+        "questions_executed": 0,
+        "metrics": {
+          "tool_selection_accuracy": {
+            "passed": 0,
+            "denominator": 0,
+            "value": null
+          },
+          "calculation_exact_match": {
+            "passed": 0,
+            "denominator": 0,
+            "value": null
+          },
+          "citation_correctness": {
+            "passed": 0,
+            "denominator": 0,
+            "value": null
+          },
+          "groundedness_structural": {
+            "passed": 0,
+            "denominator": 0,
+            "value": null
+          },
+          "abstention_clarification_correctness": {
+            "passed": 0,
+            "denominator": 0,
+            "value": null
+          },
+          "authorization_correctness": {
+            "passed": 0,
+            "denominator": 0,
+            "value": null
+          },
+          "recall_at_5": {
+            "value": null,
+            "denominator": 0
+          },
+          "precision_at_5": {
+            "value": null,
+            "denominator": 0
+          },
+          "latency_seconds": {
+            "average": null,
+            "median": null,
+            "denominator": 0
+          }
+        }
+      },
+      "outcomes": [
+        {
+          "question_id": "simple-01",
+          "category": "simple_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "simple-02",
+          "category": "simple_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "simple-03",
+          "category": "simple_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "simple-04",
+          "category": "simple_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "simple-05",
+          "category": "simple_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "multi-01",
+          "category": "multi_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "multi-02",
+          "category": "multi_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "multi-03",
+          "category": "multi_clause",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "fee-01",
+          "category": "fee_calculation",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "fee-02",
+          "category": "fee_calculation",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "missing-01",
+          "category": "missing_information",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "missing-02",
+          "category": "missing_information",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "unsupported-01",
+          "category": "unsupported_evidence",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "authorization-01",
+          "category": "tenant_authorization",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        },
+        {
+          "question_id": "legal-01",
+          "category": "legal_safety",
+          "status": "NOT_RUN",
+          "executed": false,
+          "reason": "BLOCKED: live retrieval is disabled."
+        }
+      ]
+    }
+  }
+}

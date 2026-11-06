@@ -1,0 +1,34 @@
+{
+  "name": "laga-interface",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5174",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0 --port 5174",
+    "test": "node scripts/run-isolated-tests.mjs frontend",
+    "test:all": "node scripts/run-isolated-tests.mjs all",
+    "test:python": "node scripts/run-isolated-tests.mjs python",
+    "test:security": "node scripts/run-isolated-tests.mjs security",
+    "start": "node scripts/serve.mjs",
+    "api:kit": "npm run build && python scripts/package-api-kit.py",
+    "check:deploy": "npm run build && node scripts/check-deployment.mjs",
+    "test:deployment": "node scripts/run-isolated-tests.mjs frontend",
+    "replit:package": "python scripts/package-replit.py",
+    "dev:local": "node scripts/dev-local.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "^5.3.0",
+    "lucide-react": "^0.468.0",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "ajv": "^8.20.0",
+    "vite": "^6.4.5"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

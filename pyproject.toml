@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "laga"
+version = "0.1.0"
+description = "Lease Agreement Guard Agent"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "langgraph>=1.2.19",
+    # RAG uses the LangChain 1.x family required by the existing LangGraph.
+    "pypdf>=6,<7",
+    "langchain-core>=1.4.7,<2",
+    "langchain-text-splitters>=1,<2",
+    "langchain-openai>=1,<2",
+    "pinecone>=7.3,<8",
+    "openai>=1.104,<3",
+    "python-dotenv>=1,<2",
+]
+
+[project.optional-dependencies]
+api = ["fastapi>=0.115,<1", "starlette>=0.46,<1", "uvicorn>=0.30,<1", "jsonschema>=4.23,<5", "python-multipart>=0.0.20,<1", "tzdata>=2025.2"]
+test = ["pytest>=9.2,<10", "httpx>=0.28,<1", "pypdf>=6,<7"]
+
+[project.scripts]
+laga-api = "laga.api:main"
+laga-create-user = "laga.backend_api:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.uv]
+package = false

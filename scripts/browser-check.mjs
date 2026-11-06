@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+const targets=await(await fetch('http://127.0.0.1:9224/json')).json();
+const target=targets.find(t=>t.type==='page'&&t.url.includes('5174'));
+const socket=new WebSocket(target.webSocketDebuggerUrl);await new Promise(r=>socket.addEventListener('open',r,{once:true}));
+let id=0;const pending=new Map(),errors=[];socket.addEventListener('message',e=>{const m=JSON.parse(e.data);if(m.id){const p=pending.get(m.id);pending.delete(m.id);m.error?p.reject(m.error):p.resolve(m.result)}if(m.method==='Runtime.exceptionThrown')errors.push(m.params.exceptionDetails)});
+const call=(method,params={})=>new Promise((resolve,reject)=>{const next=++id;pending.set(next,{resolve,reject});socket.send(JSON.stringify({id:next,method,params}))});
+await call('Runtime.enable');await call('Page.enable');await call('Page.navigate',{url:'http://localhost:5174'});await new Promise(r=>setTimeout(r,700));
+const run=async(expression)=>{const r=await call('Runtime.evaluate',{expression,returnByValue:true,awaitPromise:true});if(r.exceptionDetails)throw new Error(JSON.stringify(r.exceptionDetails));return r.result.value};
+const pause=()=>new Promise(r=>setTimeout(r,500));
+const click=async(text)=>{await run(`(()=>{const b=[...document.querySelectorAll('button')].find(b=>b.textContent.trim().includes(${JSON.stringify(text)}));if(!b)throw Error('Missing button: '+${JSON.stringify(text)});b.click()})()`);await pause()};
+const snap=async(name)=>{const r=await call('Page.captureScreenshot',{format:'png',captureBeyondViewport:false});await fs.writeFile('data/browser-check/'+name+'.png',Buffer.from(r.data,'base64'))};
+await call('Emulation.setDeviceMetricsOverride',{width:1440,height:1000,deviceScaleFactor:1,mobile:false});await pause();await snap('login');await click('Explore tenant workspace');await snap('tenant');
+await click('Can I bring a pet?');console.log('Tenant answer:',await run("document.querySelector('.chat-answer')?.innerText"));await snap('assistant');assert.equal(await run("!!document.querySelector('.jurisdiction-card,.answer-review-note')"),false,'State verification hidden for tenant by default');
+await click('Switch demo profile');await click('Landlord');await click('Explore landlord workspace');await snap('landlord');
+await click('Policy library');await snap('policies');assert.equal(await run("!!document.querySelector('.policy-readiness,.review-status-button')"),false,'State verification hidden for landlord by default');await click('Scheduled');console.log('Scheduled versions:',await run("document.querySelector('.policy-list').innerText"));await click('All versions');await click('Version history');await snap('policy-history');await run("document.querySelector('dialog .icon-button').click()");await pause();await click('Upload policy');console.log('Upload dialog:',await run("document.querySelector('dialog').innerText"));await snap('upload');await run("document.querySelector('dialog .icon-button').click()");
+await call('Emulation.setDeviceMetricsOverride',{width:390,height:844,deviceScaleFactor:1,mobile:true});await pause();await snap('mobile-policies');console.log('Mobile overflow:',await run('({width:innerWidth,scroll:document.documentElement.scrollWidth})'));await run("document.querySelector('[aria-label=\"Open navigation\"]').click()");await pause();await snap('mobile-navigation');
+console.log('Runtime exceptions:',errors);socket.close();
