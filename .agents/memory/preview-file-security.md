@@ -23,7 +23,9 @@ printed it in a failed equality assertion. Capturing normal application logs
 alone does not prevent test-framework diagnostics from revealing secrets.
 
 **How to apply:** Remove real bootstrap passwords and runtime database settings
-from test-process environments; supply explicit synthetic values only in tests
-that need them. Use process-local credentials without assertion value dumps
+from test-process environments and exclude actual dotenv/runtime files from
+test source copies; environment scrubbing alone does not prevent explicit
+dotenv loading. Supply synthetic values only in tests that need them.
+Use process-local credentials without assertion value dumps
 for live authentication verification. Treat a diagnostic disclosure as an
 exposure requiring a new secret and a fresh or safely rotated installation.

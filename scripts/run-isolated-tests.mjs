@@ -1,6 +1,6 @@
 // Trusted launcher: never forward the workspace environment or runtime files.
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync,mkdirSync,copyFileSync,symlinkSync,rmSync,existsSync,readdirSync} from 'node:fs';
+import {mkdtempSync,mkdirSync,copyFileSync,cpSync,symlinkSync,rmSync,existsSync,readdirSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -16,6 +16,7 @@ export function testEnvironment(parent,home,source){
  return {...env,HOME:home,XDG_CONFIG_HOME:path.join(home,'config'),XDG_CACHE_HOME:path.join(home,'cache'),
   LANG:'C.UTF-8',TZ:'UTC',LAGA_TEST_ISOLATED:'1',PYTEST_DISABLE_PLUGIN_AUTOLOAD:'1',
   PYTHON_DOTENV_DISABLED:'1',LAGA_BOOTSTRAP_PASSWORD:testPassword,
+  VITE_LAGA_MODE:'api',VITE_LAGA_API_BASE:'/api/v1',
   LAGA_DATABASE:path.join(home,'test-only.sqlite3'),
   PYTHONPATH:[path.join(source,'src'),source,
    ...(existsSync(path.join(root,'.pythonlibs/lib'))?readdirSync(path.join(root,'.pythonlibs/lib')):[]).filter(name=>/^python\d/.test(name))
@@ -50,7 +51,13 @@ export function runIsolated(mode='all',parent=process.env){
   if(mode==='verify')return run(process.execPath,['--test','frontend/tests/testIsolation.test.js']);
   if(mode==='security')return run(process.execPath,['--test','frontend/tests/previewSecurity.test.js','frontend/tests/testIsolation.test.js']);
   // Launcher tests require the real frontend build, created inside this copy.
-  let status=run('npm',['run','build']);if(status||mode==='build')return status;
+  let status=run('npm',['run','build']);if(status)return status;
+  if(mode==='build'){
+   // Export only the sanitized API-mode public build for local serving checks.
+   rmSync(path.join(root,'dist'),{recursive:true,force:true});
+   cpSync(path.join(source,'dist'),path.join(root,'dist'),{recursive:true});
+   return 0;
+  }
   if(mode==='python'||mode==='all'){
    status=run(existsSync(path.join(root,'.pythonlibs/bin/python'))?path.join(root,'.pythonlibs/bin/python'):'python',
     ['-m','pytest','-q','--tb=short']);

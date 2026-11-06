@@ -39,11 +39,29 @@ The API constrains Starlette below 1.0 to retain compatibility with the existing
 ```sh
 npm ci --include=dev
 python -m pip install --target .pythonlibs/lib/python3.11/site-packages --upgrade ".[api,test]"
+npm run test:all
+# Optional focused runs:
+npm run test:python
+npm run test:security
 npm test
-npm run check:deploy
-python -m unittest discover -s tests
+# Export a sanitized API-mode build to dist for local production serving:
+node scripts/run-isolated-tests.mjs build
 python scripts/package-replit.py
 ```
+
+Run automated suites only through the isolated runner. It allowlists the child
+environment, replaces the bootstrap password with a fictional test constant,
+uses a temporary HOME, disables automatic pytest plugin loading, and copies
+reviewed source without private databases, credential recovery files, actual
+dotenv files, bindings or snapshots. Shared installed packages are reused.
+This prevents accidental credential inheritance; it is not an OS sandbox for
+untrusted test code. Do not run direct pytest/unittest, deployment checks, or
+browser scripts against real operator credentials as ordinary regression tests.
+The Python collection guard rejects direct pytest outside the runner.
+Test generation of distinct passwords uses deterministic fictional generator
+outputs, not operator secrets. Live preview verification is a separate,
+explicitly authorized operation and must never dump response bodies, cookies
+or credential-bearing assertion operands.
 
 `check:deploy` checks build assets and the standalone static server. `tests/test_replit.py` separately verifies the production launcher, first-run bootstrap, published-origin login, secure cookies, workspace access and logout through the production proxy. Proxy regressions cover request bytes, CSRF, cookies, API Explorer routing and upstream failure. The launcher also offers `node scripts/start-app.mjs --check` for a temporary startup check; use an isolated database for this check.
 
