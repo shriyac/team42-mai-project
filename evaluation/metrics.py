@@ -2,7 +2,7 @@
 from decimal import Decimal, InvalidOperation
 import re
 
-from agent.evidence import citation_from_document, is_authorized_lease_document
+from agent.evidence import citation_matches_document, is_authorized_lease_document
 
 
 def top_five(trace):
@@ -47,16 +47,18 @@ def assess(case, state, trace, calculator_calls):
     checks["calculation"] = numerical_match(
         case.get("expected_calculation"), state.get("calculations", []),
     )
-    citations_valid = bool(citations) and all(
+    record_validity = [
         isinstance(c.get("page_number"), int) and c["page_number"] > 0
         and all(c.get(k) for k in ("source_id", "document_id", "lease_id", "source_text", "document_title"))
-        and any(citation_from_document(d, c["source_id"]) == c
+        and any(citation_matches_document(c, d)
                 and is_authorized_lease_document(d, **scope) for d in documents)
         for c in citations
-    )
+    ]
+    citations_valid = bool(citations) and all(record_validity)
     refs = set(re.findall(r"\[(S\d+)\]", state.get("answer", "")))
     citations_valid = citations_valid and refs == {c["source_id"] for c in citations}
     behavior = case["expected_behavior"]
+    checks["returned_citations"] = citations_valid if citations else None
     checks["citations"] = citations_valid if citations or behavior in {"answer", "calculation"} else None
     # Excerpt presence is structural support, NOT full semantic entailment.
     checks["groundedness"] = (
@@ -70,20 +72,23 @@ def assess(case, state, trace, calculator_calls):
     )
     checks["reference_evidence_coverage"] = (
         all(any(d.metadata.get("chunk_id") == chunk and any(
-            citation_from_document(d, c["source_id"]) == c for c in citations
+            citation_matches_document(c, d) for c in citations
         ) for d in documents) for chunk in case["expected_chunk_ids"])
-        if behavior in {"answer", "calculation"} else None
+        if behavior in {"answer", "calculation"} and case["expected_chunk_ids"] else None
+    )
+    # Explicit golden rubric: cite verified source passages, include annotated
+    # answer facts, and cover the required source set. Not a general LLM judge.
+    checks["factual_support"] = (
+        bool(checks["citations"] and checks["groundedness"]
+             and checks["answer_reference"] and checks["reference_evidence_coverage"])
+        if behavior == "answer" else None
     )
     checks["abstention"] = None
     if behavior == "abstain":
         checks["abstention"] = state.get("validation_status") == "abstained" and not citations and not state.get("calculations")
         checks["behavior"] = checks["abstention"]
     elif behavior == "clarification":
-        checks["abstention"] = (
-            state.get("validation_status") == "abstained"
-            or bool(re.search(r"\b(?:clarif\w*|unspecified|not specified|unfilled|unknown|missing)\b",
-                              state.get("answer", ""), re.I))
-        )
+        checks["abstention"] = state.get("validation_status") == "abstained" and not citations
         checks["behavior"] = checks["abstention"] and not state.get("calculations")
     else:
         checks["behavior"] = state.get("validation_status") == "passed"

@@ -80,7 +80,7 @@ class FixtureFactory:
         (r"\bsmok|\bvaping", ("12",)),
         (r"\butilit|\bservices\b", ("16",)),
         (r"\bsecurity\s+deposit\b", ("5",)),
-        (r"\bterm\b|\bstart\b|\bend\b", ("3",)),
+        (r"\bterm\b|\bstart\b|\bend\b|\bexpir\w*", ("3",)),
         (r"\bmonthly\s+rent\b", ("4",)),
     )
 
