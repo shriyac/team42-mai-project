@@ -160,7 +160,10 @@ class AssistantIntegration:
                                 f"{clause} — {section_title}" if clause and clause != section_title
                                 else section_title
                             )
-                        evidence.append(deepcopy({"identity": identity, "section": section}))
+                        evidence.append(deepcopy({
+                            "identity": identity, "section": section,
+                            "source_spans": metadata.get("source_spans", []),
+                        }))
                         accepted.append(document)
                     return accepted
 

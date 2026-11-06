@@ -30,7 +30,7 @@ export function allowedSource(file){
   || part==='documents.json'||/\.(?:sqlite.*|db|pem|key|p12|pfx)$/.test(part));
 }
 export function runIsolated(mode='all',parent=process.env){
- if(!['all','verify','python','frontend','security','build'].includes(mode))throw Error('Unknown isolated test mode');
+ if(!['all','verify','python','frontend','security','build','rag-config','evals'].includes(mode))throw Error('Unknown isolated test mode');
  const temp=mkdtempSync(path.join(tmpdir(),'laga-isolated-'));
  try{
   const source=path.join(temp,'source'),home=path.join(temp,'home');
@@ -50,6 +50,18 @@ export function runIsolated(mode='all',parent=process.env){
   };
   if(mode==='verify')return run(process.execPath,['--test','frontend/tests/testIsolation.test.js']);
   if(mode==='security')return run(process.execPath,['--test','frontend/tests/previewSecurity.test.js','frontend/tests/testIsolation.test.js']);
+  const python=existsSync(path.join(root,'.pythonlibs/bin/python'))?path.join(root,'.pythonlibs/bin/python'):'python';
+  if(mode==='evals'){
+   const status=run(python,['-m','evaluation.run_evals','--mode','mock']);
+   if(status)return status;
+   // Only the public synthetic evaluation report/results leave this isolated copy.
+   for(const name of ['results.json','report.md']){
+    copyFileSync(path.join(source,'evaluation',name),path.join(root,'evaluation',name));
+   }
+   return 0;
+  }
+  if(mode==='rag-config')return run(python,['-m','pytest','-q','--tb=short',
+   'tests/test_rag_target_configuration.py','tests/test_production_rag.py','tests/test_synthetic_demo.py']);
   // Launcher tests require the real frontend build, created inside this copy.
   let status=run('npm',['run','build']);if(status)return status;
   if(mode==='build'){
@@ -59,7 +71,7 @@ export function runIsolated(mode='all',parent=process.env){
    return 0;
   }
   if(mode==='python'||mode==='all'){
-   status=run(existsSync(path.join(root,'.pythonlibs/bin/python'))?path.join(root,'.pythonlibs/bin/python'):'python',
+   status=run(python,
     ['-m','pytest','-q','--tb=short']);
    if(status||mode==='python')return status;
   }

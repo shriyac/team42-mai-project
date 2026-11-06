@@ -109,6 +109,24 @@ def merge_documents(existing: Sequence[Any], incoming: Sequence[Any]) -> list[An
     return result
 
 
+def citation_matches_document(citation, document):
+    """Accept only exact excerpts on the original page, never rewritten quotes."""
+    original = citation_from_document(document, citation.get("source_id", ""))
+    if original is None or any(citation.get(k) != v for k, v in original.items()
+                               if k not in {"source_text", "page_number"}):
+        return False
+    quote = citation.get("source_text")
+    if not isinstance(quote, str) or not quote.strip():
+        return False
+    if citation == original:
+        return True
+    spans = getattr(document, "metadata", {}).get("source_spans", [])
+    if spans:
+        return any(isinstance(s, Mapping) and quote in s.get("text", "")
+                   and citation.get("page_number") == s.get("page_number") for s in spans)
+    return quote in original["source_text"] and citation.get("page_number") == original["page_number"]
+
+
 class MockLeaseRetriever:
     """Synthetic evidence is supplied by callers/tests; no built-in lease data."""
 

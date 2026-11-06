@@ -52,3 +52,13 @@ enabledForHosting = false
 
 [userenv.development]
 LAGA_DATABASE = "data/demo-phase7f/backend.sqlite3"
+LAGA_RAG_ENABLED = "false"
+LAGA_RAG_EXPECTED_CORPUS_ID = "74176289f06d1ecbcb70b901b1fb4fb1f6194194623a06502151ce431f005fc0"
+LAGA_RAG_SYNTHETIC_DEMO_ENABLED = "false"
+PINECONE_CLOUD = "aws"
+PINECONE_INDEX_NAME = "laga-rag"
+PINECONE_NAMESPACE = "laga-hydrid"
+PINECONE_REGION = "us-east-1"
+PINECONE_SPARSE_INDEX_NAME = "laga-rag-sparse"
+
+[userenv.shared]

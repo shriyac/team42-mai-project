@@ -26,7 +26,8 @@ KEYS = (
     "PINECONE_INDEX_NAME", "PINECONE_SPARSE_INDEX_NAME", "PINECONE_API_KEY",
     "NEBIUS_API_KEY", "FIREWORKS_API_KEY",
     "LAGA_RAG_SYNTHETIC_DEMO_ENABLED",
-    "PINECONE_NAMESPACE",
+    "PINECONE_NAMESPACE", "PINECONE_CLOUD", "PINECONE_REGION",
+    "LAGA_RAG_EXPECTED_CORPUS_ID",
 )
 
 
@@ -69,6 +70,7 @@ class RuntimeRAGConfiguration:
     bindings_path: Path
     data_dir: Path
     synthetic_demo_enabled: bool = False
+    expected_corpus_id: str | None = None
 
 
 def load_configuration(environ=None):
@@ -80,6 +82,12 @@ def load_configuration(environ=None):
         demo = str(values.get("LAGA_RAG_SYNTHETIC_DEMO_ENABLED") or "false").strip().lower()
         if demo not in {"true", "1", "false", "0"}:
             raise ValueError("Invalid synthetic demo setting.")
+        expected_corpus = values.get("LAGA_RAG_EXPECTED_CORPUS_ID")
+        if expected_corpus is not None and (
+            not isinstance(expected_corpus, str)
+            or not re.fullmatch(r"[0-9a-f]{64}", expected_corpus)
+        ):
+            raise ValueError("Invalid expected corpus identity.")
         settings = Settings({
             key: value for key, value in values.items() if not key.startswith("LAGA_")
         }, root=ROOT)
@@ -103,6 +111,7 @@ def load_configuration(environ=None):
             bindings_path=resolve_project_path(values.get("LAGA_RAG_BINDINGS_FILE") or "rag_bindings.json"),
             data_dir=resolve_project_path(values.get("LAGA_RAG_DATA_DIR") or "data"),
             synthetic_demo_enabled=demo in {"true", "1"},
+            expected_corpus_id=expected_corpus,
         )
     except RAGIntegrationError:
         raise

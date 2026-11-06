@@ -49,3 +49,23 @@ String replacement hides ownership mistakes and damages citation provenance.
 
 **How to apply:** Authorize any association through explicit, verified
 server-owned mappings and preserve the original source metadata on evidence.
+
+Preserve operator-supplied namespace spelling exactly; never autocorrect a
+resource identifier.
+
+**Why:** The user explicitly specified `laga-hydrid`, not `laga-hybrid`, as the
+verified target namespace.
+
+**How to apply:** Require exact agreement between configured and actual
+snapshot namespaces. Report a mismatch rather than renaming or normalizing it.
+
+Live demo approval must assess substantive answers, not just supported statuses
+and valid citation identifiers.
+
+**Why:** Real retrieval can return authentic but irrelevant clauses, unchecked
+template alternatives, and incomplete PDF fragments. Structural validation
+alone previously made these appear to be successful supported answers.
+
+**How to apply:** Retest missing-evidence abstention alongside positive cases.
+Inspect the actual operative clause and its conditions, not only the status,
+source identity, or test count. Keep unknown question types conservative.

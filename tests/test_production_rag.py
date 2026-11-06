@@ -171,7 +171,7 @@ def test_authorized_backend_runs_real_hybrid_graph_and_preserves_original_docume
     assert answer["status"] == "supported"
     assert answer["citations"][0]["documentId"] == "pinecone-a"
     assert answer["citations"][0]["section"] == "3 — RENT"
-    assert answer["citations"][0]["page"] == 1
+    assert answer["citations"][0]["page"] == 2
     assert "PRIVATE TENANT B" not in answer["answer"]
     assert answer["compliance"] == {"status": "unavailable"}
     p.pc.create_index.assert_not_called()
@@ -268,9 +268,9 @@ def test_duplicate_document_ownership_is_rejected(production):
     p.clients.assert_not_called()
 
 
-def test_manifest_without_explicit_backend_ownership_cannot_be_enabled_by_hash_alone(production):
+def test_manifest_without_canonical_lease_identity_cannot_be_enabled_by_hash_alone(production):
     p = production
-    del p.manifest[0]["tenant_id"]
+    del p.manifest[0]["lease_id"]
     write_json(p.manifest_path, {"documents": p.manifest})
     p.binding["manifest_sha256"] = sha256(p.manifest_path.read_bytes()).hexdigest()
     write_json(p.bindings_path, p.binding)

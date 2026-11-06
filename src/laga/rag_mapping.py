@@ -109,6 +109,8 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
                 and not re.fullmatch(r"leases-v1-[0-9a-f]{24}", snapshot["namespace"]))
             or type(snapshot["chunk_count"]) is not int or snapshot["chunk_count"] < 1
             or not isinstance(snapshot["documents"], dict) or not snapshot["documents"]
+            or (getattr(config, "expected_corpus_id", None) is not None
+                and snapshot.get("corpus_id") != config.expected_corpus_id)
         ):
             raise ValueError("Invalid ingestion snapshot.")
     except FileNotFoundError:
@@ -179,9 +181,16 @@ def verify_scope(backend, config, tenant_id, tenant_name, lease_id):
                 or (record["document_status"] == "synthetic_unsigned"
                     and record.get("property_id") != lease["propertyId"])
                 or record["tenant_name"] != tenant_key(principal["name"])
-                or any(record.get(key) != row[key] for key in (
-                    "organization_id", "tenant_id", "lease_id", "backend_document_id",
+                # SQLite authorizes the account and lease; the operator-approved,
+                # hash-pinned binding associates independent backend/RAG IDs.
+                # Ingestion need not duplicate backend-only identities. If it
+                # does declare them, contradictory (including empty) values fail.
+                or record.get("lease_id") != lease_id
+                or any(key in record and record[key] != row[key] for key in (
+                    "organization_id", "tenant_id", "backend_document_id",
                 ))
+                or ("property_id" in record and record["property_id"] != lease["propertyId"])
+                or ("propertyId" in principal and principal["propertyId"] != lease["propertyId"])
                 or digest(record["pdf_path"]) != row["document_sha256"]
                 or snapshot["documents"][row["pinecone_document_id"]] != {
                     "access": "tenant", "tenant_name": tenant_key(principal["name"]),

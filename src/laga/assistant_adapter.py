@@ -51,6 +51,30 @@ def _calculation(raw: dict[str, Any]) -> dict[str, Any] | None:
     }
 
 
+def _matches_excerpt(identity, item):
+    """Independently verify a narrowed quote against server-recorded evidence."""
+    original = item["identity"]
+    if identity == original:
+        return True
+    if set(identity) != set(original) or any(
+        identity[k] != v for k, v in original.items()
+        if k not in {"source_text", "page_number"}
+    ):
+        return False
+    quote = identity.get("source_text")
+    if not isinstance(quote, str) or not quote.strip():
+        return False
+    spans = item.get("source_spans", [])
+    if spans:
+        return any(isinstance(s, dict) and isinstance(s.get("text"), str)
+                   and quote in s["text"] and identity.get("page_number") == s.get("page_number")
+                   for s in spans)
+    return (
+        quote in original["source_text"]
+        and identity.get("page_number") == original["page_number"]
+    )
+
+
 def adapt_answer(
     result: dict[str, Any], *, thread_id: str, evidence: list[dict[str, Any]],
 ) -> dict[str, Any]:
@@ -83,7 +107,7 @@ def adapt_answer(
         if not isinstance(source_id, str) or not re.fullmatch(r"S\d+", source_id) or source_id in ids:
             raise InvalidAgentResult("Invalid or repeated citation ID.")
         identity = {key: value for key, value in citation.items() if key != "source_id"}
-        matching = next((item for item in evidence if item["identity"] == identity), None)
+        matching = next((item for item in evidence if _matches_excerpt(identity, item)), None)
         if matching is None:
             raise InvalidAgentResult("Citation was not retrieved from the authorized lease.")
         ids.add(source_id)

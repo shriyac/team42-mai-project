@@ -13,8 +13,9 @@ from tools.fee_calculator import (
 from .evidence import (
     RetrieverFactory, MockLeaseRetrieverFactory, MockLeaseRetriever,
     citation_from_document, is_authorized_lease_document, merge_documents,
-    source_text,
+    source_text, citation_matches_document,
 )
+from .answerability import select, answerable, insufficient_message
 from .fee_inputs import extract_fee_input
 from .prompts import ABSTENTION, format_evidence_answer
 from .state import LAGAState
@@ -134,15 +135,21 @@ def _extractive_claims_only(answer, documents):
     A valid citation alone does not prove entailment. The default answerer is
     extractive; optional RAG generators must also supply verifiable excerpts.
     """
-    evidence = " ".join(source_text(doc) for doc in documents)
     normalize = lambda value: re.sub(r"\W+", " ", value).casefold().strip()
-    supported = normalize(evidence)
-    claims = SOURCE_REFERENCE.sub("", answer)
-    return all(
-        normalize(claim) in supported
-        for claim in re.split(r"[.!?;\n]+", claims)
-        if normalize(claim)
-    )
+    cursor = 0
+    for marker in SOURCE_REFERENCE.finditer(answer):
+        doc = documents.get(marker.group(1))
+        if doc is None:
+            return False
+        supported = normalize(source_text(doc))
+        claims = answer[cursor:marker.start()]
+        if not normalize(claims) or not all(
+            normalize(claim) in supported for claim in re.split(r"[.!?;\n]+", claims)
+            if normalize(claim)
+        ):
+            return False
+        cursor = marker.end()
+    return cursor > 0 and not normalize(answer[cursor:])
 
 
 def _generated_part(question, documents, answer_generator, llm, citations):
@@ -171,7 +178,11 @@ def _generated_part(question, documents, answer_generator, llm, citations):
             mapping[source_id] = global_id
             records.append(record)
             cited_documents.append(documents[index])
-        if not _extractive_claims_only(answer, cited_documents):
+        if (
+            not _extractive_claims_only(answer, dict(zip(local_ids, cited_documents)))
+            or not answerable(question, [source_text(doc) for doc in cited_documents])
+            or not answerable(question, [SOURCE_REFERENCE.sub("", answer)])
+        ):
             raise ValueError
         citations.extend(records)
         answer = SOURCE_REFERENCE.sub(lambda match: f"[{mapping[match.group(1)]}]", answer)
@@ -193,10 +204,13 @@ def generate_answer(state: LAGAState, answer_generator=None, llm=None):
             parts.append(_generated_part(question, documents, answer_generator, llm, citations))
         else:
             excerpts = []
-            for doc in documents:
+            for doc, quote, page in select(question, documents):
                 source_id = f"S{len(citations) + 1}"
                 record = citation_from_document(doc, source_id)
                 if record:
+                    record = {**record, "source_text": quote, "page_number": page}
+                    if not citation_matches_document(record, doc):
+                        continue
                     citations.append(record)
                     excerpts.append((source_id, record["source_text"]))
             parts.append({
@@ -227,7 +241,7 @@ def validate_answer(state: LAGAState):
         for doc in bundle.get("documents", [])
     ]
     for citation in citations:
-        if not any(citation_from_document(doc, citation["source_id"]) == citation
+        if not any(citation_matches_document(citation, doc)
                    for doc in documents):
             errors.append("Citation metadata does not match retrieved evidence.")
     for part in state.get("answer_parts", []):
@@ -236,6 +250,9 @@ def validate_answer(state: LAGAState):
             part.get("error") or not part.get("answer") or not sources
             or set(SOURCE_REFERENCE.findall(part["answer"])) != sources
             or not sources <= ids
+            or not answerable(part["subquestion"], [
+                c["source_text"] for c in citations if c["source_id"] in sources
+            ])
         ):
             errors.append(part.get("error") or f"Missing validated citations: {part['subquestion']}")
             retry_questions.append(part["subquestion"])
@@ -288,7 +305,7 @@ def safe_abstain(state: LAGAState):
             f"payment details. {result.explanation}"
         )
     else:
-        answer = ABSTENTION
+        answer = insufficient_message(state.get("question", "")) or ABSTENTION
         if state.get("fee_errors"):
             answer += " " + " ".join(state["fee_errors"])
     return {
