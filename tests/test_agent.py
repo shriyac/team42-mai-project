@@ -152,6 +152,68 @@ def test_late_fee_question_extracts_evidence_and_invokes_calculator():
     assert "USD 20.00" in state["answer"]
 
 
+@pytest.mark.parametrize(("statement", "already_charged"), [
+    ("No late fee has already been charged", False),
+    ("A late fee has already been charged", True),
+    ("Have not paid a late fee", False),
+    ("I have not paid a late fee", False),
+    ("No late fee has been charged", False),
+    ("A late fee has not been charged", False),
+    ("I haven't paid a late fee", False),
+    ("I haven’t paid a late fee", False),
+    ("I have already been charged a late fee", True),
+    ("I already paid a late fee", True),
+    ("A late fee was already assessed", True),
+    ("No late fee has already been charged for this installment", False),
+    ("No late fee has been charged. Have not paid a late fee", False),
+    ("I don't know whether a late fee was charged", None),
+    ("I don't know whether a late fee has already been charged", None),
+    ("I'm not sure. A late fee has already been charged", None),
+    ("No late fee has not been charged", None),
+    ("I have not not paid a late fee", None),
+    ("It is not true that no late fee has been charged", None),
+    ("No late fee has been charged, but a late fee has already been charged", None),
+    ("A late fee has already been charged. Have not paid a late fee", None),
+    ("If a late fee has already been charged", None),
+    ("A late fee might have been charged", None),
+    ("No late fee has been charged but has been paid", None),
+    ("No late fee has been charged, not really", None),
+    ("Have not paid a late fee and have paid one", None),
+    ("A late fee has already been charged for last month's installment", None),
+])
+def test_prior_fee_status_requires_an_unambiguous_complete_assertion(statement, already_charged):
+    factory = MockLeaseRetrieverFactory([make_document(quote=(
+        "Monthly rent is $2,200.00. Rent is payable on the first day of each "
+        "month. A flat late fee of $50.00 applies."
+    ))])
+    calls = []
+
+    def calculator(inputs):
+        calls.append(inputs)
+        return calculate_late_fee(inputs)
+
+    state = build_graph(retriever_factory=factory, fee_calculator=calculator).invoke(
+        request_state(
+            "For rent due on 2026-11-01, I paid on 2026-11-06. "
+            f"{statement}. What is my late fee?",
+            as_of="2026-11-06",
+        )
+    )
+    if already_charged is None:
+        assert calls == []
+        assert state["validation_status"] == "abstained"
+        assert state["calculations"] == []
+        assert "Clarify whether a late fee has already been charged" in state["answer"]
+        return
+    assert len(calls) == 1
+    assert calls[0].fee_already_charged is already_charged
+    assert state["validation_status"] == "passed"
+    result = state["calculations"][0]
+    assert result["status"] == ("already_charged" if already_charged else "fee_calculated")
+    assert result["calculated_late_fee"] == ("0.00" if already_charged else "50.00")
+    assert result["statutory_maximum"] == "110.00"
+
+
 def test_missing_contractual_fee_terms_are_not_guessed():
     evidence = make_document(
         quote=(

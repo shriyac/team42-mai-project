@@ -48,17 +48,67 @@ DUE_DAY = re.compile(
     r"(first|second|third|fourth|fifth|\d{1,2}(?:st|nd|rd|th)?)"
     r"(?:\s+day)?\s+(?:of\s+)?(?:each|every)\s+(?:calendar\s+)?month\b", re.I,
 )
-NO_FEE = re.compile(
-    r"\b(?:no\s+late\s+(?:fee|charge)\s+(?:has\s+been\s+)?(?:charged|assessed|paid)|"
-    r"(?:have|has)\s+not\s+(?:been\s+)?(?:charged|assessed|paid)"
-    r"\s+(?:a\s+)?late\s+(?:fee|charge))\b", re.I,
+_FEE = r"late\s+(?:fee|charge)"
+_ACTION = r"(?:charged|assessed|paid)"
+_PRIOR = r"(?:(?:already|previously)\s+)?"
+_PERSON = r"(?:(?:i|we)\s+)?"
+_TERM = rf"(?:(?:a|the)\s+)?{_FEE}"
+_PASSIVE = rf"(?:has\s+{_PRIOR}been|was(?:\s+(?:already|previously))?)"
+_THIS_INSTALLMENT = r"(?:\s+for\s+this\s+(?:rental\s+)?installment)?"
+_NEGATIVE_FEE_STATUS = re.compile(
+    rf"(?:no\s+{_FEE}\s+(?:{_PASSIVE}\s+)?{_ACTION}|"
+    rf"{_PERSON}(?:have|has)\s+not\s+{_PRIOR}(?:been\s+)?{_ACTION}\s+{_TERM}|"
+    rf"{_TERM}\s+(?:has\s+not\s+{_PRIOR}been|was\s+not)\s+{_ACTION})"
+    rf"{_THIS_INSTALLMENT}"
 )
-ALREADY_CHARGED = re.compile(
-    r"\b(?:(?:already|previously)\s+(?:been\s+)?(?:charged|assessed|paid)"
-    r"\s+(?:a\s+)?late\s+(?:fee|charge)|"
-    r"late\s+(?:fee|charge)\s+(?:has\s+already\s+been|was\s+already)"
-    r"\s+(?:charged|assessed|paid))\b", re.I,
+_POSITIVE_FEE_STATUS = re.compile(
+    rf"(?:{_TERM}\s+{_PASSIVE}\s+{_ACTION}|"
+    rf"{_PERSON}(?:have\s+)?{_PRIOR}paid\s+{_TERM}|"
+    rf"{_PERSON}(?:have\s+{_PRIOR}been|was(?:\s+(?:already|previously))?)"
+    rf"\s+(?:charged|assessed)\s+{_TERM}|"
+    rf"(?:already|previously)\s+{_ACTION}\s+{_TERM})"
+    rf"{_THIS_INSTALLMENT}"
 )
+_UNCERTAIN_FEE_STATUS = re.compile(
+    r"\b(?:whether|if|unless|suppose|assuming|would|could|might|maybe|perhaps|"
+    r"possibly|unsure|uncertain|don't know|do not know|not sure|not certain)\b"
+)
+
+
+def _prior_fee_status(question: str) -> bool | None:
+    """Parse complete reviewed assertions; None means clarification, not False.
+
+    Never search for a positive assertion inside a negated or qualified clause.
+    Both contradictory assertions and unrecognized status wording fail closed.
+    This deliberately does not attempt general natural-language interpretation.
+    """
+    text = re.sub(r"\s+", " ", question.replace("’", "'")).casefold()
+    for contraction, expanded in (
+        ("haven't", "have not"), ("hasn't", "has not"),
+        ("wasn't", "was not"), ("i've", "i have"),
+    ):
+        text = re.sub(rf"\b{contraction}\b", expanded, text)
+    if _UNCERTAIN_FEE_STATUS.search(text):
+        return None
+    statuses = set()
+    for sentence in re.split(r"[.!?;]+", text):
+        if not re.search(rf"\b{_FEE}\b", sentence) or not re.search(rf"\b{_ACTION}\b", sentence):
+            continue
+        for clause in re.split(r"\s+(?:and|but|however|yet)\s+|,\s*", sentence):
+            clause = clause.strip()
+            if _NEGATIVE_FEE_STATUS.fullmatch(clause):
+                statuses.add(False)
+            elif _POSITIVE_FEE_STATUS.fullmatch(clause):
+                statuses.add(True)
+            elif clause:
+                # Only explicit rent/payment dates may accompany an assertion.
+                # Do not discard qualifiers or elliptical contradictions such
+                # as "but not paid" or ", not really".
+                if re.search(rf"\b{_FEE}\b", clause) or not (
+                    PAYMENT_DATE.search(clause) or DUE_DATE.search(clause)
+                ):
+                    return None
+    return next(iter(statuses)) if len(statuses) == 1 else None
 
 
 def _date_token(value):
@@ -108,8 +158,8 @@ def extract_fee_input(state: LAGAState):
     if len(due_days) > 1 or (due and due_days and due.day not in due_days):
         errors.append("The installment due date conflicts with the retrieved due-day terms.")
 
-    no_fee, charged = bool(NO_FEE.search(question)), bool(ALREADY_CHARGED.search(question))
-    if no_fee == charged:
+    charged = _prior_fee_status(question)
+    if charged is None:
         errors.append("Clarify whether a late fee has already been charged for this installment.")
 
     flat, percentages = set(), set()
