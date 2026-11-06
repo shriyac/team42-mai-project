@@ -47,3 +47,8 @@ outputType = "webview"
 
 [packager.features]
 enabledForHosting = false
+
+[userenv]
+
+[userenv.development]
+LAGA_DATABASE = "data/demo-phase7d/backend.sqlite3"
