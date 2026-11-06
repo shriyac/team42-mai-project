@@ -35,7 +35,8 @@ test('production server serves app, API docs, PDFs, health and HEAD with correct
  const home=await fetch(baseUrl+'/');assert.equal(home.headers.get('cache-control'),'no-cache');assert.equal(home.headers.get('x-content-type-options'),'nosniff');
  assert.deepEqual(await(await fetch(baseUrl+'/healthz')).json(),{status:'ok',service:'laga-frontend'});
  assert.match(await(await fetch(baseUrl+'/some/app/route')).text(),/Laga app/);
- for(const url of ['/assets/missing.js','/assets/missing','/api-docs/missing','/.env'])assert.equal((await fetch(baseUrl+url)).status,404);
+ for(const url of ['/assets/missing.js','/assets/missing','/api-docs/missing'])assert.equal((await fetch(baseUrl+url)).status,404);
+ assert.equal((await fetch(baseUrl+'/.env')).status,403);
 });
 
 test('unconnected API reads and mutations return safe JSON 503, never the SPA or 405',async t=>{
@@ -53,8 +54,8 @@ test('static paths cannot escape dist through encoded traversal or symlinks',asy
  const request=pathname=>new Promise((resolve,reject)=>{http.get(baseUrl+pathname,response=>{response.resume();resolve(response.statusCode)}).on('error',reject)});
  assert.equal(await request('/%2e%2e%2fprivate.txt'),403);
  assert.equal(await request('/%5c..%5cprivate.txt'),403);
- assert.equal(await request('/bad%ZZ'),400);
- assert.equal(await request('/%00'),400);
+ assert.equal(await request('/bad%ZZ'),403);
+ assert.equal(await request('/%00'),403);
  const outside=path.join(base,'private');await mkdir(outside);await writeFile(path.join(outside,'private.txt'),'private fixture');
  try{await symlink(outside,path.join(root,'escape'),process.platform==='win32'?'junction':'dir')}
  catch(error){if(['EPERM','EACCES','ENOSYS'].includes(error.code)){t.diagnostic('Symlink fixture unavailable on this host.');return}throw error}
@@ -67,6 +68,7 @@ test('production CLI honors PORT and serves dist relative to the script from ano
  await mkdir(path.join(base,'scripts'));
  const script=path.join(base,'scripts','serve.mjs');
  await writeFile(script,await readFile(new URL('../../scripts/serve.mjs',import.meta.url)));
+ await writeFile(path.join(base,'scripts/private-routes.mjs'),await readFile(new URL('../../scripts/private-routes.mjs',import.meta.url)));
  const child=spawn(process.execPath,[script],{cwd:tmpdir(),env:{...process.env,PORT:String(port)},stdio:['ignore','pipe','pipe']});
  let output='';child.stdout.on('data',chunk=>output+=chunk);child.stderr.on('data',chunk=>output+=chunk);
  t.after(async()=>{if(child.exitCode===null&&!child.signalCode){child.kill();await once(child,'exit')}});

@@ -94,12 +94,17 @@ class BootstrapTests(unittest.TestCase):
                 self.assertIsNone(policy["excerpt"])
 
     def test_installations_generate_distinct_passwords(self):
-        bootstrap_database(self.service)
-        other = BackendAPI(Path(self.temp.name) / "developer-b/backend.sqlite3")
-        result = bootstrap_database(other)
+        # Test generation deterministically, never comparing inherited secrets.
+        with patch.dict(os.environ):
+            os.environ.pop("LAGA_BOOTSTRAP_PASSWORD", None)
+            with patch("laga.bootstrap.secrets.token_urlsafe",
+                       side_effect=["fictional-generated-password-0001", "fictional-generated-password-0002"]):
+                bootstrap_database(self.service)
+                other = BackendAPI(Path(self.temp.name) / "developer-b/backend.sqlite3")
+                result = bootstrap_database(other)
         first = json.loads(self.credentials.read_text(encoding="utf-8"))
         second = json.loads((Path(other.database).parent / result["credentialsPath"]).read_text(encoding="utf-8"))
-        self.assertNotEqual(first["password"], second["password"])
+        self.assertTrue(first["password"] != second["password"], "Generated test passwords must differ")
         self.assertEqual(first["accounts"], second["accounts"])
 
     def test_failure_after_credential_creation_removes_file_and_rows(self):

@@ -88,7 +88,7 @@ class ReplitTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             folder = Path(directory)
             (folder/"scripts").mkdir()
-            for filename in ["serve.mjs", "start-app.mjs"]:
+            for filename in ["serve.mjs", "start-app.mjs", "private-routes.mjs"]:
                 (folder/"scripts"/filename).write_bytes((ROOT/"scripts"/filename).read_bytes())
             result = subprocess.run(["node", str(folder/"scripts/start-app.mjs"), "--check"], env={**os.environ,"PORT":"5197","LAGA_LOCAL_API_PORT":"8197"}, capture_output=True, text=True, timeout=10)
             self.assertNotEqual(result.returncode, 0)
