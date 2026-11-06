@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "namespace": "laga-hydrid",
+  "profile": {
+    "provider": "nebius",
+    "base_url": "https://api.tokenfactory.nebius.com/v1/",
+    "model": "Qwen/Qwen3-Embedding-8B",
+    "dimensions": 4096,
+    "query_instruction": "Retrieve rental lease clauses including applicable conditions, fees, and exceptions.",
+    "adapter_version": "qwen-l2-v1",
+    "sparse_model": "pinecone-sparse-english-v0",
+    "sparse_max_tokens": 2048
+  },
+  "corpus_id": "74176289f06d1ecbcb70b901b1fb4fb1f6194194623a06502151ce431f005fc0",
+  "dense_index": "laga-rag",
+  "sparse_index": "laga-rag-sparse",
+  "documents": {
+    "lease-document-1": {
+      "tenant_name": "maya chen",
+      "access": "tenant"
+    },
+    "nc-chapter-42": {
+      "tenant_name": "",
+      "access": "shared"
+    }
+  },
+  "chunk_count": 277
+}
