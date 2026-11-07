@@ -1,98 +1,53 @@
-# LAGA MVP evaluations
+# LAGA evaluation guide
 
-The current dataset is **Q01–Q10**, documented in
-`DATASET_ANNOTATIONS.md`. Check each report's execution mode, generation time
-and dataset fingerprint before comparing results.
+LAGA uses a **10-question golden dataset (Q01–Q10)** to evaluate clause retrieval, multi-clause reasoning, fee-question handling, missing-evidence abstention, and tenant authorization. Each expectation is grounded in the hash-pinned synthetic lease and recorded in [golden_questions.json](golden_questions.json).
 
-Run the final 10-question **OFFLINE** evaluation without inheriting workspace secrets:
+## Evaluation modes
+
+| Mode | What it tests |
+|---|---|
+| **OFFLINE** | Deterministic fixture retrieval, LangGraph routing, calculator behavior, citation rules, and backend authorization without external providers |
+| **LIVE** | Read-only Pinecone retrieval through the production adapter, verified corpus and tenant/document bindings, real response behavior |
+
+Do not compare offline latencies to provider-backed latency or describe an offline pass as a successful live retrieval.
+
+## Run safely
+
+Offline evaluations use the repository's secret-isolated runner:
 
 ```sh
 node scripts/run-isolated-tests.mjs evals
 ```
 
-This invokes the existing `agent.graph.build_graph().invoke()` interface, real
-fee calculator, actual PDF chunker and real backend ownership methods against a
-disposable synthetic SQLite fixture. It does not call Pinecone, any LLM, or an
-embedding service. The mocked retriever selects actual PDF chunks by explicit
-topic rules, independently of golden expected chunk IDs.
-
-Run live evaluation **only when intentionally requested**:
-
-```sh
-PYTHONPATH=src:. .pythonlibs/bin/python -m evaluation.run_evals --mode live
-```
-
-For an explicitly approved isolated synthetic-demo evaluation while the
-application remains disabled:
+An authorized **isolated demo** live run can be invoked with:
 
 ```sh
 PYTHONPATH=src:. python -m evaluation.run_evals --mode live --isolated-demo
 ```
 
-This passes reviewed activation flags only to an in-memory configuration.
-It does not change Replit environment configuration or the running app.
-The real production factory still validates approved bindings, snapshot,
-canonical corpus, ownership and both indexes. Failure never substitutes
-offline fixtures.
+Live mode still requires valid private credentials, approved bindings, the pinned `active.json` snapshot, matching PDFs, existing indexes, and tenant authorization. The isolated-demo option does **not** activate retrieval in the running app, bypass verification, or write to Pinecone. If prerequisites fail, record cases as **BLOCKED / NOT_RUN**, never as passed.
 
-The live runner does not enable anything. If retrieval is disabled or local
-production prerequisites fail, all live cases are recorded as `NOT_RUN` with a
-`BLOCKED` reason. When enabled, it uses a read-only connection to the configured
-backend SQLite DB, existing backend principal/lease authorization and
-`ProductionRetrieverFactory` including its approved binding, snapshot, corpus,
-canonical citation and index validation. It never calls ingestion/index creation.
-No fixture fallback is allowed. A successful local preflight alone is not proof
-that service access will succeed; service failures remain evaluation failures.
+Run evaluation-related tests only through the [secret-isolated test setup](../replit.md#checks). Never execute tests against actual Replit Secrets using an unsanitized child environment.
 
-Q10 executes `BackendAPI.post_assistant_messages()` and must be denied before
-retrieval. Positive graph outcomes pass through the existing `adapt_answer()`
-and Answer schema for actual public response status. These are service-level
-evaluations, not browser/session tests. The explicit factual-support rubric
-checks annotated answer facts, source provenance and required clause coverage;
-it is not an unverified model self-score or independent human legal review.
-Run `evaluation/test_evals.py` with the existing secret-isolated test machinery.
+## Results and interpretation
 
-The cases are three simple questions, two multi-clause questions, two fee
-questions, two missing-evidence questions (Wi-Fi and personal phone password), and one tenant
-authorization denial. Expected facts and reference chunk IDs come from the
-hash-pinned canonical synthetic PDF. Fees use explicit hypothetical payment
-facts and independently specified Decimal expectations. Current Q06 is
-clarification-first under existing extraction requirements; its USD 50 reference
-is conditional, not a mandatory calculator invocation. Q07 lacks a payment date.
+See [report.md](report.md) and [results.json](results.json) for the run modes, dataset fingerprint, metric denominators, latency, and per-case outcomes.
 
-`results.json` preserves separate `mock` (labeled **OFFLINE**) and `live` runs. `report.md` summarizes
-actual results, denominators, limitations and failures. The CLI returns 0 when a
-report was generated (even with failing assertions or blocked cases), and 2 when
-the runner itself cannot complete. Inspect reported outcomes for quality gates.
-Re-running offline mode preserves a previously recorded live run only when its
-dataset fingerprint matches. Stale runs from the earlier 15-case dataset are
-not combined with final 10-case results. The CLI also accepts `--mode offline`
-as an alias for the existing `mock` mode.
+| Metric | LIVE | OFFLINE |
+|---|---:|---:|
+| Golden pass rate | **9/10** | 6/10 |
+| Recall@5 | 71.4% | 35.7% |
+| Precision@5 | 20.0% | 11.4% |
+| Tool-selection accuracy | 100% | 100% |
+| Citation correctness | 100% | 80% |
+| Strict factual support | 80% | 20% |
+| Clarification / abstention | 100% | 100% |
 
-All monetary values are USD decimal strings; percentages, where used, are
-percentage points. Payment dates in questions are hypothetical user-supplied
-inputs, not claims about recorded payments. Reference amounts are manually
-annotated expectations checked with Decimal, not outputs copied from the tool.
+- **Q05:** The live response included valid citations but omitted a qualifying pet-damage condition, failing the strict completeness rubric.
+- **Fee cases:** Both golden questions correctly required clarification; **live numeric exact-match was NOT_MEASURED (0 cases)**. Separately, the Python fee calculator and its LangGraph invocation passed controlled offline tests.
+- **Authorization:** Q10 tests another lease ID through `BackendAPI.post_assistant_messages()` and verifies rejection before retrieval.
+- **Scoring:** Retrieval metrics cover cases with annotated source chunks. The strict factual-support rubric is rule-based against expected facts and clauses; it is not an independent legal review or an unverified model confidence score.
 
-The PDF hash pins the real public unsigned fixture, and the manifest fixture pins
-its declared identity. References come from actual local chunk extraction, not a
-reconstructed ingestion snapshot. Do not call this fixture signed or enforceable.
-Unverifiable answers must use `annotation_status: "needs_annotation"`; they are
-not scored as passing. Do not modify chunks to make an evaluation pass.
+The checked-in artifacts use synthetic data only. Do not include credentials, real tenant data, private binding files, or service logs in evaluation outputs. A report generated by the CLI may still contain failing or blocked cases; always inspect the per-case results before describing a run as successful.
 
-Results contain source excerpts and metadata. The checked-in dataset is restricted
-to the public synthetic fixture. Do not substitute real tenant data into distributable
-reports. A future private dataset needs private output handling and human review.
-
-Recall@5 uses first-seen unique returned chunks across subquestions/retries,
-not an independent global ranking. Cases without annotated chunks are
-`NOT_MEASURED`; aggregate retrieval scores exclude those cases. Citations are
-checked as exact excerpts on verified source pages, including Phase 8H's
-narrowed quotes. A reported failure is not permission to alter production
-prompts, answerability rules, or the calculator to improve this dataset's score.
-
-The offline topic selector is deliberately limited: it may return only template
-sections and omit operative clauses elsewhere in the combined PDF. Thus an
-offline failure can differ from a successful live Pinecone retest. All measured
-latencies in an OFFLINE report are fixture/graph execution times, not provider
-or UI response times.
+See [DATASET_ANNOTATIONS.md](DATASET_ANNOTATIONS.md) for the annotation methodology.
